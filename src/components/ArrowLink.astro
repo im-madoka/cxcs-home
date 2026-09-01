@@ -1,0 +1,13 @@
+---
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+const { href, label, external = false, class: className = '' } = Astro.props;
+---
+
+<a
+  class={`arrow-link ${className}`}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <span>{label}</span>{external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
+</a>

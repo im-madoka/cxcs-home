@@ -1,0 +1,93 @@
+---
+import { getCollection, render } from 'astro:content';
+import { ArrowUpRight, Github } from 'lucide-astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
+import StatusPill from '../../components/StatusPill.astro';
+import { siteData } from '../../data/site';
+export async function getStaticPaths() {
+  const allEntries = await getCollection('projects');
+  return allEntries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const related = (
+  await getCollection('articles', ({ data }) => !data.draft && data.relatedProjects.includes(entry.id))
+).slice(0, 3);
+---
+
+<BaseLayout
+  title={`${entry.data.title} · Projects · ${siteData.shortName}`}
+  description={entry.data.description}
+  image={entry.data.cover?.image}
+>
+  <article>
+    <header class="detail-hero">
+      <div class="container detail-header">
+        <p class="eyebrow">01 / Project · {entry.data.status}</p><h1>{entry.data.title}</h1><p>
+          {entry.data.description}
+        </p><div class="detail-byline">
+          <StatusPill status={entry.data.status} />{
+            entry.data.startedAt && <span>{entry.data.startedAt.getFullYear()}</span>
+          }{entry.data.deployedWithCxcsPage && <span>Deployed with CXCS Page</span>}
+        </div>
+      </div>
+    </header>
+    <div class="detail-cover">
+      {
+        entry.data.cover ? (
+          <img src={entry.data.cover.image} alt={entry.data.cover.alt} />
+        ) : (
+          <BrandPlaceholder label={entry.data.title} />
+        )
+      }
+    </div>
+    <div class="container project-detail-grid">
+      <aside class="project-aside">
+        <p class="eyebrow">Links</p>{
+          entry.data.website && (
+            <a class="arrow-link" href={entry.data.website} target="_blank" rel="noopener noreferrer">
+              访问项目 <ArrowUpRight size={16} />
+            </a>
+          )
+        }{
+          entry.data.repository && (
+            <a class="arrow-link" href={entry.data.repository} target="_blank" rel="noopener noreferrer">
+              GitHub <Github size={16} />
+            </a>
+          )
+        }<p class="eyebrow aside-label">技术栈</p><div class="tag-list">
+          {entry.data.technologies.map((tag) => <span class="tag">{tag}</span>)}
+        </div><p class="eyebrow aside-label">成员</p>{
+          entry.data.members.map((member) => (
+            <p class="member-line">
+              {member.person} <span>{member.role}</span>
+            </p>
+          ))
+        }
+      </aside><div class="article-body project-body"><Content /></div>
+    </div>
+    <footer class="article-footer">
+      <ArrowLink href="/projects" label="返回 Projects" />{
+        related.length > 0 && (
+          <div class="related-block">
+            <>
+              <p class="eyebrow">关于这个项目</p>
+              <div class="related-grid">
+                {related.map((item) => (
+                  <a class="related-link" href={`/articles/${item.id}`}>
+                    <p>{item.data.type}</p>
+                    <h3>{item.data.title}</h3>
+                  </a>
+                ))}
+              </div>
+            </>
+          </div>
+        )
+      }
+    </footer>
+  </article>
+</BaseLayout>

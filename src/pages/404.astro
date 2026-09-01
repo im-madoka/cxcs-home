@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { siteData } from '../data/site';
+---
+
+<BaseLayout title={`404 · ${siteData.shortName}`} description="这个页面不存在，也可能已经被移动到了别的地方。">
+  <section class="not-found">
+    <div class="container">
+      <p class="eyebrow">Error / 404</p><h1>404</h1><h2>好像走错地方了。</h2><p>
+        这个页面不存在，也可能已经被移动到了别的地方。
+      </p><div class="terminal">&gt; cd /somewhere<br /><span>cd: no such file or directory</span></div><div
+        class="hero-actions"
+      >
+        <a class="button button-primary" href="/">返回首页 →</a><ArrowLink href="/articles" label="看看最近的内容" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

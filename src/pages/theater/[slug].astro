@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import { characters } from '../../data/site';
+export async function getStaticPaths() {
+  const entries = await getCollection('theater');
+  return entries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const episodes = (await getCollection('theater', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.episode - b.data.episode,
+);
+const index = episodes.findIndex((item) => item.id === entry.id);
+const previous = index > 0 ? episodes[index - 1] : null;
+const next = index < episodes.length - 1 ? episodes[index + 1] : null;
+---
+
+<BaseLayout
+  title={`EP.${String(entry.data.episode).padStart(2, '0')} ${entry.data.title} · Theater`}
+  description={entry.data.description}
+  image={entry.data.cover.image}
+>
+  <article>
+    <header class="detail-hero episode-detail-hero">
+      <div class="container detail-header">
+        <p class="episode-index">EP.{String(entry.data.episode).padStart(2, '0')}</p><h1>{entry.data.title}</h1><div
+          class="tag-list centered-tags"
+        >
+          {entry.data.topics.map((topic) => <span class="tag orange">{topic}</span>)}
+        </div><div class="detail-byline">
+          <span>{entry.data.publishedAt.toLocaleDateString('zh-CN')}</span><span
+            >{entry.data.characters.map((id) => characters[id]?.name || id).join(' / ')}</span
+          >
+        </div>
+      </div>
+    </header>
+    <div class="detail-cover episode-hero-cover"><img src={entry.data.cover.image} alt={entry.data.cover.alt} /></div>
+    <div class="episode-reading article-body"><Content /></div>
+    <section class="episode-end reading-container">
+      <p class="eyebrow">本集结束</p><h2>“学会了吗？”</h2><p>Rust 发卡：“最好是。”</p>{
+        entry.data.relatedGuides.length > 0 && (
+          <div class="related-grid">
+            {entry.data.relatedGuides.map((guide) => (
+              <a class="related-link" href={guide.url} target="_blank" rel="noopener noreferrer">
+                <p>CXCS Guide ↗</p>
+                <h3>{guide.label}</h3>
+              </a>
+            ))}
+          </div>
+        )
+      }<nav class="episode-nav" aria-label="剧集导航">
+        {
+          previous ? (
+            <ArrowLink
+              href={`/theater/${previous.id}`}
+              label={`EP.${String(previous.data.episode).padStart(2, '0')}`}
+            />
+          ) : (
+            <span />
+          )
+        }{
+          next ? (
+            <ArrowLink href={`/theater/${next.id}`} label={`EP.${String(next.data.episode).padStart(2, '0')}`} />
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+    </section>
+  </article>
+</BaseLayout>

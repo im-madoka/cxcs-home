@@ -1,0 +1,25 @@
+---
+const { status, label, startAt, endAt, cancelled, recruitmentStart, recruitmentEnd } = Astro.props;
+const labels: Record<string, string> = {
+  active: 'Active',
+  experimental: 'Experimental',
+  archived: 'Archived',
+  upcoming: '即将开始',
+  ongoing: '进行中',
+  ended: '已结束',
+  cancelled: '已取消',
+  open: '正在进行',
+  closed: '本轮结束',
+};
+---
+
+<span
+  class={`status-pill status-${status}`}
+  data-status-pill
+  data-status={status}
+  data-start={startAt}
+  data-end={endAt}
+  data-cancelled={cancelled ? 'true' : undefined}
+  data-recruitment-start={recruitmentStart}
+  data-recruitment-end={recruitmentEnd}><i aria-hidden="true"></i>{label || labels[status] || status}</span
+>

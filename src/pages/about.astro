@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import SectionIntro from '../components/SectionIntro.astro';
+import { siteData } from '../data/site';
+---
+
+<BaseLayout title={`About · ${siteData.shortName}`} description="我们是一群喜欢计算机，也喜欢折腾的人。">
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div>
+        <p class="eyebrow">About CXCS</p><h1>喜欢计算机，<br />也喜欢折腾。</h1><p class="page-hero-copy">
+          有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。
+        </p>
+      </div><div class="about-seal" aria-label="CXCS 完整社徽视觉占位">
+        <span>CXCS</span><i>&lt;/&gt;</i><small>Computer Association</small>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="container about-grid">
+      <div><p class="eyebrow">What is CXCS</p><h2>不是培训班，<br />是一群人的社区。</h2></div><div class="about-copy">
+        <p>不知道从哪里开始，可以一起学。网站、工具、Bot、开发板，想到什么就试着做点什么。</p><p>
+          计算机不一定只能一个人坐在电脑前研究。找到愿意一起踩坑、一起分享的人，也是一件很重要的事。
+        </p><ArrowLink href="/join" label="加入计算机协会" />
+      </div>
+    </div>
+    <div class="container values-grid">
+      <article class="value-card">
+        <span>01</span><h3>Curiosity</h3><p>保持好奇，允许自己先问一个简单问题。</p>
+      </article><article class="value-card">
+        <span>02</span><h3>Build</h3><p>动手去做，让想法获得可以被看见的形状。</p>
+      </article><article class="value-card">
+        <span>03</span><h3>Share</h3><p>愿意把经验留下，也愿意听听不同的方法。</p>
+      </article><article class="value-card">
+        <span>04</span><h3>Together</h3><p>一起成长，不把会不会当成进入社区的门槛。</p>
+      </article>
+    </div>
+  </section>
+  <section class="band band-soft">
+    <div class="container">
+      <SectionIntro
+        eyebrow="CXCS Online"
+        title="我们也在搭自己的数字空间。"
+        description="同一个 CXCS，不同的职责。"
+      /><div class="ecosystem-list">
+        <a href={siteData.url}
+          ><strong>cxcs.dev</strong><span>协会官方网站、动态、项目和招新入口</span><span class="eco-arrow">→</span></a
+        ><a href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
+          ><strong>guide.cxcs.dev</strong><span>学习指南与知识库</span><span class="eco-arrow">↗</span></a
+        ><a href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
+          ><strong>cxcs.page</strong><span>成员网站部署与托管平台</span><span class="eco-arrow">↗</span></a
+        >
+      </div>
+    </div>
+  </section>
+  <section class="join-band">
+    <div class="container">
+      <p class="eyebrow">Next Step</p><h2>了解得差不多了。<br />来认识一下我们？</h2><div class="hero-actions">
+        <a class="button button-primary" href="/join">加入计算机协会 →</a><a
+          class="button button-secondary"
+          href="/activities">看看最近的活动 →</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

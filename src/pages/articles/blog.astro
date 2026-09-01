@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
+import SectionIntro from '../../components/SectionIntro.astro';
+import { siteData } from '../../data/site';
+const articles = (await getCollection('articles', ({ data }) => !data.draft && data.type === 'blog')).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+---
+
+<BaseLayout title={`Blog · Articles · ${siteData.shortName}`} description="CXCS 成员的故事、项目复盘和有趣想法。">
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div>
+        <p class="eyebrow">Articles / Blog</p><h1>写点<br />有意思的。</h1><p class="page-hero-copy">
+          项目故事、成员随笔、技术旁路和一点不太严肃的观察。
+        </p>
+      </div><div class="page-hero-art" aria-hidden="true"></div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="container">
+      <nav class="filter-tabs" aria-label="文章分类">
+        <a href="/articles">全部</a><a href="/articles/news">新闻</a><a href="/articles/blog" aria-current="page"
+          >博客</a
+        >
+      </nav><SectionIntro eyebrow="Blog Feed" title="从一个小问题开始。" /><div class="editorial-grid">
+        {
+          articles.map((article) => (
+            <article class="editorial-item">
+              <a class="article-card" href={`/articles/${article.id}`}>
+                <>
+                  <div class="article-cover">
+                    {article.data.cover ? (
+                      <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
+                    ) : (
+                      <BrandPlaceholder label="BLOG" />
+                    )}
+                  </div>
+                  <div class="article-meta">
+                    <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                    {article.data.authors.length > 0 && <span>作者 / {article.data.authors.join(', ')}</span>}
+                  </div>
+                  <h3>{article.data.title}</h3>
+                  <p>{article.data.description}</p>
+                </>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

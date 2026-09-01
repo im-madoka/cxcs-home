@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from 'astro:content';
+import { CalendarDays, MapPin } from 'lucide-astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
+import StatusPill from '../../components/StatusPill.astro';
+import { siteData } from '../../data/site';
+import { getActivityStatus } from '../../lib/status';
+export async function getStaticPaths() {
+  const allEntries = await getCollection('activities');
+  return allEntries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const status = getActivityStatus(entry.data.startAt, entry.data.endAt, new Date(), entry.data.cancelled);
+---
+
+<BaseLayout
+  title={`${entry.data.title} · Activities · ${siteData.shortName}`}
+  description={entry.data.description}
+  image={entry.data.cover?.image}
+>
+  <article>
+    <header class="detail-hero">
+      <div class="container detail-header">
+        <p class="eyebrow">{status === 'upcoming' ? 'Upcoming Activity' : 'Event Archive'}</p><h1>
+          {entry.data.title}
+        </h1><p>{entry.data.description}</p><div class="event-meta detail-event-meta">
+          <span
+            ><CalendarDays size={16} />{entry.data.startAt.toLocaleDateString('zh-CN')} · {
+              entry.data.startAt.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+            }</span
+          ><span><MapPin size={16} />{entry.data.location.name}</span><StatusPill
+            status={status}
+            startAt={entry.data.startAt.toISOString()}
+            endAt={entry.data.endAt.toISOString()}
+            cancelled={entry.data.cancelled}
+          />
+        </div>{
+          status === 'upcoming' && entry.data.registrationUrl && (
+            <a
+              class="button button-primary"
+              href={entry.data.registrationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              报名参加 ↗
+            </a>
+          )
+        }
+      </div>
+    </header>
+    <div class="detail-cover">
+      {
+        entry.data.cover ? (
+          <img src={entry.data.cover.image} alt={entry.data.cover.alt} />
+        ) : (
+          <BrandPlaceholder label="ACTIVITY" />
+        )
+      }
+    </div>
+    <div class="article-body"><Content /></div>
+    {
+      entry.data.materials.length > 0 && (
+        <section class="band-tight">
+          <div class="reading-container">
+            <>
+              <p class="eyebrow">Materials</p>
+              <div class="related-grid">
+                {entry.data.materials.map((material) => (
+                  <a class="related-link" href={material.url} target="_blank" rel="noopener noreferrer">
+                    <p>External ↗</p>
+                    <h3>{material.label}</h3>
+                  </a>
+                ))}
+              </div>
+            </>
+          </div>
+        </section>
+      )
+    }
+    <footer class="article-footer"><ArrowLink href="/activities" label="返回 Activities" /></footer>
+  </article>
+</BaseLayout>

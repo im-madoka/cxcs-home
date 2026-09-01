@@ -1,0 +1,54 @@
+---
+import SiteHeader from '../widgets/global/SiteHeader.astro';
+import SiteFooter from '../widgets/global/SiteFooter.astro';
+import { siteData } from '../data/site';
+import '../styles/global.css';
+const {
+  title = siteData.title,
+  description = siteData.description,
+  image = 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=85',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, siteData.url).toString();
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#FAFAFA" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%23232323'/%3E%3Ccircle cx='50' cy='50' r='24' fill='none' stroke='%2378bfe8' stroke-width='8'/%3E%3C/svg%3E"
+    />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        try {
+          const choice = localStorage.getItem('cxcs-theme') || 'system';
+          document.documentElement.dataset.theme = choice;
+        } catch {
+          document.documentElement.dataset.theme = 'system';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳转到主要内容</a>
+    <SiteHeader />
+    <main id="main-content"><slot /></main>
+    <SiteFooter />
+    <script src="../scripts/temporal-status.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionIntro from '../../components/SectionIntro.astro';
+import { characters, siteData } from '../../data/site';
+const episodes = (await getCollection('theater', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.episode - a.data.episode,
+);
+const latest = episodes[0];
+const cast = Object.values(characters);
+---
+
+<BaseLayout
+  title={`Theater · ${siteData.shortName}`}
+  description="把难懂一点的东西，讲得好玩一点。"
+  image={latest?.data.cover.image}
+>
+  <section class="page-hero theater-page-hero">
+    <div class="container page-hero-inner">
+      <div>
+        <p class="eyebrow">Theater</p><h1>技术不一定<br />非得一本正经。</h1><p class="page-hero-copy">
+          把难懂一点的东西，讲得好玩一点。
+        </p>
+      </div><div class="page-hero-art theater-art" aria-hidden="true"><span>危</span></div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="container">
+      <div class="section-head-row">
+        <SectionIntro eyebrow="Latest Episode" title="先从最新一集开始。" /><span class="eyebrow"
+          >Playground / IP Stage</span
+        >
+      </div>{
+        latest && (
+          <a class="episode-card theater-latest" href={`/theater/${latest.id}`}>
+            <>
+              <div class="episode-cover">
+                <img src={latest.data.cover.image} alt={latest.data.cover.alt} />
+              </div>
+              <div class="episode-info">
+                <>
+                  <span class="episode-index">LATEST EPISODE · EP.{String(latest.data.episode).padStart(2, '0')}</span>
+                  <h3>{latest.data.title}</h3>
+                  <p>{latest.data.description}</p>
+                  <span class="arrow-link">
+                    开始阅读 <span aria-hidden="true">→</span>
+                  </span>
+                  <div class="tag-list">
+                    {latest.data.topics.map((topic) => (
+                      <span class="tag orange">{topic}</span>
+                    ))}
+                  </div>
+                </>
+              </div>
+            </>
+          </a>
+        )
+      }
+    </div>
+  </section>
+  <section class="band band-soft">
+    <div class="container">
+      <SectionIntro eyebrow="Episodes" title="一格一格，把知识讲清楚。" />
+      <div class="episode-wall">
+        {
+          episodes.map((episode, index) => (
+            <a class={`episode-tile ${index === 0 ? 'large' : ''}`} href={`/theater/${episode.id}`}>
+              <>
+                <img src={episode.data.cover.image} alt={episode.data.cover.alt} loading="lazy" />
+                <div class="episode-tile-content">
+                  <>
+                    <span class="episode-index">EP.{String(episode.data.episode).padStart(2, '0')}</span>
+                    <h3>{episode.data.title}</h3>
+                  </>
+                </div>
+              </>
+            </a>
+          ))
+        }
+      </div>
+      <div class="section-head-row cast-heading">
+        <SectionIntro eyebrow="Cast" title="本剧常驻人员。" /><span class="eyebrow">Core Cast / 2026</span>
+      </div>
+      <div class="cast-grid">
+        {
+          cast.map((character) => (
+            <article class="character-card">
+              <>
+                <div class="character-avatar">{character.name.slice(0, 1)}</div>
+                <h3>{character.name}</h3>
+                <p>{character.description}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

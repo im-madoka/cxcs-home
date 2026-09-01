@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
+import SectionIntro from '../../components/SectionIntro.astro';
+import { siteData } from '../../data/site';
+const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+const featured = articles.find((entry) => entry.data.featured) || articles[0];
+const rest = articles.filter((entry) => entry.id !== featured?.id);
+---
+
+<BaseLayout title={`Articles · ${siteData.shortName}`} description="记录最近发生的事情，也写一些我们觉得有意思的东西。">
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div>
+        <p class="eyebrow">05 / Articles</p><h1>文章<br />与动态。</h1><p class="page-hero-copy">
+          记录最近发生的事情，也写一些我们觉得有意思的东西。
+        </p>
+      </div><div class="page-hero-art" aria-hidden="true"></div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="container">
+      <nav class="filter-tabs" aria-label="文章分类">
+        <a href="/articles" aria-current="page">全部</a><a href="/articles/news">新闻</a><a href="/articles/blog"
+          >博客</a
+        >
+      </nav>
+      {
+        featured && (
+          <a class="story-card" href={`/articles/${featured.id}`}>
+            <>
+              <>
+                {featured.data.cover ? (
+                  <img src={featured.data.cover.image} alt={featured.data.cover.alt} />
+                ) : (
+                  <BrandPlaceholder label="FEATURED" />
+                )}
+              </>
+              <div class="story-content">
+                <>
+                  <div class="eyebrow">
+                    {featured.data.type} · {featured.data.publishedAt.toLocaleDateString('zh-CN')}
+                  </div>
+                  <h3>{featured.data.title}</h3>
+                  <p>{featured.data.description}</p>
+                  <span class="arrow-link">
+                    阅读全文 <span aria-hidden="true">→</span>
+                  </span>
+                </>
+              </div>
+            </>
+          </a>
+        )
+      }
+      <div class="section-head-row article-feed-heading">
+        <SectionIntro eyebrow="Editorial Feed" title="慢慢读，也可以快速找到想看的。" /><ArrowLink
+          href="/join"
+          label="了解 CXCS"
+        />
+      </div>
+      <div class="editorial-grid">
+        {
+          rest.map((article) => (
+            <article class="editorial-item">
+              <a class="article-card" href={`/articles/${article.id}`}>
+                <>
+                  <div class="article-cover">
+                    {article.data.cover ? (
+                      <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
+                    ) : (
+                      <BrandPlaceholder label={article.data.type.toUpperCase()} />
+                    )}
+                  </div>
+                  <div class="article-meta">
+                    <>
+                      <span class="article-type">{article.data.type}</span>
+                      <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                    </>
+                  </div>
+                  <h3>{article.data.title}</h3>
+                  <p>{article.data.description}</p>
+                </>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

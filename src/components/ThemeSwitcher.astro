@@ -1,0 +1,63 @@
+---
+import { Monitor, Moon, Sun } from 'lucide-astro';
+---
+
+<div class="theme-switcher">
+  <button class="icon-button theme-trigger" type="button" aria-label="切换主题" aria-expanded="false" title="切换主题">
+    <Sun size={16} strokeWidth={1.8} />
+  </button>
+  <div class="theme-menu" role="menu" hidden>
+    <button type="button" role="menuitem" data-theme-choice="system"><Monitor size={15} /> System</button>
+    <button type="button" role="menuitem" data-theme-choice="light"><Sun size={15} /> Light</button>
+    <button type="button" role="menuitem" data-theme-choice="dark"><Moon size={15} /> Dark</button>
+  </div>
+</div>
+
+<script>
+  const switcher = document.querySelector<HTMLElement>('.theme-switcher');
+  if (switcher) {
+    const trigger = switcher.querySelector<HTMLButtonElement>('.theme-trigger');
+    const menu = switcher.querySelector<HTMLDivElement>('.theme-menu');
+    const setTheme = (choice: string | undefined, x = window.innerWidth / 2, y = 24) => {
+      if (!choice || !menu) return;
+      const apply = () => {
+        document.documentElement.dataset.theme = choice;
+        try {
+          localStorage.setItem('cxcs-theme', choice);
+        } catch {}
+      };
+      if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.style.setProperty('--theme-x', `${x}px`);
+        document.documentElement.style.setProperty('--theme-y', `${y}px`);
+        document.startViewTransition(apply);
+      } else apply();
+      menu.hidden = true;
+      trigger?.setAttribute('aria-expanded', 'false');
+    };
+    trigger?.addEventListener('click', (event) => {
+      const rect = trigger.getBoundingClientRect();
+      if (!menu) return;
+      menu.hidden = !menu.hidden;
+      trigger.setAttribute('aria-expanded', String(!menu.hidden));
+      if (!menu.hidden) menu.querySelector('button')?.focus();
+      document.documentElement.style.setProperty('--theme-x', `${rect.left + rect.width / 2}px`);
+      document.documentElement.style.setProperty('--theme-y', `${rect.top + rect.height / 2}px`);
+      event.stopPropagation();
+    });
+    switcher.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
+      button.addEventListener('click', () =>
+        setTheme(
+          button.dataset.themeChoice,
+          parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--theme-x')),
+          parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--theme-y')),
+        ),
+      );
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !switcher.contains(event.target) && menu) {
+        menu.hidden = true;
+        trigger?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
