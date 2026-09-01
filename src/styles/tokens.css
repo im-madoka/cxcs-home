@@ -1,0 +1,6 @@
+:root {
+  --motion-instant: 120ms;
+  --motion-fast: 220ms;
+  --motion-normal: 360ms;
+  --motion-slow: 720ms;
+}
