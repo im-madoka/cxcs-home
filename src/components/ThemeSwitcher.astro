@@ -20,6 +20,22 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
     const menu = switcher.querySelector<HTMLDivElement>('.theme-menu');
     const setTheme = (choice: string | undefined, x = window.innerWidth / 2, y = 24) => {
       if (!choice || !menu) return;
+      
+      const currentChoice = document.documentElement.dataset.theme || 'system';
+      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const getEffectiveTheme = (val: string) => (val === 'system' ? (isSystemDark ? 'dark' : 'light') : val);
+
+      // If neither the setting choice nor the effective rendered appearance changes, do nothing to prevent flashing
+      if (choice === currentChoice || getEffectiveTheme(choice) === getEffectiveTheme(currentChoice)) {
+        document.documentElement.dataset.theme = choice;
+        try {
+          localStorage.setItem('cxcs-theme', choice);
+        } catch {}
+        menu.hidden = true;
+        trigger?.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
       const apply = () => {
         document.documentElement.dataset.theme = choice;
         try {

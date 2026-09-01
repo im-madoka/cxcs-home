@@ -6,10 +6,18 @@ import { footerGroups, siteData } from '../../data/site';
 <footer class="site-footer">
   <div class="footer-top">
     <div class="footer-brand-block">
-      <div class="seal-mark" aria-hidden="true"><span>✦</span></div>
-      <p class="footer-kicker">东南大学成贤学院</p>
-      <h2>CXCS</h2>
-      <p>一起学习，一起折腾，<br />一起做点有意思的东西。</p>
+      <img
+        class="seal-mark"
+        src="/assets/brand/association-emblem.png"
+        alt=""
+        width="64"
+        height="64"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="footer-wordmark" role="img" aria-label="东南大学成贤学院校团委科创部大学生科学技术协会（计算机分会）">
+      </div>
+      <p class="footer-tagline">一起学习，一起折腾，<br />一起做点有意思的东西。</p>
     </div>
     {
       footerGroups.map((group) => (

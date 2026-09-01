@@ -36,13 +36,42 @@ const latestEpisode = episodes[0];
         </div>
         <div class="scroll-cue"><span></span> Scroll to explore</div>
       </div>
-      <div class="hero-visual" aria-label="CXCS mascot visual">
-        <div class="hero-visual-card">
-          <div class="mascot">
-            <div class="mascot-head">•ᴗ•</div><div class="mascot-body"></div><div class="mascot-pin">危</div>
-          </div>
+      <div class="hero-visual" data-hero-visual>
+        <!-- Floating organic decorative elements behind & around the mascot -->
+        <div class="hero-decorations" aria-hidden="true">
+          <div class="decor-aurora"></div>
+          <div class="decor-ambient-light" data-decor-light></div>
+          
+          <!-- Smooth kinetic energy rings (fluid pulse & rotation) -->
+          <div class="kinetic-orbit ring-outer"></div>
+          <div class="kinetic-orbit ring-mid"></div>
+          <div class="kinetic-orbit ring-inner"></div>
+
+          <!-- Interactive particle constellations / code embers -->
+          <div class="floating-mote mote-1"></div>
+          <div class="floating-mote mote-2"></div>
+          <div class="floating-mote mote-3"></div>
+          <div class="floating-mote mote-4"></div>
         </div>
-        <p class="hero-note">平时安静，触发时有反应。<br />— 计协娘</p>
+
+        <div class="hero-mascot-container" data-mascot-container>
+          <img
+            class="hero-mascot"
+            src="/assets/characters/shurin-aran/hero.png"
+            alt="Shurin Aran，计协娘"
+            width="1024"
+            height="1536"
+            fetchpriority="high"
+            data-hero-mascot
+          />
+        </div>
+
+        <div class="mascot-tag" data-mascot-tag>
+          <span class="tag-pulse" aria-hidden="true"></span>
+          <span class="tag-name">Shurin Aran</span>
+          <span class="tag-sep">·</span>
+          <span class="tag-sub">计协娘</span>
+        </div>
       </div>
     </div>
   </section>
@@ -58,24 +87,52 @@ const latestEpisode = episodes[0];
       </div>
       <div class="bento-grid">
         <article class="bento-card">
-          <span class="card-number">01</span><h3>学点新东西</h3><p>
-            编程、电脑、软件、开发板……感兴趣的东西，都可以一起研究。
-          </p><span class="card-icon"><Code2 size={56} strokeWidth={1.3} /></span>
+          <span class="card-number">01</span>
+          <h3>学点新东西</h3>
+          <p>编程、电脑、软件、开发板……感兴趣的东西，都可以一起研究。</p>
+          <div class="card-chips">
+            <span class="chip">C / C++</span>
+            <span class="chip">Python</span>
+            <span class="chip">Web 前端</span>
+            <span class="chip">Linux / Shell</span>
+          </div>
+          <span class="card-icon"><Code2 size={56} strokeWidth={1.3} /></span>
         </article>
         <article class="bento-card">
-          <span class="card-number">02</span><h3>做点有意思的项目</h3><p>
-            网站、小游戏、机器人、小工具。想到了，就试着把它做出来。
-          </p><span class="card-icon"><Sparkles size={56} strokeWidth={1.3} /></span>
+          <span class="card-number">02</span>
+          <h3>做点有意思的项目</h3>
+          <p>网站、小游戏、机器人、小工具。想到了，就试着把它做出来。</p>
+          <div class="card-chips">
+            <span class="chip">社团 Bot</span>
+            <span class="chip">开源工具</span>
+            <span class="chip">硬件折腾</span>
+            <span class="chip">个人主页</span>
+          </div>
+          <span class="card-icon"><Sparkles size={56} strokeWidth={1.3} /></span>
         </article>
         <article class="bento-card">
-          <span class="card-number">03</span><h3>一起参加比赛</h3><p>有队友、有经验分享，也有人陪你一起踩坑。</p><span
-            class="card-icon">↗</span
-          >
+          <span class="card-number">03</span>
+          <h3>一起参加比赛</h3>
+          <p>有队友、有经验分享，也有人陪你一起踩坑。</p>
+          <div class="card-chips">
+            <span class="chip">ACM / ICPC</span>
+            <span class="chip">蓝桥杯</span>
+            <span class="chip">计算机博弈大赛</span>
+            <span class="chip">高校黑客松</span>
+          </div>
+          <span class="card-icon">↗</span>
         </article>
         <article class="bento-card">
-          <span class="card-number">04</span><h3>认识一群爱折腾的人</h3><p>
-            技术很重要，但找到一群志同道合的人也很重要。
-          </p><span class="card-icon">⌁</span>
+          <span class="card-number">04</span>
+          <h3>认识一群爱折腾的人</h3>
+          <p>技术很重要，但找到一群志同道合的人也很重要。</p>
+          <div class="card-chips">
+            <span class="chip">代码交流</span>
+            <span class="chip">经验传承</span>
+            <span class="chip">线下活动</span>
+            <span class="chip">技术沙龙</span>
+          </div>
+          <span class="card-icon">⌁</span>
         </article>
       </div>
     </div>
@@ -212,21 +269,6 @@ const latestEpisode = episodes[0];
           ))
         }
       </div>
-      {
-        featuredProject?.data.title === 'CXCS Page' && (
-          <div class="page-process">
-            <>
-              <span>获取项目代码</span>
-              <i>→</i>
-              <span>安装项目依赖</span>
-              <i>→</i>
-              <span>构建完成</span>
-              <i>→</i>
-              <strong>网站已经上线</strong>
-            </>
-          </div>
-        )
-      }
     </div>
   </section>
 
@@ -259,12 +301,12 @@ const latestEpisode = episodes[0];
 
   <section class="band theater-layout" id="theater">
     <div class="container">
-      <div class="theater-intro">
+      <div class="section-head-row">
         <SectionIntro
           eyebrow="07 / Theater"
           title="技术不一定非得一本正经。"
           description="我们也会把一些计算机知识，做成小剧场、漫画和一些奇怪的东西。"
-        /><div class="speech">等等，计协还有这个。</div>
+        />
       </div>
       {
         latestEpisode && (

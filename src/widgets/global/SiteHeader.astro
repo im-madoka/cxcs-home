@@ -6,8 +6,18 @@ import { navItems, siteData } from '../../data/site';
 
 <header class="site-header" data-header>
   <a class="brand" href="/" aria-label="CXCS 首页">
-    <span class="brand-orbit" aria-hidden="true"><span></span></span>
-    <span>CXCS</span>
+    <img
+      class="brand-emblem"
+      src="/assets/brand/association-emblem.png"
+      alt=""
+      width="32"
+      height="32"
+      decoding="async"
+    />
+    <span class="brand-text">
+      <span class="brand-wordmark" aria-hidden="true"></span>
+      <span class="brand-fallback">CXCS</span>
+    </span>
   </a>
   <nav class="desktop-nav" aria-label="主导航">
     {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -35,9 +45,20 @@ import { navItems, siteData } from '../../data/site';
 
 <div class="mobile-overlay" data-mobile-overlay aria-hidden="true" inert>
   <div class="mobile-overlay-top">
-    <a class="brand" href="/" aria-label="CXCS 首页"
-      ><span class="brand-orbit" aria-hidden="true"><span></span></span><span>CXCS</span></a
-    >
+    <a class="brand" href="/" aria-label="CXCS 首页">
+      <img
+        class="brand-emblem"
+        src="/assets/brand/association-emblem.png"
+        alt=""
+        width="32"
+        height="32"
+        decoding="async"
+      />
+      <span class="brand-text">
+        <span class="brand-wordmark" aria-hidden="true"></span>
+        <span class="brand-fallback">CXCS</span>
+      </span>
+    </a>
     <button class="icon-button" type="button" aria-label="关闭菜单" data-menu-close><X size={21} /></button>
   </div>
   <nav aria-label="移动端主导航">

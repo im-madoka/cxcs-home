@@ -39,6 +39,7 @@ const next = index < episodes.length - 1 ? episodes[index + 1] : null;
       </div>
     </header>
     <div class="detail-cover episode-hero-cover"><img src={entry.data.cover.image} alt={entry.data.cover.alt} /></div>
+    <div class="reading-progress" aria-hidden="true"></div>
     <div class="episode-reading article-body"><Content /></div>
     <section class="episode-end reading-container">
       <p class="eyebrow">本集结束</p><h2>“学会了吗？”</h2><p>Rust 发卡：“最好是。”</p>{

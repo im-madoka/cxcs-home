@@ -28,10 +28,8 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%23232323'/%3E%3Ccircle cx='50' cy='50' r='24' fill='none' stroke='%2378bfe8' stroke-width='8'/%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/png" href="/assets/brand/association-emblem.png" />
+    <link rel="apple-touch-icon" href="/assets/brand/association-emblem.png" />
     <title>{title}</title>
     <script is:inline>
       (() => {
@@ -50,5 +48,6 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
     <main id="main-content"><slot /></main>
     <SiteFooter />
     <script src="../scripts/temporal-status.ts"></script>
+    <script src="../scripts/page-motion.ts"></script>
   </body>
 </html>

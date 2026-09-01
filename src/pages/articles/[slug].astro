@@ -72,14 +72,3 @@ const related = entries
     </footer>
   </article>
 </BaseLayout>
-
-<script>
-  const progress = document.querySelector<HTMLElement>('.reading-progress');
-  const updateProgress = () => {
-    if (!progress) return;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
-  };
-  updateProgress();
-  window.addEventListener('scroll', updateProgress, { passive: true });
-</script>
