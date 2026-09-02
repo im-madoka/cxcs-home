@@ -136,9 +136,14 @@ if (!reduceMotion) {
     };
 
     // Spring tap / click reaction
+
+    const tapSound = new Audio('/assets/characters/shurin-aran/clickaudio.mp3');
+
     const mascot = document.querySelector<HTMLElement>('[data-hero-mascot]');
     if (mascot) {
       mascot.addEventListener('click', () => {
+        tapSound.currentTime = 0;
+        tapSound.play().catch((err) => console.log('Failed to play tap sound:', err));
         // Natural elastic spring bounce
         gsap.killTweensOf(mascot);
         gsap.fromTo(
