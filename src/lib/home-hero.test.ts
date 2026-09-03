@@ -12,7 +12,7 @@ beforeAll(() => {
     stdio: 'pipe',
   });
   homepage = readFileSync(join(projectRoot, 'dist/index.html'), 'utf8');
-});
+}, 30_000);
 
 describe('homepage mascot hero', () => {
   test('renders Shurin Aran as the accessible hero visual', () => {

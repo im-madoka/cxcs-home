@@ -1,1 +1,4 @@
-/* Geist can be self-hosted here when the approved WOFF2 assets are supplied. */
+:root {
+  --font-ui: 'Inter', 'Noto Sans CJK SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-cjk: 'Noto Sans CJK SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}

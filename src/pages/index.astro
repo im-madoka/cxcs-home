@@ -19,7 +19,6 @@ const episodes = (await getCollection('theater', ({ data }) => !data.draft)).sor
 );
 const featuredArticle = articles.find((entry) => entry.data.featured) || articles[0];
 const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.id).slice(0, 2);
-const featuredProject = projects[0];
 const latestEpisode = episodes[0];
 ---
 
@@ -29,7 +28,9 @@ const latestEpisode = episodes[0];
       <div>
         <p class="hero-kicker">Computer Association · 2026</p>
         <h1>Hello,<br /><span class="accent">World.</span></h1>
-        <p class="hero-copy">欢迎来到东南大学成贤学院计算机协会。<br />一起学习，一起折腾，一起做点有意思的东西。</p>
+        <p class="hero-copy cjk-copy">
+          欢迎来到东南大学成贤学院计算机协会。<br />一起学习，一起折腾，一起做点有意思的东西。
+        </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#what-we-do">看看我们在做什么 <ArrowRight size={16} /></a>
           <a class="button button-secondary" href="/join">加入计协 <ArrowUpRight size={16} /></a>
@@ -41,7 +42,7 @@ const latestEpisode = episodes[0];
         <div class="hero-decorations" aria-hidden="true">
           <div class="decor-aurora"></div>
           <div class="decor-ambient-light" data-decor-light></div>
-          
+
           <!-- Smooth kinetic energy rings (fluid pulse & rotation) -->
           <div class="kinetic-orbit ring-outer"></div>
           <div class="kinetic-orbit ring-mid"></div>
@@ -72,6 +73,7 @@ const latestEpisode = episodes[0];
           <span class="tag-sep">·</span>
           <span class="tag-sub">计协娘</span>
         </div>
+        <p class="hero-note cjk-copy">平时安静，触发时有反应。<br />— 计协娘</p>
       </div>
     </div>
   </section>
@@ -82,14 +84,15 @@ const latestEpisode = episodes[0];
         <SectionIntro
           eyebrow="02 / What We Do"
           title="所以……我们平时到底在干嘛？"
-          description="简单说，就是一起把感兴趣的东西研究明白，再把想法做出来。"
+          titleLines={['所以……我们平时', '到底在干嘛？']}
+          description={'简单说，就是一起把感兴趣的东西研究明\u2060白，再把想法做出来。'}
         />
       </div>
       <div class="bento-grid">
         <article class="bento-card">
           <span class="card-number">01</span>
-          <h3>学点新东西</h3>
-          <p>编程、电脑、软件、开发板……感兴趣的东西，都可以一起研究。</p>
+          <h3 class="cjk-heading">学点新东西</h3>
+          <p class="cjk-copy">编程、电脑、软件、开发板……感兴趣的东西，都可以一起研究。</p>
           <div class="card-chips">
             <span class="chip">C / C++</span>
             <span class="chip">Python</span>
@@ -100,8 +103,8 @@ const latestEpisode = episodes[0];
         </article>
         <article class="bento-card">
           <span class="card-number">02</span>
-          <h3>做点有意思的项目</h3>
-          <p>网站、小游戏、机器人、小工具。想到了，就试着把它做出来。</p>
+          <h3 class="cjk-heading">做点有意思的项目</h3>
+          <p class="cjk-copy">网站、小游戏、机器人、小工具。想到了，就试着把它做出来。</p>
           <div class="card-chips">
             <span class="chip">社团 Bot</span>
             <span class="chip">开源工具</span>
@@ -112,8 +115,8 @@ const latestEpisode = episodes[0];
         </article>
         <article class="bento-card">
           <span class="card-number">03</span>
-          <h3>一起参加比赛</h3>
-          <p>有队友、有经验分享，也有人陪你一起踩坑。</p>
+          <h3 class="cjk-heading">一起参加比赛</h3>
+          <p class="cjk-copy">有队友、有经验分享，也有人陪你一起踩坑。</p>
           <div class="card-chips">
             <span class="chip">ACM / ICPC</span>
             <span class="chip">蓝桥杯</span>
@@ -124,8 +127,8 @@ const latestEpisode = episodes[0];
         </article>
         <article class="bento-card">
           <span class="card-number">04</span>
-          <h3>认识一群爱折腾的人</h3>
-          <p>技术很重要，但找到一群志同道合的人也很重要。</p>
+          <h3 class="cjk-heading">认识一群爱折腾的人</h3>
+          <p class="cjk-copy">技术很重要，但找到一群志同道合的人也很重要。</p>
           <div class="card-chips">
             <span class="chip">代码交流</span>
             <span class="chip">经验传承</span>
@@ -144,22 +147,29 @@ const latestEpisode = episodes[0];
         <SectionIntro
           eyebrow="03 / Start Here"
           title="可是……我什么都不会。"
+          titleLines={['可是……', '我什么都不会。']}
           description="那就从零开始。一步一步来，先找到一个愿意动手的理由。"
         />
       </div>
       <div class="journey">
         <article class="journey-step">
-          <div class="journey-no"><span>01</span><span>Learn</span></div><h3>从零开始</h3><p>
+          <div class="journey-no"><span>01</span><span>Learn</span></div><h3 class="cjk-heading">从零开始</h3><p
+            class="cjk-copy"
+          >
             第一次写代码？没关系，我们准备了面向新手的学习资料。
           </p><ArrowLink href={siteData.guideUrl} label="打开 CXCS Guide" external />
         </article>
         <article class="journey-step">
-          <div class="journey-no"><span>02</span><span>Build</span></div><h3>做点自己的东西</h3><p>
+          <div class="journey-no"><span>02</span><span>Build</span></div><h3 class="cjk-heading">做点自己的东西</h3><p
+            class="cjk-copy"
+          >
             学会一点之后，试着做一个真正属于自己的小项目。
           </p><ArrowLink href="/projects" label="看看大家做过什么" />
         </article>
         <article class="journey-step">
-          <div class="journey-no"><span>03</span><span>Deploy</span></div><h3>把它分享出去</h3><p>
+          <div class="journey-no"><span>03</span><span>Deploy</span></div><h3 class="cjk-heading">把它分享出去</h3><p
+            class="cjk-copy"
+          >
             如果你做了一个网站，还可以直接用协会的平台发布出来。
           </p><ArrowLink href={siteData.pageUrl} label="了解 CXCS Page" external />
         </article>
@@ -173,6 +183,7 @@ const latestEpisode = episodes[0];
         <SectionIntro
           eyebrow="04 / Latest"
           title="最近发生了什么"
+          titleLines={['最近发生了什么']}
           description="看看 CXCS 最近都在折腾些什么。"
         /><ArrowLink href="/articles" label="浏览全部文章" />
       </div>
@@ -190,8 +201,8 @@ const latestEpisode = episodes[0];
                   <div class="eyebrow">
                     {featuredArticle.data.type} · {featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}
                   </div>
-                  <h3>{featuredArticle.data.title}</h3>
-                  <p>{featuredArticle.data.description}</p>
+                  <h3 class="cjk-heading">{featuredArticle.data.title}</h3>
+                  <p class="cjk-copy">{featuredArticle.data.description}</p>
                   <span class="arrow-link">
                     阅读更多 <ArrowRight size={16} />
                   </span>
@@ -213,8 +224,8 @@ const latestEpisode = episodes[0];
                       <span class="article-type">{article.data.type}</span>
                       <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
                     </div>
-                    <h3>{article.data.title}</h3>
-                    <p>{article.data.description}</p>
+                    <h3 class="cjk-heading">{article.data.title}</h3>
+                    <p class="cjk-copy">{article.data.description}</p>
                   </div>
                 </a>
               ))}
@@ -231,6 +242,7 @@ const latestEpisode = episodes[0];
         <SectionIntro
           eyebrow="05 / Projects"
           title="我们真的会做点东西。"
+          titleLines={['我们真的会', '做点东西。']}
           description="网站、Bot、小工具，以及一些突然冒出来的奇怪想法。"
         /><ArrowLink href="/projects" label="进入项目展" />
       </div>
@@ -252,8 +264,8 @@ const latestEpisode = episodes[0];
                     <StatusPill status={project.data.status} />
                   </>
                 </div>
-                <h3>{project.data.title}</h3>
-                <p>{project.data.description}</p>
+                <h3 class="cjk-heading">{project.data.title}</h3>
+                <p class="cjk-copy">{project.data.description}</p>
                 <div class="project-bottom">
                   <>
                     <div class="tag-list">
@@ -277,21 +289,26 @@ const latestEpisode = episodes[0];
       <SectionIntro
         eyebrow="06 / CXCS Ecosystem"
         title="不只是一个协会。"
+        titleLines={['不只是一个协会。']}
         description="我们也在搭自己的工具、内容和平台。"
       />
       <div class="ecosystem-grid">
         <a class="eco-card" href="/about"
-          ><span class="eco-card-number">01 / Website</span><h3>认识我们</h3><p>
+          ><span class="eco-card-number">01 / Website</span><h3 class="cjk-heading">认识我们</h3><p class="cjk-copy">
             招新、动态、活动、项目，以及正在发生的一切。
           </p><span class="eco-url">cxcs.dev <ArrowRight size={17} /></span></a
         >
         <a class="eco-card" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">02 / Guide</span><h3>从不会，<br />到会一点。</h3><p>
+          ><span class="eco-card-number">02 / Guide</span><h3 class="cjk-heading">从不会，<br />到会一点。</h3><p
+            class="cjk-copy"
+          >
             面向新生整理的教程和学习资料。
           </p><span class="eco-url">guide.cxcs.dev <ArrowUpRight size={17} /></span></a
         >
         <a class="eco-card" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">03 / Page</span><h3>把网站，<br />放到网上。</h3><p>
+          ><span class="eco-card-number">03 / Page</span><h3 class="cjk-heading">把网站，<br />放到网上。</h3><p
+            class="cjk-copy"
+          >
             连接仓库、构建、发布，拿到属于你的地址。
           </p><span class="eco-url">cxcs.page <ArrowUpRight size={17} /></span></a
         >
@@ -305,6 +322,7 @@ const latestEpisode = episodes[0];
         <SectionIntro
           eyebrow="07 / Theater"
           title="技术不一定非得一本正经。"
+          titleLines={['技术不一定非得', '一本正经。']}
           description="我们也会把一些计算机知识，做成小剧场、漫画和一些奇怪的东西。"
         />
       </div>
@@ -320,8 +338,8 @@ const latestEpisode = episodes[0];
                   <span class="episode-index">
                     LATEST EPISODE · EP.{String(latestEpisode.data.episode).padStart(2, '0')}
                   </span>
-                  <h3>{latestEpisode.data.title}</h3>
-                  <p>{latestEpisode.data.description}</p>
+                  <h3 class="cjk-heading">{latestEpisode.data.title}</h3>
+                  <p class="cjk-copy">{latestEpisode.data.description}</p>
                   <span class="arrow-link">
                     开始阅读 <ArrowRight size={16} />
                   </span>
@@ -344,8 +362,8 @@ const latestEpisode = episodes[0];
 
   <section class="join-band" id="join-us">
     <div class="container">
-      <p class="eyebrow">08 / Join Us</p><h2>下一段故事，<br />等你一起写。</h2><p>
-        不会编程没关系。有兴趣，就已经是一个很好的开始。
+      <p class="eyebrow">08 / Join Us</p><h2 class="cjk-heading">下一段故事，<br />等你一起写。</h2><p class="cjk-copy">
+        不会编程没关系。<br class="mobile-only-break" />有兴趣，就已经是一个很好的开始。
       </p><div class="hero-actions">
         <a class="button button-primary" href="/join">加入计算机协会 <ArrowRight size={16} /></a><a
           class="button button-secondary"
