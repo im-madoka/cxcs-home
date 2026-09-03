@@ -141,6 +141,7 @@ if (!reduceMotion) {
     let clickCountStorage = localStorage.getItem("click_count");
     let clickCount: number = clickCountStorage ? parseInt(clickCountStorage) : 0;
     const tapSound = new Audio('/assets/characters/shurin-aran/clickaudio.mp3');
+    const tapSound2 = new Audio('/assets/characters/shurin-aran/clickaudio2.mp3');
     if (mascot) {
       mascot.addEventListener('click', () => {
         clickCount++;
@@ -148,6 +149,10 @@ if (!reduceMotion) {
           tapSound.currentTime = 0;
           tapSound.play().catch((err) => console.log('Failed to play tap sound:', err));
           localStorage.setItem("click_count", `${clickCount}`);
+        }
+        else {
+          tapSound2.currentTime = 0;
+          tapSound2.play().catch((err) => console.log('Failed to play tap sound:', err));
         }
         // Natural elastic spring bounce
         gsap.killTweensOf(mascot);
