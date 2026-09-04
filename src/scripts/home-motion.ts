@@ -140,10 +140,21 @@ if (!reduceMotion) {
     const mascot = document.querySelector<HTMLElement>('[data-hero-mascot]');
     let clickCountStorage = localStorage.getItem("click_count");
     let clickCount: number = clickCountStorage ? parseInt(clickCountStorage) : 0;
-    const tapSound = new Audio('/assets/characters/shurin-aran/clickaudio.mp3');
-    const tapSound2 = new Audio('/assets/characters/shurin-aran/clickaudio2.mp3');
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const IDLE_TIMEOUT_MS = 150000; // 单位是毫秒
+    const tapSound = new Audio('/assets/characters/shurin-aran/clickaudio.mp3');  //the click sound effect what is darty
+    const tapSound2 = new Audio('/assets/characters/shurin-aran/clickaudio2.mp3'); //the click sound effect that is cute
     if (mascot) {
       mascot.addEventListener('click', () => {
+        if (resetTimer) {
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        }
+        resetTimer = setTimeout(() => {
+          clickCount = 0;
+          localStorage.setItem("click_count", "0");
+        }, IDLE_TIMEOUT_MS);
+
         clickCount++;
         if (clickCount > 30) {
           tapSound.currentTime = 0;
