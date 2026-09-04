@@ -4,76 +4,224 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
 
 <div class="theme-switcher">
   <button class="icon-button theme-trigger" type="button" aria-label="切换主题" aria-expanded="false" title="切换主题">
-    <Sun size={16} strokeWidth={1.8} />
+    <Sun size={16} strokeWidth={1.8} class="icon-sun" />
+    <Moon size={16} strokeWidth={1.8} class="icon-moon" />
   </button>
   <div class="theme-menu" role="menu" hidden>
-    <button type="button" role="menuitem" data-theme-choice="system"><Monitor size={15} /> System</button>
-    <button type="button" role="menuitem" data-theme-choice="light"><Sun size={15} /> Light</button>
-    <button type="button" role="menuitem" data-theme-choice="dark"><Moon size={15} /> Dark</button>
+    <button type="button" role="menuitem" data-theme-choice="system"><Monitor size={15} /> 跟随系统</button>
+    <button type="button" role="menuitem" data-theme-choice="light"><Sun size={15} /> 浅色模式</button>
+    <button type="button" role="menuitem" data-theme-choice="dark"><Moon size={15} /> 深色模式</button>
   </div>
 </div>
 
 <script>
-  const switcher = document.querySelector<HTMLElement>('.theme-switcher');
-  if (switcher) {
+  type ViewTransitionLike = {
+    skipTransition: () => void;
+    finished: Promise<void>;
+  };
+
+  let activeTransition: ViewTransitionLike | null = null;
+  let isForwardingClick = false;
+
+  const findInteractiveElementAt = (x: number, y: number): HTMLElement | null => {
+    const selector = [
+      'button',
+      'a',
+      'input',
+      'select',
+      'textarea',
+      'summary',
+      '[role="button"]',
+      '[role="menuitem"]',
+      '[role="link"]',
+      '[data-theme-choice]',
+      '.hero-mascot',
+      '.theme-trigger'
+    ].join(', ');
+
+    const all = Array.from(document.querySelectorAll<HTMLElement>(selector));
+    const hits: { el: HTMLElement; zIndex: number; rect: DOMRect }[] = [];
+
+    for (const el of all) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) continue;
+
+      const style = window.getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') continue;
+
+      let current: HTMLElement | null = el;
+      let zIndex = 0;
+      while (current && current !== document.documentElement) {
+        const s = window.getComputedStyle(current);
+        if (s.position === 'fixed') zIndex = Math.max(zIndex, 1000);
+        const parsedZ = parseInt(s.zIndex, 10);
+        if (!Number.isNaN(parsedZ)) {
+          zIndex = Math.max(zIndex, parsedZ);
+        }
+        current = current.parentElement;
+      }
+
+      hits.push({ el, zIndex, rect });
+    }
+
+    if (hits.length === 0) return null;
+
+    hits.sort((a, b) => {
+      if (b.zIndex !== a.zIndex) return b.zIndex - a.zIndex;
+      const aArea = a.rect.width * a.rect.height;
+      const bArea = b.rect.width * b.rect.height;
+      if (aArea !== bArea) return aArea - bArea;
+      return a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_PRECEDING ? -1 : 1;
+    });
+
+    return hits[0].el;
+  };
+
+  // When a full-page view transition is active, browsers disable hit-testing on the page DOM.
+  // We capture click events on window, locate the target interactive element, skip the transition
+  // so the page is immediately unblocked, and trigger the action immediately.
+  window.addEventListener(
+    'click',
+    (event) => {
+      if (isForwardingClick || !activeTransition) return;
+
+      const rawTarget = event.target instanceof HTMLElement ? event.target : null;
+      const isDirectHit = rawTarget && rawTarget !== document.documentElement && rawTarget !== document.body;
+      const target = isDirectHit ? rawTarget : findInteractiveElementAt(event.clientX, event.clientY);
+
+      if (target) {
+        const vt = activeTransition;
+        activeTransition = null;
+        try {
+          vt.skipTransition();
+        } catch {}
+
+        if (!isDirectHit) {
+          isForwardingClick = true;
+          try {
+            if (typeof target.focus === 'function' && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+              target.focus();
+            }
+            target.click();
+          } finally {
+            isForwardingClick = false;
+          }
+        }
+      }
+    },
+    true
+  );
+
+  const updateThemeUI = (currentChoice: string) => {
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((btn) => {
+      const isSelected = btn.dataset.themeChoice === currentChoice;
+      btn.setAttribute('aria-selected', String(isSelected));
+      btn.classList.toggle('is-active', isSelected);
+    });
+  };
+
+  const closeAllMenus = () => {
+    document.querySelectorAll<HTMLElement>('.theme-switcher').forEach((sw) => {
+      const menu = sw.querySelector<HTMLElement>('.theme-menu');
+      const trigger = sw.querySelector<HTMLButtonElement>('.theme-trigger');
+      if (menu) menu.hidden = true;
+      trigger?.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const setTheme = (choice: string | undefined, x = window.innerWidth / 2, y = 24) => {
+    if (!choice) return;
+
+    const currentChoice = document.documentElement.dataset.theme || 'system';
+    const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const getEffectiveTheme = (val: string) => (val === 'system' ? (isSystemDark ? 'dark' : 'light') : val);
+
+    const apply = () => {
+      document.documentElement.dataset.theme = choice;
+      try {
+        localStorage.setItem('cxcs-theme', choice);
+      } catch {}
+      updateThemeUI(choice);
+    };
+
+    if (choice === currentChoice || getEffectiveTheme(choice) === getEffectiveTheme(currentChoice)) {
+      apply();
+      closeAllMenus();
+      return;
+    }
+
+    if (activeTransition) {
+      try {
+        activeTransition.skipTransition();
+      } catch {}
+      activeTransition = null;
+    }
+
+    if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.setProperty('--theme-x', `${x}px`);
+      document.documentElement.style.setProperty('--theme-y', `${y}px`);
+      try {
+        const vt = document.startViewTransition(apply) as unknown as ViewTransitionLike;
+        activeTransition = vt;
+        vt.finished.finally(() => {
+          if (activeTransition === vt) {
+            activeTransition = null;
+          }
+        });
+      } catch {
+        apply();
+      }
+    } else {
+      apply();
+    }
+    closeAllMenus();
+  };
+
+  // Bind all theme switcher triggers
+  document.querySelectorAll<HTMLElement>('.theme-switcher').forEach((switcher) => {
     const trigger = switcher.querySelector<HTMLButtonElement>('.theme-trigger');
     const menu = switcher.querySelector<HTMLDivElement>('.theme-menu');
-    const setTheme = (choice: string | undefined, x = window.innerWidth / 2, y = 24) => {
-      if (!choice || !menu) return;
-      
-      const currentChoice = document.documentElement.dataset.theme || 'system';
-      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const getEffectiveTheme = (val: string) => (val === 'system' ? (isSystemDark ? 'dark' : 'light') : val);
 
-      // If neither the setting choice nor the effective rendered appearance changes, do nothing to prevent flashing
-      if (choice === currentChoice || getEffectiveTheme(choice) === getEffectiveTheme(currentChoice)) {
-        document.documentElement.dataset.theme = choice;
-        try {
-          localStorage.setItem('cxcs-theme', choice);
-        } catch {}
-        menu.hidden = true;
-        trigger?.setAttribute('aria-expanded', 'false');
-        return;
-      }
-
-      const apply = () => {
-        document.documentElement.dataset.theme = choice;
-        try {
-          localStorage.setItem('cxcs-theme', choice);
-        } catch {}
-      };
-      if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.style.setProperty('--theme-x', `${x}px`);
-        document.documentElement.style.setProperty('--theme-y', `${y}px`);
-        document.startViewTransition(apply);
-      } else apply();
-      menu.hidden = true;
-      trigger?.setAttribute('aria-expanded', 'false');
-    };
     trigger?.addEventListener('click', (event) => {
+      event.stopPropagation();
       const rect = trigger.getBoundingClientRect();
-      if (!menu) return;
-      menu.hidden = !menu.hidden;
-      trigger.setAttribute('aria-expanded', String(!menu.hidden));
-      if (!menu.hidden) menu.querySelector('button')?.focus();
+      const isCurrentlyHidden = menu ? menu.hidden : true;
+      closeAllMenus();
+      if (menu) {
+        menu.hidden = !isCurrentlyHidden;
+        trigger.setAttribute('aria-expanded', String(!menu.hidden));
+        if (!menu.hidden) menu.querySelector('button')?.focus();
+      }
       document.documentElement.style.setProperty('--theme-x', `${rect.left + rect.width / 2}px`);
       document.documentElement.style.setProperty('--theme-y', `${rect.top + rect.height / 2}px`);
+    });
+  });
+
+  // Bind all buttons with data-theme-choice anywhere in document
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
+    button.addEventListener('click', (event) => {
       event.stopPropagation();
+      const rect = button.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      setTheme(button.dataset.themeChoice, x, y);
     });
-    switcher.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
-      button.addEventListener('click', () =>
-        setTheme(
-          button.dataset.themeChoice,
-          parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--theme-x')),
-          parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--theme-y')),
-        ),
+  });
+
+  // Outside click/tap to close dropdown menus
+  document.addEventListener('pointerdown', (event) => {
+    if (event.target instanceof Node) {
+      const isInsideSwitcher = Array.from(document.querySelectorAll('.theme-switcher')).some((sw) =>
+        sw.contains(event.target as Node)
       );
-    });
-    document.addEventListener('click', (event) => {
-      if (event.target instanceof Node && !switcher.contains(event.target) && menu) {
-        menu.hidden = true;
-        trigger?.setAttribute('aria-expanded', 'false');
+      if (!isInsideSwitcher) {
+        closeAllMenus();
       }
-    });
-  }
+    }
+  });
+
+  // Initialize UI with current theme
+  const initialTheme = document.documentElement.dataset.theme || 'system';
+  updateThemeUI(initialTheme);
 </script>

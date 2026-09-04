@@ -8,15 +8,12 @@ export const siteData = {
   guideUrl: 'https://guide.cxcs.dev',
   pageUrl: 'https://cxcs.page',
   githubUrl: undefined as string | undefined,
-  contact: undefined as string | undefined,
+  contact: 'QQ群：870131425',
 };
 
 export const navItems = [
   { label: 'About', href: '/about' },
   { label: 'Articles', href: '/articles' },
-  { label: 'Activities', href: '/activities' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Theater', href: '/theater' },
 ];
 
 export const people = {

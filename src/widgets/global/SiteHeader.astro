@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, Menu, X } from 'lucide-astro';
+import { ArrowUpRight, Menu, Monitor, Moon, Sun, X } from 'lucide-astro';
 import ThemeSwitcher from '../../components/ThemeSwitcher.astro';
 import { navItems, siteData } from '../../data/site';
 ---
@@ -32,15 +32,18 @@ import { navItems, siteData } from '../../data/site';
     <ThemeSwitcher />
     <a class="header-join" href="/join">Join Us <span aria-hidden="true">↗</span></a>
   </div>
-  <button
-    class="mobile-menu-button icon-button"
-    type="button"
-    aria-label="打开菜单"
-    aria-expanded="false"
-    data-menu-trigger
-  >
-    <Menu size={20} />
-  </button>
+  <div class="mobile-header-tools">
+    <ThemeSwitcher />
+    <button
+      class="mobile-menu-button icon-button"
+      type="button"
+      aria-label="打开菜单"
+      aria-expanded="false"
+      data-menu-trigger
+    >
+      <Menu size={20} />
+    </button>
+  </div>
 </header>
 
 <div class="mobile-overlay" data-mobile-overlay aria-hidden="true" inert>
@@ -74,6 +77,20 @@ import { navItems, siteData } from '../../data/site';
     <a href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">CXCS Guide <ArrowUpRight size={15} /></a>
     <a href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">CXCS Page <ArrowUpRight size={15} /></a>
   </nav>
+  <div class="mobile-theme-row">
+    <span class="mobile-theme-label">主题模式</span>
+    <div class="mobile-theme-group">
+      <button type="button" class="mobile-theme-btn" data-theme-choice="system">
+        <Monitor size={14} /> 系统
+      </button>
+      <button type="button" class="mobile-theme-btn" data-theme-choice="light">
+        <Sun size={14} /> 浅色
+      </button>
+      <button type="button" class="mobile-theme-btn" data-theme-choice="dark">
+        <Moon size={14} /> 深色
+      </button>
+    </div>
+  </div>
   <p class="mobile-overlay-note">Learn. Build. Deploy. Share.</p>
 </div>
 

@@ -200,7 +200,7 @@ if (!reduceMotion) {
 
   // Standalone content cards entrance
   document
-    .querySelectorAll<HTMLElement>('.article-card, .project-card, .story-card, .episode-card, .audience-card')
+    .querySelectorAll<HTMLElement>('.article-card, .story-card, .audience-card')
     .forEach((element) =>
       gsap.from(element, {
         y: 28,
