@@ -5,21 +5,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowLink from '../components/ArrowLink.astro';
 import BrandPlaceholder from '../components/BrandPlaceholder.astro';
 import SectionIntro from '../components/SectionIntro.astro';
-import StatusPill from '../components/StatusPill.astro';
-import { characters, siteData } from '../data/site';
+import { siteData } from '../data/site';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => Number(b.data.featured) - Number(a.data.featured),
-);
-const episodes = (await getCollection('theater', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.episode - a.data.episode,
-);
 const featuredArticle = articles.find((entry) => entry.data.featured) || articles[0];
 const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.id).slice(0, 2);
-const latestEpisode = episodes[0];
 ---
 
 <BaseLayout title={siteData.title} description={siteData.description}>
@@ -71,9 +63,8 @@ const latestEpisode = episodes[0];
           <span class="tag-pulse" aria-hidden="true"></span>
           <span class="tag-name">Shurin Aran</span>
           <span class="tag-sep">·</span>
-          <span class="tag-sub">计协娘</span>
+          <span class="tag-sub" style="-webkit-tap-highlight-color: transparent;">计协娘</span>
         </div>
-        <p class="hero-note cjk-copy">平时安静，触发时有反应。<br />— 计协娘</p>
       </div>
     </div>
   </section>
@@ -163,8 +154,8 @@ const latestEpisode = episodes[0];
           <div class="journey-no"><span>02</span><span>Build</span></div><h3 class="cjk-heading">做点自己的东西</h3><p
             class="cjk-copy"
           >
-            学会一点之后，试着做一个真正属于自己的小项目。
-          </p><ArrowLink href="/projects" label="看看大家做过什么" />
+            学会一点之后，试着做一个真正属于自己的小项目或想法。
+          </p>
         </article>
         <article class="journey-step">
           <div class="journey-no"><span>03</span><span>Deploy</span></div><h3 class="cjk-heading">把它分享出去</h3><p
@@ -236,58 +227,10 @@ const latestEpisode = episodes[0];
     </div>
   </section>
 
-  <section class="band band-soft" id="projects">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="05 / Projects"
-          title="我们真的会做点东西。"
-          titleLines={['我们真的会', '做点东西。']}
-          description="网站、Bot、小工具，以及一些突然冒出来的奇怪想法。"
-        /><ArrowLink href="/projects" label="进入项目展" />
-      </div>
-      <div class="project-track">
-        {
-          projects.slice(0, 2).map((project, index) => (
-            <article class="project-card">
-              <>
-                <div class="project-image">
-                  {project.data.cover ? (
-                    <img src={project.data.cover.image} alt={project.data.cover.alt} loading="lazy" />
-                  ) : (
-                    <BrandPlaceholder label={project.data.title} />
-                  )}
-                </div>
-                <div class="project-meta">
-                  <>
-                    <span>0{index + 1} / Project</span>
-                    <StatusPill status={project.data.status} />
-                  </>
-                </div>
-                <h3 class="cjk-heading">{project.data.title}</h3>
-                <p class="cjk-copy">{project.data.description}</p>
-                <div class="project-bottom">
-                  <>
-                    <div class="tag-list">
-                      {project.data.technologies.slice(0, 3).map((tag) => (
-                        <span class="tag">{tag}</span>
-                      ))}
-                    </div>
-                    <ArrowLink href={`/projects/${project.id}`} label="了解项目" />
-                  </>
-                </div>
-              </>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   <section class="band ecosystem" id="ecosystem">
     <div class="container">
       <SectionIntro
-        eyebrow="06 / CXCS Ecosystem"
+        eyebrow="05 / CXCS Ecosystem"
         title="不只是一个协会。"
         titleLines={['不只是一个协会。']}
         description="我们也在搭自己的工具、内容和平台。"
@@ -316,59 +259,12 @@ const latestEpisode = episodes[0];
     </div>
   </section>
 
-  <section class="band theater-layout" id="theater">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="07 / Theater"
-          title="技术不一定非得一本正经。"
-          titleLines={['技术不一定非得', '一本正经。']}
-          description="我们也会把一些计算机知识，做成小剧场、漫画和一些奇怪的东西。"
-        />
-      </div>
-      {
-        latestEpisode && (
-          <a class="episode-card" href={`/theater/${latestEpisode.id}`}>
-            <>
-              <div class="episode-cover">
-                <img src={latestEpisode.data.cover.image} alt={latestEpisode.data.cover.alt} loading="lazy" />
-              </div>
-              <div class="episode-info">
-                <>
-                  <span class="episode-index">
-                    LATEST EPISODE · EP.{String(latestEpisode.data.episode).padStart(2, '0')}
-                  </span>
-                  <h3 class="cjk-heading">{latestEpisode.data.title}</h3>
-                  <p class="cjk-copy">{latestEpisode.data.description}</p>
-                  <span class="arrow-link">
-                    开始阅读 <ArrowRight size={16} />
-                  </span>
-                  <div class="cast-row">
-                    {latestEpisode.data.characters.map((id) => (
-                      <span class="cast-pill">
-                        <i class="cast-dot" />
-                        {characters[id]?.name || id}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              </div>
-            </>
-          </a>
-        )
-      }
-    </div>
-  </section>
-
   <section class="join-band" id="join-us">
     <div class="container">
-      <p class="eyebrow">08 / Join Us</p><h2 class="cjk-heading">下一段故事，<br />等你一起写。</h2><p class="cjk-copy">
+      <p class="eyebrow">06 / Join Us</p><h2 class="cjk-heading">下一段故事，<br />等你一起写。</h2><p class="cjk-copy">
         不会编程没关系。<br class="mobile-only-break" />有兴趣，就已经是一个很好的开始。
       </p><div class="hero-actions">
-        <a class="button button-primary" href="/join">加入计算机协会 <ArrowRight size={16} /></a><a
-          class="button button-secondary"
-          href="/activities">先看看活动 <ArrowRight size={16} /></a
-        >
+        <a class="button button-primary" href="/join">加入计算机协会 <ArrowRight size={16} /></a>
       </div>
     </div>
   </section>
