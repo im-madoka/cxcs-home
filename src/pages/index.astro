@@ -203,14 +203,16 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
             <div class="story-side">
               {latestArticles.map((article) => (
                 <a class="mini-story" href={`/articles/${article.id}`}>
-                  <div class="article-cover">
+                  <div class="mini-story-cover">
                     {article.data.cover ? (
                       <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
                     ) : (
-                      <BrandPlaceholder label={article.data.type.toUpperCase()} />
+                      <div class="mini-story-placeholder" aria-hidden="true">
+                        <span class="placeholder-symbol">&lt;/&gt;</span>
+                      </div>
                     )}
                   </div>
-                  <div>
+                  <div class="mini-story-content">
                     <div class="article-meta">
                       <span class="article-type">{article.data.type}</span>
                       <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
