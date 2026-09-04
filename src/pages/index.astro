@@ -74,16 +74,16 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
       <div class="section-head-row">
         <SectionIntro
           eyebrow="02 / What We Do"
-          title="所以……我们平时到底在干嘛？"
-          titleLines={['所以……我们平时', '到底在干嘛？']}
-          description={'简单说，就是一起把感兴趣的东西研究明\u2060白，再把想法做出来。'}
+          title="在计协，平时都在做什么？"
+          titleLines={['在计协，', '平时都在做什么？']}
+          description="聚在一起交流技术、动手做项目、组队打比赛，把感兴趣的想法亲手实现出来。"
         />
       </div>
       <div class="bento-grid">
         <article class="bento-card">
           <span class="card-number">01</span>
-          <h3 class="cjk-heading">学点新东西</h3>
-          <p class="cjk-copy">编程、电脑、软件、开发板……感兴趣的东西，都可以一起研究。</p>
+          <h3 class="cjk-heading">学习感兴趣的技术</h3>
+          <p class="cjk-copy">从日常编程、Linux 到单片机折腾，只要你感兴趣，大家都可以一起交流探讨。</p>
           <div class="card-chips">
             <span class="chip">C / C++</span>
             <span class="chip">Python</span>
@@ -94,8 +94,8 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
         </article>
         <article class="bento-card">
           <span class="card-number">02</span>
-          <h3 class="cjk-heading">做点有意思的项目</h3>
-          <p class="cjk-copy">网站、小游戏、机器人、小工具。想到了，就试着把它做出来。</p>
+          <h3 class="cjk-heading">动手做点好玩的项目</h3>
+          <p class="cjk-copy">写个实用小脚本、自动化社团 Bot，或是搭建个人主页，想到什么就动手做出来。</p>
           <div class="card-chips">
             <span class="chip">社团 Bot</span>
             <span class="chip">开源工具</span>
@@ -106,8 +106,8 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
         </article>
         <article class="bento-card">
           <span class="card-number">03</span>
-          <h3 class="cjk-heading">一起参加比赛</h3>
-          <p class="cjk-copy">有队友、有经验分享，也有人陪你一起踩坑。</p>
+          <h3 class="cjk-heading">组队参加学科竞赛</h3>
+          <p class="cjk-copy">蓝桥杯、算法赛、黑客松……在这里能找到靠谱的队友和学长学姐的备赛经验，不再孤军奋战。</p>
           <div class="card-chips">
             <span class="chip">ACM / ICPC</span>
             <span class="chip">蓝桥杯</span>
@@ -118,8 +118,8 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
         </article>
         <article class="bento-card">
           <span class="card-number">04</span>
-          <h3 class="cjk-heading">认识一群爱折腾的人</h3>
-          <p class="cjk-copy">技术很重要，但找到一群志同道合的人也很重要。</p>
+          <h3 class="cjk-heading">结识一群爱折腾的朋友</h3>
+          <p class="cjk-copy">写代码不用一个人对着屏幕死磕，社团里有一群同样热爱钻研软硬件的同好，随时交流答疑。</p>
           <div class="card-chips">
             <span class="chip">代码交流</span>
             <span class="chip">经验传承</span>
@@ -137,31 +137,31 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
       <div class="section-head-row">
         <SectionIntro
           eyebrow="03 / Start Here"
-          title="可是……我什么都不会。"
-          titleLines={['可是……', '我什么都不会。']}
-          description="那就从零开始。一步一步来，先找到一个愿意动手的理由。"
+          title="零基础？完全不用担心"
+          titleLines={['零基础？', '完全不用担心。']}
+          description="大家都是从配置环境、敲出第一行代码开始的。顺着路线慢慢来，很快就能上手。"
         />
       </div>
       <div class="journey">
         <article class="journey-step">
-          <div class="journey-no"><span>01</span><span>Learn</span></div><h3 class="cjk-heading">从零开始</h3><p
+          <div class="journey-no"><span>01</span><span>Learn</span></div><h3 class="cjk-heading">新手起步</h3><p
             class="cjk-copy"
           >
-            第一次写代码？没关系，我们准备了面向新手的学习资料。
-          </p><ArrowLink href={siteData.guideUrl} label="打开 CXCS Guide" external />
+            第一次接触编程？不用慌。我们整理了适合新生的自学指引和避坑经验。
+          </p><ArrowLink href={siteData.guideUrl} label="查阅 CXCS Guide" external />
         </article>
         <article class="journey-step">
-          <div class="journey-no"><span>02</span><span>Build</span></div><h3 class="cjk-heading">做点自己的东西</h3><p
+          <div class="journey-no"><span>02</span><span>Build</span></div><h3 class="cjk-heading">动手实践</h3><p
             class="cjk-copy"
           >
-            学会一点之后，试着做一个真正属于自己的小项目或想法。
+            光看书不够过瘾，跟着大家一起写个小功能、搭个小页面，在实践中真正理解代码。
           </p>
         </article>
         <article class="journey-step">
-          <div class="journey-no"><span>03</span><span>Deploy</span></div><h3 class="cjk-heading">把它分享出去</h3><p
+          <div class="journey-no"><span>03</span><span>Deploy</span></div><h3 class="cjk-heading">上线展示</h3><p
             class="cjk-copy"
           >
-            如果你做了一个网站，还可以直接用协会的平台发布出来。
+            写好的个人主页或小作品，可以直接用协会提供的托管平台上线，分享给身边的朋友。
           </p><ArrowLink href={siteData.pageUrl} label="了解 CXCS Page" external />
         </article>
       </div>
@@ -173,9 +173,9 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
       <div class="section-head-row">
         <SectionIntro
           eyebrow="04 / Latest"
-          title="最近发生了什么"
-          titleLines={['最近发生了什么']}
-          description="看看 CXCS 最近都在折腾些什么。"
+          title="近期动态与分享"
+          titleLines={['近期动态与分享']}
+          description="协会成员的技术文章、活动记录与最新消息。"
         /><ArrowLink href="/articles" label="浏览全部文章" />
       </div>
       {
@@ -231,28 +231,24 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
     <div class="container">
       <SectionIntro
         eyebrow="05 / CXCS Ecosystem"
-        title="不只是一个协会。"
-        titleLines={['不只是一个协会。']}
-        description="我们也在搭自己的工具、内容和平台。"
+        title="我们自己的数字空间"
+        titleLines={['我们自己的数字空间']}
+        description="除了日常社团交流，我们也在搭建属于协会自己的工具与平台。"
       />
       <div class="ecosystem-grid">
         <a class="eco-card" href="/about"
-          ><span class="eco-card-number">01 / Website</span><h3 class="cjk-heading">认识我们</h3><p class="cjk-copy">
-            招新、动态、活动、项目，以及正在发生的一切。
+          ><span class="eco-card-number">01 / Website</span><h3 class="cjk-heading">社团主站</h3><p class="cjk-copy">
+            了解协会简介、日常活动、项目作品与招新安排。
           </p><span class="eco-url">cxcs.dev <ArrowRight size={17} /></span></a
         >
         <a class="eco-card" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">02 / Guide</span><h3 class="cjk-heading">从不会，<br />到会一点。</h3><p
-            class="cjk-copy"
-          >
-            面向新生整理的教程和学习资料。
+          ><span class="eco-card-number">02 / Guide</span><h3 class="cjk-heading">新生知识库</h3><p class="cjk-copy">
+            面向零基础同学整理的编程入门教程与避坑指南。
           </p><span class="eco-url">guide.cxcs.dev <ArrowUpRight size={17} /></span></a
         >
         <a class="eco-card" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">03 / Page</span><h3 class="cjk-heading">把网站，<br />放到网上。</h3><p
-            class="cjk-copy"
-          >
-            连接仓库、构建、发布，拿到属于你的地址。
+          ><span class="eco-card-number">03 / Page</span><h3 class="cjk-heading">成员主页托管</h3><p class="cjk-copy">
+            专为协会成员打造的静态托管服务，连接 Git 仓库即可一键上线网站。
           </p><span class="eco-url">cxcs.page <ArrowUpRight size={17} /></span></a
         >
       </div>
@@ -262,7 +258,7 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
   <section class="join-band" id="join-us">
     <div class="container">
       <p class="eyebrow">06 / Join Us</p><h2 class="cjk-heading">下一段故事，<br />等你一起写。</h2><p class="cjk-copy">
-        不会编程没关系。<br class="mobile-only-break" />有兴趣，就已经是一个很好的开始。
+        不会写代码完全没关系。<br class="mobile-only-break" />只要你对计算机抱有好奇心，随时欢迎来聊聊。
       </p><div class="hero-actions">
         <a class="button button-primary" href="/join">加入计算机协会 <ArrowRight size={16} /></a>
       </div>
