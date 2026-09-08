@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
 import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
-import { siteData } from '../../data/site';
+import { siteData } from '../../config';
 const entries = await getCollection('articles');
 export async function getStaticPaths() {
   const allEntries = await getCollection('articles');

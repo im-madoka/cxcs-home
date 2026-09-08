@@ -36,7 +36,7 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
       '[role="link"]',
       '[data-theme-choice]',
       '.hero-mascot',
-      '.theme-trigger'
+      '.theme-trigger',
     ].join(', ');
 
     const all = Array.from(document.querySelectorAll<HTMLElement>(selector));
@@ -110,7 +110,7 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
         }
       }
     },
-    true
+    true,
   );
 
   const updateThemeUI = (currentChoice: string) => {
@@ -213,7 +213,7 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
   document.addEventListener('pointerdown', (event) => {
     if (event.target instanceof Node) {
       const isInsideSwitcher = Array.from(document.querySelectorAll('.theme-switcher')).some((sw) =>
-        sw.contains(event.target as Node)
+        sw.contains(event.target as Node),
       );
       if (!isInsideSwitcher) {
         closeAllMenus();

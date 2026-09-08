@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { getActivityStatus, getRecruitmentStatus } from './status';
+import { getActivityStatus, getRecruitmentStatus } from '../src/status';
 
 describe('activity status', () => {
   const start = new Date('2026-09-12T06:00:00.000Z');

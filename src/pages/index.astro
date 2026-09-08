@@ -5,7 +5,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowLink from '../components/ArrowLink.astro';
 import BrandPlaceholder from '../components/BrandPlaceholder.astro';
 import SectionIntro from '../components/SectionIntro.astro';
-import { siteData } from '../data/site';
+import { siteData } from '../config';
+import StackScroll from '../widgets/StackScroll.astro';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
@@ -18,10 +19,9 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
   <section class="hero" id="top">
     <div class="container hero-inner">
       <div>
-        <p class="hero-kicker">Computer Association · 2026</p>
         <h1>Hello,<br /><span class="accent">World.</span></h1>
         <p class="hero-copy cjk-copy">
-          欢迎来到东南大学成贤学院计算机协会。<br />一起学习，一起折腾，一起做点有意思的东西。
+          欢迎来到东南大学成贤学院计算机协会。<br />不管你刚开始学，还是已经在做项目，都可以在这里找到一起折腾的人。
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#what-we-do">看看我们在做什么 <ArrowRight size={16} /></a>
@@ -61,9 +61,9 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
 
         <div class="mascot-tag" data-mascot-tag>
           <span class="tag-pulse" aria-hidden="true"></span>
-          <span class="tag-name">Shurin Aran</span>
+          <span class="tag-name">计协娘</span>
           <span class="tag-sep">·</span>
-          <span class="tag-sub" style="-webkit-tap-highlight-color: transparent;">计协娘</span>
+          <span class="tag-sub" style="-webkit-tap-highlight-color: transparent;">好奇心驱动</span>
         </div>
       </div>
     </div>
@@ -229,33 +229,7 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
     </div>
   </section>
 
-  <section class="band ecosystem" id="ecosystem">
-    <div class="container">
-      <SectionIntro
-        eyebrow="05 / CXCS Ecosystem"
-        title="我们自己的数字空间"
-        titleLines={['我们自己的数字空间']}
-        description="除了日常社团交流，我们也在搭建属于协会自己的工具与平台。"
-      />
-      <div class="ecosystem-grid">
-        <a class="eco-card" href="/about"
-          ><span class="eco-card-number">01 / Website</span><h3 class="cjk-heading">社团主站</h3><p class="cjk-copy">
-            了解协会简介、日常活动、项目作品与招新安排。
-          </p><span class="eco-url">cxcs.dev <ArrowRight size={17} /></span></a
-        >
-        <a class="eco-card" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">02 / Guide</span><h3 class="cjk-heading">新生知识库</h3><p class="cjk-copy">
-            面向零基础同学整理的编程入门教程与避坑指南。
-          </p><span class="eco-url">guide.cxcs.dev <ArrowUpRight size={17} /></span></a
-        >
-        <a class="eco-card" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
-          ><span class="eco-card-number">03 / Page</span><h3 class="cjk-heading">成员主页托管</h3><p class="cjk-copy">
-            专为协会成员打造的静态托管服务，连接 Git 仓库即可一键上线网站。
-          </p><span class="eco-url">cxcs.page <ArrowUpRight size={17} /></span></a
-        >
-      </div>
-    </div>
-  </section>
+  <StackScroll />
 
   <section class="join-band" id="join-us">
     <div class="container">
@@ -268,4 +242,4 @@ const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.
   </section>
 </BaseLayout>
 
-<script src="../scripts/home-motion.ts"></script>
+<script src="../assets/scripts/home-motion.ts"></script>

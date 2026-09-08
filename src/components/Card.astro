@@ -1,0 +1,12 @@
+---
+const { class: className = '' } = Astro.props;
+---
+
+<article class={`site-card ${className}`}><slot /></article>
+<style>
+  .site-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+</style>

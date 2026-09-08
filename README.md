@@ -29,3 +29,12 @@ bun test
 bun run lint
 bun run format:check
 ```
+
+## 目录约定
+
+- `src/config.ts`：站点、导航、招新与页脚配置。
+- `src/layouts/`：`BaseLayout`、`BaseHead`、顶栏和页脚。
+- `src/components/`：按钮、卡片、主题切换等基础控件。
+- `src/widgets/`：由基础控件组成的页面模块，例如首页能力栈滚动卡片。
+- `src/assets/styles/` 与 `src/assets/scripts/`：全站通用样式和脚本。
+- `src/pages/`、`src/content/`：Astro 页面与支持 MDX 的内容集合。

@@ -88,10 +88,7 @@ if (!reduceMotion) {
         mascotContainer.style.transform = `translate3d(${currentMascotX.toFixed(1)}px, ${currentMascotY.toFixed(1)}px, 0)`;
       }
 
-      if (
-        Math.abs(targetMascotX - currentMascotX) > 0.05 ||
-        Math.abs(targetMascotY - currentMascotY) > 0.05
-      ) {
+      if (Math.abs(targetMascotX - currentMascotX) > 0.05 || Math.abs(targetMascotY - currentMascotY) > 0.05) {
         rafId = requestAnimationFrame(renderLoop);
       } else {
         rafId = null;
@@ -159,7 +156,7 @@ if (!reduceMotion) {
                 yoyo: true,
               });
             },
-          }
+          },
         );
       });
     }
@@ -199,15 +196,25 @@ if (!reduceMotion) {
   });
 
   // Standalone content cards entrance
-  document
-    .querySelectorAll<HTMLElement>('.article-card, .story-card, .audience-card')
-    .forEach((element) =>
-      gsap.from(element, {
-        y: 28,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: element, start: 'top 88%', once: true },
-      }),
-    );
+  document.querySelectorAll<HTMLElement>('.article-card, .story-card, .audience-card').forEach((element) =>
+    gsap.from(element, {
+      y: 28,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+    }),
+  );
+}
+
+// Design-style capability stack: cards reveal as they enter the viewport.
+if (!reduceMotion) {
+  gsap.from('.stack-card', {
+    y: 52,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.14,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.stack-track', start: 'top 78%', once: true },
+  });
 }

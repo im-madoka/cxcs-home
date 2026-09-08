@@ -4,8 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowLink from '../components/ArrowLink.astro';
 import SectionIntro from '../components/SectionIntro.astro';
 import StatusPill from '../components/StatusPill.astro';
-import { recruitment, siteData } from '../data/site';
-import { getRecruitmentStatus } from '../lib/status';
+import { recruitment, siteData } from '../config';
+import { getRecruitmentStatus } from '../status';
 const status =
   recruitment.opensAt && recruitment.closesAt
     ? getRecruitmentStatus(recruitment.opensAt, recruitment.closesAt)

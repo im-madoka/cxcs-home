@@ -1,0 +1,44 @@
+---
+const cards = [
+  {
+    step: '01 / Learn',
+    title: '先从一个问题开始',
+    text: '第一次写代码、第一次装开发环境，都可以从身边的小问题开始。有人分享经验，也有人陪你一起试。',
+  },
+  {
+    step: '02 / Build',
+    title: '把想法做成能用的东西',
+    text: '网页、小工具、机器人和比赛题目，想到什么就动手做出来。做错了没关系，下一次会更快。',
+  },
+  {
+    step: '03 / Share',
+    title: '让作品被看见',
+    text: '把项目部署到自己的主页，写成一篇文章，或在活动里讲给大家听。你的好奇心值得留下记录。',
+  },
+];
+---
+
+<section class="stack-scroll" id="stack">
+  <div class="container">
+    <div class="stack-scroll-intro">
+      <p class="eyebrow">05 / From curiosity to craft</p>
+      <h2>从好奇开始，<br />一直做到分享。</h2>
+      <p>在计协，你不需要一开始就知道答案。我们把学习、实践和交流放在同一张桌子上。</p>
+    </div>
+    <div class="stack-track">
+      {
+        cards.map((card) => (
+          <article class="stack-card" data-step={card.step.slice(0, 2)}>
+            <>
+              <div class="stack-meta">
+                <span>{card.step}</span>
+              </div>
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
