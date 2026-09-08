@@ -31,11 +31,12 @@ export const characters: Record<string, { name: string; description: string; acc
 
 export const recruitment = {
   title: '下一次招新信息待确认',
-  description: '招新时间和入口会在这里更新。没有编程基础也没关系，有兴趣，就已经是一个很好的开始。',
+  description: '招新时间和入口会在这里更新。没有编程基础也没关系，有兴趣，就已经是很好的开始。',
   opensAt: undefined as string | undefined,
   closesAt: undefined as string | undefined,
   applicationUrl: undefined as string | undefined,
   groupUrl: undefined as string | undefined,
+  qqGroup: '870131425',
 };
 
 export const footerGroups = [
@@ -46,6 +47,13 @@ export const footerGroups = [
       { label: 'CXCS Guide ↗', href: siteData.guideUrl, external: true },
       { label: 'CXCS Page ↗', href: siteData.pageUrl, external: true },
       ...(siteData.githubUrl ? [{ label: 'GitHub ↗', href: siteData.githubUrl, external: true }] : []),
+    ],
+  },
+  {
+    title: 'Projects',
+    links: [
+      { label: 'CXCS Guide', href: siteData.guideUrl, external: true },
+      { label: 'CXCS Page', href: siteData.pageUrl, external: true },
     ],
   },
 ];

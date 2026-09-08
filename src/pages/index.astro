@@ -1,242 +1,288 @@
 ---
-import { ArrowRight, ArrowUpRight, Code2, Sparkles } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ArrowLink from '../components/ArrowLink.astro';
-import BrandPlaceholder from '../components/BrandPlaceholder.astro';
-import SectionIntro from '../components/SectionIntro.astro';
-import { siteData } from '../config';
+import { siteData, recruitment } from '../config';
 import StackScroll from '../widgets/StackScroll.astro';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
 const featuredArticle = articles.find((entry) => entry.data.featured) || articles[0];
-const latestArticles = articles.filter((entry) => entry.id !== featuredArticle?.id).slice(0, 2);
+const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id).slice(0, 2);
 ---
 
 <BaseLayout title={siteData.title} description={siteData.description}>
-  <section class="hero" id="top">
-    <div class="container hero-inner">
-      <div>
-        <h1>Hello,<br /><span class="accent">World.</span></h1>
-        <p class="hero-copy cjk-copy">
-          欢迎来到东南大学成贤学院计算机协会。<br />不管你刚开始学，还是已经在做项目，都可以在这里找到一起折腾的人。
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#what-we-do">看看我们在做什么 <ArrowRight size={16} /></a>
-          <a class="button button-secondary" href="/join">加入计协 <ArrowUpRight size={16} /></a>
-        </div>
-        <div class="scroll-cue"><span></span> Scroll to explore</div>
-      </div>
-      <div class="hero-visual" data-hero-visual>
-        <!-- Floating organic decorative elements behind & around the mascot -->
-        <div class="hero-decorations" aria-hidden="true">
-          <div class="decor-aurora"></div>
-          <div class="decor-ambient-light" data-decor-light></div>
+  <!-- Hero section matching design (full dvh, massive HELLO/WORLD, mascot parallax, kicker & index removed) -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-grid" aria-hidden="true"></div>
 
-          <!-- Smooth kinetic energy rings (fluid pulse & rotation) -->
-          <div class="kinetic-orbit ring-outer"></div>
-          <div class="kinetic-orbit ring-mid"></div>
-          <div class="kinetic-orbit ring-inner"></div>
+    <div class="hello" aria-hidden="true">HELLO</div>
 
-          <!-- Interactive particle constellations / code embers -->
-          <div class="floating-mote mote-1"></div>
-          <div class="floating-mote mote-2"></div>
-          <div class="floating-mote mote-3"></div>
-          <div class="floating-mote mote-4"></div>
-        </div>
+    <img
+      class="hero-character"
+      src="/assets/characters/shurin-aran/hero.png"
+      alt="Shurin Aran，计协娘"
+      width="1024"
+      height="1536"
+      fetchpriority="high"
+      data-hero-mascot
+    />
 
-        <div class="hero-mascot-container" data-mascot-container>
-          <img
-            class="hero-mascot"
-            src="/assets/characters/shurin-aran/hero.png"
-            alt="Shurin Aran，计协娘"
-            width="1024"
-            height="1536"
-            fetchpriority="high"
-            data-hero-mascot
-          />
-        </div>
+    <div class="world" aria-hidden="true">WORLD.</div>
 
-        <div class="mascot-tag" data-mascot-tag>
-          <span class="tag-pulse" aria-hidden="true"></span>
-          <span class="tag-name">计协娘</span>
-          <span class="tag-sep">·</span>
-          <span class="tag-sub" style="-webkit-tap-highlight-color: transparent;">好奇心驱动</span>
-        </div>
-      </div>
+    <div class="hero-copy">
+      <h1 id="hero-title">
+        <span>欢迎来到</span>东南大学成贤学院<br />计算机协会
+      </h1>
+      <p>
+        一起学习，一起折腾，<br />一起做点有意思的东西。
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <a class="button button-primary" href="#what-we-do">
+        看看我们在做什么 <ArrowRight size={14} />
+      </a>
+      <a class="button button-secondary" href="/join">
+        加入计协 <ArrowUpRight size={14} />
+      </a>
+    </div>
+
+    <div class="hero-aside">
+      不必先成为高手。<br />从“有点好奇”开始，就很好。
+      <small>LEARN. BUILD. DEPLOY. SHARE.</small>
     </div>
   </section>
 
-  <section class="band" id="what-we-do">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="02 / What We Do"
-          title="在计协，平时都在做什么？"
-          titleLines={['在计协，', '平时都在做什么？']}
-          description="聚在一起交流技术、动手做项目、组队打比赛，把感兴趣的想法亲手实现出来。"
-        />
-      </div>
-      <div class="bento-grid">
-        <article class="bento-card">
-          <span class="card-number">01</span>
-          <h3 class="cjk-heading">学习感兴趣的技术</h3>
-          <p class="cjk-copy">从日常编程、Linux 到单片机折腾，只要你感兴趣，大家都可以一起交流探讨。</p>
-          <div class="card-chips">
-            <span class="chip">C / C++</span>
-            <span class="chip">Python</span>
-            <span class="chip">Web 前端</span>
-            <span class="chip">Linux / Shell</span>
-          </div>
-          <span class="card-icon"><Code2 size={56} strokeWidth={1.3} /></span>
-        </article>
-        <article class="bento-card">
-          <span class="card-number">02</span>
-          <h3 class="cjk-heading">动手做点好玩的项目</h3>
-          <p class="cjk-copy">写个实用小脚本、自动化社团 Bot，或是搭建个人主页，想到什么就动手做出来。</p>
-          <div class="card-chips">
-            <span class="chip">社团 Bot</span>
-            <span class="chip">开源工具</span>
-            <span class="chip">硬件折腾</span>
-            <span class="chip">个人主页</span>
-          </div>
-          <span class="card-icon"><Sparkles size={56} strokeWidth={1.3} /></span>
-        </article>
-        <article class="bento-card">
-          <span class="card-number">03</span>
-          <h3 class="cjk-heading">组队参加学科竞赛</h3>
-          <p class="cjk-copy">蓝桥杯、算法赛、黑客松……在这里能找到靠谱的队友和学长学姐的备赛经验，不再孤军奋战。</p>
-          <div class="card-chips">
-            <span class="chip">ACM / ICPC</span>
-            <span class="chip">蓝桥杯</span>
-            <span class="chip">计算机博弈大赛</span>
-            <span class="chip">高校黑客松</span>
-          </div>
-          <span class="card-icon">↗</span>
-        </article>
-        <article class="bento-card">
-          <span class="card-number">04</span>
-          <h3 class="cjk-heading">结识一群爱折腾的朋友</h3>
-          <p class="cjk-copy">写代码不用一个人对着屏幕死磕，社团里有一群同样热爱钻研软硬件的同好，随时交流答疑。</p>
-          <div class="card-chips">
-            <span class="chip">代码交流</span>
-            <span class="chip">经验传承</span>
-            <span class="chip">线下活动</span>
-            <span class="chip">技术沙龙</span>
-          </div>
-          <span class="card-icon">⌁</span>
-        </article>
-      </div>
+  <!-- Section 02 / What We Do (Bento cards) -->
+  <section class="section wrap" id="what-we-do" aria-labelledby="what-title">
+    <div class="section-line"><span>02</span> WHAT WE DO</div>
+    <div class="section-heading">
+      <h2 id="what-title">所以，我们平时<br />到底在干嘛？</h2>
+      <p>这里有代码、有项目，也有很多还没想明白的问题。大家一起，让想法往前走一点。</p>
+    </div>
+
+    <div class="bento">
+      <article class="daily">
+        <div class="daily-top">
+          <span>01 / LEARN</span>
+          <span>从好奇出发</span>
+        </div>
+        <h3>学点新东西</h3>
+        <p>编程、电脑、软件、开发板……<br />感兴趣的东西，都可以一起研究。</p>
+        <span class="daily-symbol" aria-hidden="true">&lt;/&gt;</span>
+      </article>
+
+      <article class="daily">
+        <div class="daily-top">
+          <span>02 / BUILD</span>
+          <span>动手比空想有趣</span>
+        </div>
+        <h3>做点有意思的项目</h3>
+        <p>网站、小游戏、机器人、小工具。<br />想到了，就试着把它做出来。</p>
+        <span class="daily-symbol orange" aria-hidden="true">↗</span>
+      </article>
+
+      <article class="daily">
+        <div class="daily-top">
+          <span>03 / TEAM UP</span>
+          <span>一起想办法</span>
+        </div>
+        <h3>一起参加比赛</h3>
+        <p>有队友、有经验分享，<br />也有人陪你一起踩坑。</p>
+        <span class="daily-symbol" aria-hidden="true">&#123; &#125;</span>
+      </article>
+
+      <article class="daily">
+        <div class="daily-top">
+          <span>04 / TOGETHER</span>
+          <span>找到你的同伴</span>
+        </div>
+        <h3>认识一群爱折腾的人</h3>
+        <p>技术很重要，但找到一群<br />志同道合的人也很重要。</p>
+        <span class="daily-symbol" aria-hidden="true">++</span>
+      </article>
     </div>
   </section>
 
-  <section class="band band-soft" id="start-here">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="03 / Start Here"
-          title="零基础？完全不用担心"
-          titleLines={['零基础？', '完全不用担心。']}
-          description="大家都是从配置环境、敲出第一行代码开始的。顺着路线慢慢来，很快就能上手。"
-        />
+  <!-- Section 03 / Start Here -->
+  <section class="start" id="start-here" aria-labelledby="start-title">
+    <div class="wrap">
+      <div class="section-line"><span>03</span> START HERE</div>
+      <div class="start-intro">
+        <p>“可是……我什么都不会。”</p>
+        <h2 id="start-title">那就，<span>从零开始。</span></h2>
       </div>
-      <div class="journey">
-        <article class="journey-step">
-          <div class="journey-no"><span>01</span><span>Learn</span></div><h3 class="cjk-heading">新手起步</h3><p
-            class="cjk-copy"
-          >
-            第一次接触编程？不用慌。我们整理了适合新生的自学指引和避坑经验。
-          </p><ArrowLink href={siteData.guideUrl} label="查阅 CXCS Guide" external />
+
+      <div class="steps">
+        <article class="step">
+          <span class="step-number">01 →</span>
+          <h3>从零开始</h3>
+          <p>第一次写代码？没关系。<br />先找到一条适合自己的学习路线。</p>
+          <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+            打开 CXCS Guide <ArrowUpRight size={13} />
+          </a>
         </article>
-        <article class="journey-step">
-          <div class="journey-no"><span>02</span><span>Build</span></div><h3 class="cjk-heading">动手实践</h3><p
-            class="cjk-copy"
-          >
-            光看书不够过瘾，跟着大家一起写个小功能、搭个小页面，在实践中真正理解代码。
-          </p>
+
+        <article class="step">
+          <span class="step-number">02 →</span>
+          <h3>做点自己的东西</h3>
+          <p>学会一点，就用起来。<br />把一个想法变成看得见的小项目。</p>
+          <a class="small-link" href="#projects">
+            看看我们的项目 <ArrowRight size={13} />
+          </a>
         </article>
-        <article class="journey-step">
-          <div class="journey-no"><span>03</span><span>Deploy</span></div><h3 class="cjk-heading">上线展示</h3><p
-            class="cjk-copy"
-          >
-            写好的个人主页或小作品，可以直接用协会提供的托管平台上线，分享给身边的朋友。
-          </p><ArrowLink href={siteData.pageUrl} label="了解 CXCS Page" external />
+
+        <article class="step">
+          <span class="step-number">03 ↗</span>
+          <h3>把它分享出去</h3>
+          <p>给做好的网站一个地址。<br />让作品被打开，也让新的交流发生。</p>
+          <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
+            用 CXCS Page 发布 <ArrowUpRight size={13} />
+          </a>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="band" id="latest">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="04 / Latest"
-          title="近期动态与分享"
-          titleLines={['近期动态与分享']}
-          description="协会成员的技术文章、活动记录与最新消息。"
-        /><ArrowLink href="/articles" label="浏览全部文章" />
-      </div>
+  <!-- Section 04 / Latest from CXCS -->
+  <section class="section wrap" id="latest" aria-labelledby="latest-title">
+    <div class="section-line"><span>04</span> LATEST FROM CXCS</div>
+    <div class="section-heading">
+      <h2 id="latest-title">我们最近，<br />又折腾了些什么。</h2>
+      <a class="small-link" href="/articles">全部文章 <ArrowRight size={14} /></a>
+    </div>
+
+    <div class="latest-grid">
       {
         featuredArticle && (
-          <div class="featured-layout">
-            <a class="story-card" href={`/articles/${featuredArticle.id}`}>
-              {featuredArticle.data.cover ? (
-                <img src={featuredArticle.data.cover.image} alt={featuredArticle.data.cover.alt} loading="lazy" />
-              ) : (
-                <BrandPlaceholder label="LATEST" />
-              )}
-              <div class="story-content">
+          <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
+            <img
+              class="news-cover"
+              src={featuredArticle.data.cover?.image || '/assets/articles/code.jpg'}
+              alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
+              loading="lazy"
+            />
+            <div class="meta">
+              <span class="type">{featuredArticle.data.type === 'news' ? '新闻' : '博客'}</span>
+              <span>·</span>
+              <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+              {featuredArticle.data.authors.length > 0 && (
                 <>
-                  <div class="eyebrow">
-                    {featuredArticle.data.type} · {featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}
-                  </div>
-                  <h3 class="cjk-heading">{featuredArticle.data.title}</h3>
-                  <p class="cjk-copy">{featuredArticle.data.description}</p>
-                  <span class="arrow-link">
-                    阅读更多 <ArrowRight size={16} />
-                  </span>
+                  <span>·</span>
+                  <span>{featuredArticle.data.authors.join(' / ')}</span>
                 </>
-              </div>
-            </a>
-            <div class="story-side">
-              {latestArticles.map((article) => (
-                <a class="mini-story" href={`/articles/${article.id}`}>
-                  <div class="mini-story-cover">
-                    {article.data.cover ? (
-                      <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
-                    ) : (
-                      <div class="mini-story-placeholder" aria-hidden="true">
-                        <span class="placeholder-symbol">&lt;/&gt;</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="mini-story-content">
-                    <div class="article-meta">
-                      <span class="article-type">{article.data.type}</span>
-                      <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                    </div>
-                    <h3 class="cjk-heading">{article.data.title}</h3>
-                    <p class="cjk-copy">{article.data.description}</p>
-                  </div>
-                </a>
-              ))}
+              )}
             </div>
-          </div>
+            <h3>{featuredArticle.data.title}</h3>
+            <p>{featuredArticle.data.description}</p>
+          </a>
         )
       }
+
+      <div class="side-stories">
+        {
+          sideArticles.map((article, idx) => (
+            <a class="side-story" href={`/articles/${article.id}`}>
+              <div>
+                <div class="meta">
+                  <span class="type">{article.data.type === 'news' ? '新闻' : '博客'}</span>
+                  <span>·</span>
+                  <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                </div>
+                <h3>{article.data.title}</h3>
+                <p>{article.data.description}</p>
+              </div>
+              {article.data.cover?.image ? (
+                <img src={article.data.cover.image} alt={article.data.title} loading="lazy" />
+              ) : idx === 0 ? (
+                <img src="/assets/articles/community.jpg" alt={article.data.title} loading="lazy" />
+              ) : (
+                <div class="story-art" aria-hidden="true">
+                  &lt;/&gt;
+                </div>
+              )}
+            </a>
+          ))
+        }
+
+        <div class="latest-note">
+          <span>*</span>
+          <span>所有文章均由协会成员撰写与维护。</span>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- Section 05 / Projects (CXCS Page showcase) -->
+  <section class="projects" id="projects" aria-labelledby="project-title">
+    <div class="wrap">
+      <div class="section-line"><span>05</span> PROJECTS</div>
+      <div class="section-heading project-heading">
+        <h2 id="project-title">我们真的会<br />做点东西。</h2>
+        <p>先解决一个身边的小问题，<br />再把它变成大家都用得上的工具。</p>
+      </div>
+
+      <a
+        class="project-display"
+        href={siteData.pageUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="访问 CXCS Page"
+      >
+        <img
+          src="/assets/ecosystem/page-screen.png"
+          alt="CXCS Page 网站的真实界面"
+          width="1440"
+          height="1000"
+          loading="lazy"
+        />
+      </a>
+
+      <div class="project-description">
+        <div>
+          <div class="project-title">
+            <h3>CXCS Page</h3>
+            <span>FEATURED</span>
+          </div>
+          <p>你负责把网站做好，我们帮它被看见。连接代码仓库，完成构建，就能拿到一个真正可以访问的网址。</p>
+          <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
+            发布你的网站 <ArrowUpRight size={13} />
+          </a>
+        </div>
+        <div class="deploy-flow" aria-label="网站发布流程">
+          <span><b>01</b>获取项目代码</span>
+          <span><b>02</b>安装项目依赖</span>
+          <span><b>03</b>构建完成</span>
+          <span><b>04</b>网站已经上线 ↗</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 06 / Ecosystem Stacking Scroll Component -->
   <StackScroll />
 
-  <section class="join-band" id="join-us">
-    <div class="container">
-      <p class="eyebrow">06 / Join Us</p><h2 class="cjk-heading">下一段故事，<br />等你一起写。</h2><p class="cjk-copy">
-        不会写代码完全没关系。<br class="mobile-only-break" />只要你对计算机抱有好奇心，随时欢迎来聊聊。
-      </p><div class="hero-actions">
-        <a class="button button-primary" href="/join">加入计算机协会 <ArrowRight size={16} /></a>
+  <!-- Section 07 / Join Us -->
+  <section class="join-section" id="join-us" aria-labelledby="join-title">
+    <div class="wrap">
+      <div class="section-line"><span>07</span> JOIN US</div>
+      <div class="join-inner">
+        <h2 id="join-title">下一段故事，<br />等你一起写。</h2>
+        <div>
+          <p>
+            不会编程没关系。<br />有兴趣，就已经是很好的开始。
+          </p>
+          <a class="button button-primary" href="/join">
+            来一起做点有意思的事 <ArrowRight size={14} />
+          </a>
+          <span class="join-status">
+            {recruitment.title} · 公开 QQ 交流群 {
+              siteData.contact ? siteData.contact.replace('QQ群：', '') : '870131425'
+            }
+          </span>
+        </div>
       </div>
     </div>
   </section>

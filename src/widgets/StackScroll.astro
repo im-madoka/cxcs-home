@@ -1,44 +1,233 @@
 ---
-const cards = [
-  {
-    step: '01 / Learn',
-    title: '先从一个问题开始',
-    text: '第一次写代码、第一次装开发环境，都可以从身边的小问题开始。有人分享经验，也有人陪你一起试。',
-  },
-  {
-    step: '02 / Build',
-    title: '把想法做成能用的东西',
-    text: '网页、小工具、机器人和比赛题目，想到什么就动手做出来。做错了没关系，下一次会更快。',
-  },
-  {
-    step: '03 / Share',
-    title: '让作品被看见',
-    text: '把项目部署到自己的主页，写成一篇文章，或在活动里讲给大家听。你的好奇心值得留下记录。',
-  },
-];
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+import { siteData } from '../config';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'ecosystem' } = Astro.props;
 ---
 
-<section class="stack-scroll" id="stack">
-  <div class="container">
-    <div class="stack-scroll-intro">
-      <p class="eyebrow">05 / From curiosity to craft</p>
-      <h2>从好奇开始，<br />一直做到分享。</h2>
-      <p>在计协，你不需要一开始就知道答案。我们把学习、实践和交流放在同一张桌子上。</p>
-    </div>
-    <div class="stack-track">
-      {
-        cards.map((card) => (
-          <article class="stack-card" data-step={card.step.slice(0, 2)}>
-            <>
-              <div class="stack-meta">
-                <span>{card.step}</span>
-              </div>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-            </>
-          </article>
-        ))
-      }
+<section class="ecosystem" id={id} aria-labelledby="ecosystem-title">
+  <div class="wrap">
+    <div class="section-line"><span>06</span> CXCS ECOSYSTEM</div>
+    <div class="section-heading">
+      <h2 id="ecosystem-title">从认识我们，<br />到做出你的作品。</h2>
+      <p>三个站点，连起一段完整的旅程。</p>
     </div>
   </div>
+
+  <article class="eco-panel eco-website">
+    <div class="wrap">
+      <div class="eco-content">
+        <div class="eco-number">01 / MEET</div>
+        <h3 class="eco-name">Website</h3>
+        <h4 class="eco-headline">从这里，认识计协。</h4>
+        <p>我们是谁，最近在做什么，做过哪些项目，以及怎样加入。关于协会的故事，都在这里。</p>
+        <a class="small-link" href="#what">认识计算机协会 <ArrowRight size={14} /></a>
+      </div>
+      <div class="eco-visual">
+        <img
+          src="/assets/ecosystem/emblem.png"
+          alt="东南大学成贤学院计算机协会完整社徽"
+          width="226"
+          height="226"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </article>
+
+  <article class="eco-panel eco-guide">
+    <div class="wrap">
+      <div class="eco-content">
+        <div class="eco-number">02 / LEARN</div>
+        <h3 class="eco-name">Guide</h3>
+        <h4 class="eco-headline">学一点，再多一点。</h4>
+        <p>从环境配置到学习路线，从第一段代码到项目实践。把走过的路整理下来，成为下一位同学的起点。</p>
+        <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+          前往 CXCS Guide <ArrowUpRight size={14} />
+        </a>
+      </div>
+      <div class="eco-visual">
+        <img
+          src="/assets/ecosystem/guide-screen.png"
+          alt="CXCS Guide 学习指南的真实网页界面"
+          width="1440"
+          height="1000"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </article>
+
+  <article class="eco-panel eco-page">
+    <div class="wrap">
+      <div class="eco-content">
+        <div class="eco-number">03 / DEPLOY</div>
+        <h3 class="eco-name">Page</h3>
+        <h4 class="eco-headline">让你的作品，有个地址。</h4>
+        <p>从项目文件夹到互联网上的一个网站。把发布交给 CXCS Page，把时间留给下一次想做的东西。</p>
+        <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
+          前往 CXCS Page <ArrowUpRight size={14} />
+        </a>
+      </div>
+      <div class="eco-visual">
+        <img
+          src="/assets/ecosystem/page-screen.png"
+          alt="CXCS Page 网站的真实界面"
+          width="1440"
+          height="1000"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </article>
 </section>
+
+<style>
+  .ecosystem {
+    padding-top: 79px;
+  }
+  .ecosystem > .wrap {
+    padding-bottom: 36px;
+  }
+  .ecosystem .section-heading {
+    margin: 0;
+  }
+  .eco-panel {
+    min-height: 570px;
+    position: sticky;
+    top: var(--header-height, 72px);
+    display: flex;
+    align-items: center;
+    padding: 58px 0;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.05);
+  }
+  .eco-panel .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.12fr;
+    align-items: center;
+    gap: 62px;
+    width: min(1296px, calc(100% - 112px));
+    margin: auto;
+  }
+  .eco-website {
+    background: var(--surface);
+    z-index: 1;
+  }
+  .eco-guide {
+    background: #2464ed;
+    color: #ffffff;
+    z-index: 2;
+    border-color: #2464ed;
+  }
+  .eco-page {
+    background: #171b23;
+    color: #ffffff;
+    z-index: 3;
+    border-color: #171b23;
+  }
+  .eco-number {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 39px;
+  }
+  .eco-guide .eco-number,
+  .eco-page .eco-number {
+    color: #c1d3ff;
+  }
+  .eco-name {
+    font-size: clamp(52px, 5.5vw, 81px);
+    line-height: 1.05;
+    font-weight: 700;
+    margin: 0 0 20px;
+  }
+  .eco-headline {
+    font-size: 25px;
+    line-height: 1.25;
+    font-weight: 650;
+    margin: 0 0 14px;
+  }
+  .eco-content p {
+    font-size: 13px;
+    max-width: 440px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 31px;
+  }
+  .eco-guide .eco-content p,
+  .eco-page .eco-content p {
+    color: #e5edff;
+  }
+  .eco-guide .small-link,
+  .eco-page .small-link {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  .eco-visual {
+    background: var(--ice);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 30px;
+    min-height: 388px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .eco-website .eco-visual {
+    background: #d8e5ff;
+    border-color: #bfd4ff;
+  }
+  :root[data-theme='dark'] .eco-website .eco-visual {
+    background: #1d2535;
+    border-color: #2b384f;
+  }
+  .eco-website .eco-visual img {
+    width: 226px;
+    height: 226px;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 28px rgba(36, 100, 237, 0.22));
+    transition: transform 0.3s ease;
+  }
+  .eco-website:hover .eco-visual img {
+    transform: scale(1.05);
+  }
+  .eco-guide .eco-visual {
+    background: #184cc2;
+    border-color: #2c65e8;
+  }
+  .eco-page .eco-visual {
+    background: #0f1218;
+    border-color: #252b37;
+  }
+  .eco-guide .eco-visual img,
+  .eco-page .eco-visual img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  .eco-panel:hover .eco-visual img {
+    transform: translateY(-4px);
+  }
+
+  @media (max-width: 900px) {
+    .eco-panel .wrap {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .eco-panel {
+      min-height: auto;
+      padding: 42px 0;
+    }
+    .eco-visual {
+      min-height: 260px;
+    }
+  }
+</style>

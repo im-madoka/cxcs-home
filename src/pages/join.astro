@@ -1,179 +1,513 @@
 ---
-import { ArrowRight, ArrowUpRight, Clock3, Users } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ArrowLink from '../components/ArrowLink.astro';
-import SectionIntro from '../components/SectionIntro.astro';
-import StatusPill from '../components/StatusPill.astro';
 import { recruitment, siteData } from '../config';
 import { getRecruitmentStatus } from '../status';
+
 const status =
   recruitment.opensAt && recruitment.closesAt
     ? getRecruitmentStatus(recruitment.opensAt, recruitment.closesAt)
     : 'upcoming';
-const statusCopy = { upcoming: '即将开始', open: '正在进行', closed: '本轮招新暂时结束啦。' };
-const faq = [
-  ['不会编程可以加入吗？', '可以。兴趣比起点更重要，第一次接触编程也有适合你的入口。'],
-  ['非计算机专业可以加入吗？', '可以。只要你对计算机、项目、比赛或内容创作感兴趣，欢迎来认识我们。'],
-  ['一定要参加比赛吗？', '不需要。你可以学习、交流，也可以从一个感兴趣的小问题开始。'],
-  ['平时有什么安排？', '我们会定期整理技术文章与学习资料，并在社群中同步各类交流机会。'],
-  ['需要自带电脑吗？', '不同活动要求不同，具体信息会写在活动详情里。'],
-  ['怎样联系协会？', '招新开放时，Join 页面会显示当期可用的报名和交流群入口。'],
+
+const statusLabels: Record<string, string> = {
+  open: '● 招新进行中',
+  upcoming: '○ 即将开启',
+  closed: '✕ 招新已结束',
+};
+
+const audiences = [
+  {
+    num: '01',
+    title: '想学点技术的同学',
+    desc: '不管是从 C 语言还是从 Python、前端开始，我们都有面向零基础的学习资料和带练支持。',
+    chips: ['编程语言', '动手实践', '路线指导'],
+  },
+  {
+    num: '02',
+    title: '爱折腾的数码控',
+    desc: '喜欢自己装机、折腾系统、刷固件、玩树莓派……这里有随时能跟你讨论到深夜的人。',
+    chips: ['硬件装机', 'Linux / 固件', '单片机 / 树莓派'],
+  },
+  {
+    num: '03',
+    title: '有想法想做成项目的同学',
+    desc: '网站、小程序、机器人……任何奇怪的想法，协会都能提供技术支持和展示平台。',
+    chips: ['独立开发', '团队协作', 'CXCS Page 发布'],
+  },
+  {
+    num: '04',
+    title: '想结识志同道合朋友的同学',
+    desc: '大学不只有自习室和宿舍。在这里，你会遇到一群认真生活也认真折腾的同龄人。',
+    chips: ['技术沙龙', '经验交流', '线下团建'],
+  },
+];
+
+const faqs = [
+  {
+    q: '我完全没有编程基础，可以加入吗？',
+    a: '当然可以！协会每年都有大量零基础同学加入。我们专门准备了面向新生的 CXCS Guide，有学长学姐带练和指导，只要你愿意动手，就完全没问题。',
+  },
+  {
+    q: '加入计算机协会需要缴纳会费吗？',
+    a: '不需要。协会所有活动、培训和资源分享均面向成员免费开放。',
+  },
+  {
+    q: '不是计算机相关专业的同学可以加入吗？',
+    a: '没有任何专业限制！不论来自哪个学院和专业，只要对计算机、数码或折腾事物感兴趣，我们都非常欢迎。',
+  },
+  {
+    q: '加入后需要做些什么？有强制要求吗？',
+    a: '没有硬性打卡考核。你可以根据自己的节奏参与技术分享、参加各类比赛培训、参与协会项目开发，或者随时在群里和大家交流讨论。',
+  },
 ];
 ---
 
-<BaseLayout title={`Join CXCS · ${siteData.shortName}`} description="不会编程没关系。有兴趣，就已经是一个很好的开始。">
-  <section class="page-hero">
-    <div class="container page-hero-inner">
-      <div>
-        <p class="eyebrow">Join CXCS</p><h1>来一起<br />做点有意思的事。</h1><p class="page-hero-copy">
-          不需要一开始就知道自己想做什么。如果你对计算机感兴趣，可以先来看看。
-        </p>
-      </div><div class="page-hero-art join-art" aria-hidden="true"><span>+</span></div>
-    </div>
-  </section>
-  <section class="band">
-    <div class="container">
-      <div class="section-head-row">
-        <SectionIntro
-          eyebrow="Who Is It For"
-          title="你可以从任何地方开始。"
-          description="或者你只是觉得这些看起来挺有意思的。"
-        />
-      </div><div class="audience-grid">
-        <article class="audience-card">
-          <strong>01</strong><h3>第一次接触编程</h3><p>想学，但不知道从哪里开始。</p>
-        </article><article class="audience-card">
-          <strong>02</strong><h3>已经会一点</h3><p>想找人一起做项目、交流或参加比赛。</p>
-        </article><article class="audience-card">
-          <strong>03</strong><h3>喜欢折腾电脑</h3><p>软件、硬件、服务器、开发板都想碰一碰。</p>
-        </article><article class="audience-card">
-          <strong>04</strong><h3>喜欢做内容</h3><p>文章、设计、漫画、小剧场、宣传同样欢迎。</p>
-        </article>
+<BaseLayout title={`Join Us · ${siteData.shortName}`} description="加入计算机协会，一起学、一起做、一起折腾。">
+  <!-- Page Hero -->
+  <section class="join-hero">
+    <div class="wrap">
+      <div class="section-line"><span>01 / RECRUITMENT</span> JOIN US</div>
+      <h1>加入计协，<br />把想法变成作品。</h1>
+      <p class="join-hero-copy">
+        这里没有繁琐的考核，只有一群愿意把时间花在有意思事情上的人。<br />
+        无论你是否会写第一行代码，只要你愿意动手，就随时欢迎。
+      </p>
+      <div class="status-indicator">
+        <span class={`status-badge status-${status}`}>{statusLabels[status] || statusLabels.open}</span>
+        <span class="status-tip">2026 年秋季纳新群已就绪</span>
       </div>
     </div>
   </section>
-  <section class="band band-soft">
-    <div class="container">
-      <SectionIntro eyebrow="What You Can Do" title="加入以后，可以做很多事。" /><div class="join-capabilities">
-        <article><span>Learn</span><h3>跟着 Guide 学点东西</h3></article><article>
-          <span>Build</span><h3>参与项目或做自己的项目</h3>
-        </article><article><span>Deploy</span><h3>用 CXCS Page 发布网站</h3></article><article>
-          <span>Compete</span><h3>和队友一起参加比赛</h3>
-        </article><article><span>Share</span><h3>做分享、写文章</h3></article><article>
-          <span>Create</span><h3>制作小剧场和其他内容</h3>
-        </article>
+
+  <!-- Who We Look For -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>我们欢迎这样的你。</h2>
+        <p>不看基础，看的是不是真的有好奇心。</p>
       </div>
-    </div>
-  </section>
-  <section class="band">
-    <div class="container">
-      <div class="join-grid">
-        <div><p class="eyebrow">Community Expectation</p><h2>加入计协<br />≠ 来上课。</h2></div><div class="about-copy">
-          <p>我们会分享知识，也会整理学习资料。但计算机协会不是培训班。</p><p>
-            你可以跟大家一起学，也可以自己研究；可以参加项目，也可以只是来交流。
-          </p><ArrowLink href="/about" label="更多关于 CXCS" />
-        </div>
-      </div><div class={`recruitment-panel status-panel-${status}`}>
-        <div>
-          <StatusPill status={status} recruitmentStart={recruitment.opensAt} recruitmentEnd={recruitment.closesAt} /><h3
-          >
-            {recruitment.title}
-          </h3><p>{statusCopy[status]}</p>{
-            recruitment.opensAt && recruitment.closesAt && (
-              <p class="recruitment-dates">
-                <Clock3 size={14} />
-                {new Date(recruitment.opensAt).toLocaleDateString('zh-CN')} —{' '}
-                {new Date(recruitment.closesAt).toLocaleDateString('zh-CN')}
-              </p>
-            )
-          }
-        </div><div class="recruitment-actions">
-          {
-            status === 'open' && (
-              <>
-                {recruitment.applicationUrl && (
-                  <a
-                    class="button button-primary"
-                    href={recruitment.applicationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    立即报名 <ArrowUpRight size={16} />
-                  </a>
-                )}
-                {recruitment.groupUrl && (
-                  <a
-                    class="button button-secondary"
-                    href={recruitment.groupUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    加入招新群 <ArrowUpRight size={16} />
-                  </a>
-                )}
-              </>
-            )
-          }{
-            status === 'upcoming' && (
-              <a class="button button-secondary" href="/articles">
-                浏览最新文章 <ArrowRight size={16} />
-              </a>
-            )
-          }{
-            status === 'closed' && (
-              <>
-                <>
-                  <a class="button button-secondary" href="/articles">
-                    浏览最新文章 <ArrowRight size={16} />
-                  </a>
-                  <a class="button button-secondary" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
-                    打开 Guide <ArrowUpRight size={16} />
-                  </a>
-                </>
-              </>
-            )
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="band band-soft">
-    <div class="container">
-      <SectionIntro
-        eyebrow="How to Join"
-        title="如果你还没想好，也没关系。"
-        description="先看看最新文章，或从一份新手资料开始。"
-      /><div class="join-steps">
-        <article><b>01</b><div><h3>查看本次招新信息</h3><p>确认当前状态和可用入口。</p></div></article><article>
-          <b>02</b><div><h3>填写报名或加入招新群</h3><p>只使用页面上真实存在的入口。</p></div>
-        </article><article>
-          <b>03</b><div><h3>加入交流</h3><p>先认识大家，再决定下一步。</p></div>
-        </article><article><b>04</b><div><h3>欢迎来到 CXCS</h3><p>从你觉得有意思的地方开始。</p></div></article>
-      </div>
-    </div>
-  </section>
-  <section class="band">
-    <div class="container">
-      <SectionIntro eyebrow="FAQ" title="先回答几个常见问题。" /><div class="faq">
+
+      <div class="audience-grid">
         {
-          faq.map(([question, answer]) => (
-            <details>
-              <>
-                <summary>{question}</summary>
-                <p>{answer}</p>
-              </>
-            </details>
+          audiences.map((item) => (
+            <article class="audience-card">
+              <span class="audience-num">{item.num}</span>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <div class="chips">
+                {item.chips.map((chip) => (
+                  <span class="chip">{chip}</span>
+                ))}
+              </div>
+            </article>
           ))
         }
-      </div><div class="not-sure">
-        <Users size={20} /><div>
-          <h3>还没想好？没关系。</h3><div class="not-sure-links">
-            <ArrowLink href="/articles" label="浏览最新文章" />
-            <ArrowLink href="/about" label="了解计算机协会" />
-            <ArrowLink href={siteData.guideUrl} label="打开新手 Guide" external />
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Join -->
+  <section class="section join-methods">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>怎样加入我们？</h2>
+        <p>简单几步，直接进群和大家聊起来。</p>
+      </div>
+
+      <div class="method-layout">
+        <!-- Main QQ Group Block -->
+        <div class="method-main">
+          <div class="method-step-label">STEP 01</div>
+          <h3>加入招新 QQ 群</h3>
+          <p class="method-desc">
+            这是了解协会最新动态、咨询问题和认识学长学姐最直接的方式。群内禁发一切广告，请放心加入。
+          </p>
+
+          <div class="qq-block">
+            <span class="qq-label">官方纳新群号</span>
+            <span class="qq-number">{recruitment.qqGroup || '870131425'}</span>
+            <a
+              class="button button-primary qq-action"
+              href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup || '870131425'}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              一键加群 <ArrowUpRight size={14} />
+            </a>
+          </div>
+        </div>
+
+        <!-- Side Notes -->
+        <div class="method-side">
+          <div class="method-step-label">STEP 02</div>
+          <h3>关注公众号与宣讲</h3>
+          <p class="method-desc">开学季我们会在大学生活动中心举办线下宣讲会，现场会有硬件展示、项目演示与互动答疑。</p>
+
+          <div class="side-notes">
+            <div class="note-item">
+              <span class="note-dot"></span>
+              <div>
+                <strong>招新对象</strong>
+                <p>全校各年级、各专业在读学生（无专业与基础限制）</p>
+              </div>
+            </div>
+            <div class="note-item">
+              <span class="note-dot"></span>
+              <div>
+                <strong>会费说明</strong>
+                <p>全期免费，不收取任何形式的会费或押金</p>
+              </div>
+            </div>
+            <div class="note-item">
+              <span class="note-dot"></span>
+              <div>
+                <strong>入驻平台</strong>
+                <p>成员免费分配 cxcs.page 二级域名与云端构建配额</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq-section">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>常见疑问。</h2>
+        <p>如果这里没有解答你的顾虑，欢迎进群直接提问。</p>
+      </div>
+
+      <div class="faq-list">
+        {
+          faqs.map((faq) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{faq.q}</span>
+                <span class="faq-icon" aria-hidden="true" />
+              </summary>
+              <div class="faq-answer">
+                <p>{faq.a}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="section join-bottom">
+    <div class="wrap">
+      <div class="join-bottom-card">
+        <div class="section-line"><span>GET STARTED</span></div>
+        <h2>准备好了？立刻出发。</h2>
+        <p>期待在下一个项目、下一场比赛，或者下一次技术沙龙里看见你的名字。</p>
+        <div class="cta-actions">
+          <a
+            class="button button-primary"
+            href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup || '870131425'}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            加群：{recruitment.qqGroup || '870131425'}
+            <ArrowUpRight size={14} />
+          </a>
+          <a class="button button-secondary" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+            先读读 CXCS Guide <ArrowRight size={14} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .join-hero {
+    padding: calc(var(--header-height) + 54px) 0 54px;
+    background: var(--ice);
+    border-bottom: 1px solid var(--line);
+  }
+  .join-hero h1 {
+    font-size: clamp(38px, 4.8vw, 56px);
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .join-hero-copy {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.8;
+    margin: 0 0 28px;
+  }
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .status-open {
+    background: #e6f7ec;
+    color: #0d8239;
+    border: 1px solid #b7ebd0;
+  }
+  :root[data-theme='dark'] .status-open {
+    background: #143521;
+    color: #4ade80;
+    border-color: #22543d;
+  }
+  .status-tip {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .audience-card {
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .audience-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--blue);
+  }
+  .audience-num {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .audience-card h3 {
+    font-size: 18px;
+    font-weight: 650;
+    margin: 0 0 12px;
+    line-height: 1.4;
+  }
+  .audience-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin: 0 0 24px;
+    flex-grow: 1;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--ice);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+  }
+
+  .join-methods {
+    background: var(--ice);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .method-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+  }
+  .method-main,
+  .method-side {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 36px;
+  }
+  .method-step-label {
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .method-main h3,
+  .method-side h3 {
+    font-size: 24px;
+    font-weight: 650;
+    margin: 0 0 12px;
+  }
+  .method-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 28px;
+  }
+  .qq-block {
+    background: var(--ice);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .qq-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .qq-number {
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--blue);
+    line-height: 1.1;
+  }
+  .qq-action {
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+
+  .side-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .note-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .note-item strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .note-item p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+  .faq-icon::before {
+    content: '+';
+    font-size: 18px;
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .faq-item[open] .faq-icon::before {
+    content: '−';
+  }
+  .faq-answer {
+    padding-bottom: 22px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.85;
+    max-width: 760px;
+  }
+  .faq-answer p {
+    margin: 0;
+  }
+
+  .join-bottom-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 48px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .join-bottom-card h2 {
+    font-size: clamp(28px, 3.2vw, 38px);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+  .join-bottom-card p {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 0 28px;
+    line-height: 1.8;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  @media (max-width: 960px) {
+    .audience-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .method-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .audience-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta-actions {
+      flex-direction: column;
+    }
+    .method-main,
+    .method-side,
+    .join-bottom-card {
+      padding: 24px;
+    }
+  }
+</style>

@@ -1,57 +1,237 @@
 ---
 import { getCollection } from 'astro:content';
+import { ArrowRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
-import SectionIntro from '../../components/SectionIntro.astro';
 import { siteData } from '../../config';
+
 const articles = (await getCollection('articles', ({ data }) => !data.draft && data.type === 'news')).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
 ---
 
 <BaseLayout title={`News · Articles · ${siteData.shortName}`} description="CXCS 的新闻、公告和活动动态。">
-  <section class="page-hero">
-    <div class="container page-hero-inner">
-      <div>
-        <p class="eyebrow">Articles / News</p><h1>新闻<br />正在发生。</h1><p class="page-hero-copy">
-          正式事件、活动消息和协会里值得记下来的时刻。
-        </p>
-      </div><div class="page-hero-art" aria-hidden="true"></div>
+  <section class="articles-hero">
+    <div class="wrap">
+      <div class="section-line"><span>ARTICLES / NEWS</span></div>
+      <h1>新闻正在发生。</h1>
+      <p class="articles-hero-copy">正式事件、活动消息和协会里值得被记下来的时刻。</p>
+
+      <nav class="filter-tabs" aria-label="文章分类">
+        <a class="filter-btn" href="/articles">全部</a>
+        <a class="filter-btn is-active" href="/articles/news" aria-current="page">新闻</a>
+        <a class="filter-btn" href="/articles/blog">博客</a>
+      </nav>
     </div>
   </section>
-  <section class="band">
-    <div class="container">
-      <nav class="filter-tabs" aria-label="文章分类">
-        <a href="/articles">全部</a><a href="/articles/news" aria-current="page">新闻</a><a href="/articles/blog"
-          >博客</a
-        >
-      </nav><SectionIntro eyebrow="News Feed" title="记录正在发生的事。" /><div class="editorial-grid">
-        {
-          articles.map((article) => (
-            <article class="editorial-item">
-              <a class="article-card" href={`/articles/${article.id}`}>
-                <>
-                  <div class="article-cover">
-                    {article.data.cover ? (
-                      <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
-                    ) : (
-                      <BrandPlaceholder label="NEWS" />
-                    )}
-                  </div>
-                  <div class="article-meta">
-                    <>
-                      <span class="article-type">NEWS</span>
-                      <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                    </>
-                  </div>
-                  <h3>{article.data.title}</h3>
-                  <p>{article.data.description}</p>
-                </>
+
+  <section class="section stories-section">
+    <div class="wrap stories-feed">
+      {
+        articles.map((article, idx) => (
+          <article class="story">
+            <span class="story-number">{String(idx + 1).padStart(2, '0')}</span>
+            <div class="story-media">
+              <img
+                src={article.data.cover?.image || '/assets/articles/community.jpg'}
+                alt={article.data.title}
+                loading="lazy"
+              />
+            </div>
+            <div class="story-content">
+              <div class="meta">
+                <span class="type">新闻</span>
+                <span>·</span>
+                <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                {article.data.authors.length > 0 && (
+                  <>
+                    <span>·</span>
+                    <span>{article.data.authors.join(' / ')}</span>
+                  </>
+                )}
+              </div>
+              <h2>
+                <a href={`/articles/${article.id}`}>{article.data.title}</a>
+              </h2>
+              <p>{article.data.description}</p>
+              <a class="read-link" href={`/articles/${article.id}`}>
+                阅读全文 <ArrowRight size={13} />
               </a>
-            </article>
-          ))
-        }
-      </div>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .articles-hero {
+    padding: calc(var(--header-height) + 54px) 0 42px;
+    background: var(--ice);
+    border-bottom: 1px solid var(--line);
+  }
+  .articles-hero h1 {
+    font-size: clamp(38px, 4.8vw, 56px);
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .articles-hero-copy {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.8;
+    margin: 0 0 28px;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.15s ease;
+  }
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--blue);
+  }
+  .filter-btn.is-active {
+    background: var(--blue);
+    color: #ffffff;
+    border-color: var(--blue);
+  }
+
+  .stories-section {
+    padding: 56px 0 84px;
+  }
+  .stories-feed {
+    display: flex;
+    flex-direction: column;
+  }
+  .story {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .story:first-child {
+    padding-top: 0;
+  }
+  .story-number {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 700;
+    padding-top: 6px;
+  }
+  .story-media {
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: var(--ice);
+  }
+  .story img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .story:hover img {
+    transform: scale(1.02);
+  }
+  .story-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .meta .type {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .story h2 {
+    font-size: 26px;
+    line-height: 1.4;
+    font-weight: 650;
+    margin: 0 0 14px;
+  }
+  .story h2 a {
+    transition: color 0.15s ease;
+  }
+  .story h2 a:hover {
+    color: var(--blue);
+  }
+  .story p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 22px;
+  }
+  .read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--blue);
+    align-self: flex-start;
+    transition: gap 0.15s ease;
+  }
+  .read-link:hover {
+    gap: 12px;
+  }
+
+  @media (max-width: 860px) {
+    .story {
+      grid-template-columns: 28px 1fr;
+      gap: 20px;
+    }
+    .story-media {
+      grid-column: 2;
+    }
+    .story-content {
+      grid-column: 2;
+    }
+    .story img {
+      height: 220px;
+    }
+    .story h2 {
+      font-size: 22px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .story {
+      padding: 32px 0;
+    }
+    .story-number {
+      display: none;
+    }
+    .story {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .story-media,
+    .story-content {
+      grid-column: 1;
+    }
+  }
+</style>

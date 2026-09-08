@@ -1,10 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { ArrowRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArrowLink from '../../components/ArrowLink.astro';
-import BrandPlaceholder from '../../components/BrandPlaceholder.astro';
-import SectionIntro from '../../components/SectionIntro.astro';
 import { siteData } from '../../config';
+
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
@@ -12,83 +11,286 @@ const featured = articles.find((entry) => entry.data.featured) || articles[0];
 const rest = articles.filter((entry) => entry.id !== featured?.id);
 ---
 
-<BaseLayout title={`Articles · ${siteData.shortName}`} description="记录最近发生的事情，也写一些我们觉得有意思的东西。">
-  <section class="page-hero">
-    <div class="container page-hero-inner">
-      <div>
-        <p class="eyebrow">05 / Articles</p><h1>文章<br />与动态。</h1><p class="page-hero-copy">
-          记录最近发生的事情，也写一些我们觉得有意思的东西。
-        </p>
-      </div><div class="page-hero-art" aria-hidden="true"></div>
+<BaseLayout
+  title={`Articles · ${siteData.shortName}`}
+  description="记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。"
+>
+  <!-- Page Hero -->
+  <section class="articles-hero">
+    <div class="wrap">
+      <div class="section-line"><span>05</span> CXCS EDITORIAL</div>
+      <h1>文章与动态。</h1>
+      <p class="articles-hero-copy">记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。</p>
+
+      <nav class="filter-tabs" aria-label="文章分类">
+        <a class="filter-btn is-active" href="/articles" aria-current="page">全部</a>
+        <a class="filter-btn" href="/articles/news">新闻</a>
+        <a class="filter-btn" href="/articles/blog">博客</a>
+      </nav>
     </div>
   </section>
-  <section class="band">
-    <div class="container">
-      <nav class="filter-tabs" aria-label="文章分类">
-        <a href="/articles" aria-current="page">全部</a><a href="/articles/news">新闻</a><a href="/articles/blog"
-          >博客</a
-        >
-      </nav>
+
+  <!-- Stories Feed -->
+  <section class="section stories-section">
+    <div class="wrap stories-feed">
       {
         featured && (
-          <a class="story-card" href={`/articles/${featured.id}`}>
-            <>
-              <>
-                {featured.data.cover ? (
-                  <img src={featured.data.cover.image} alt={featured.data.cover.alt} />
-                ) : (
-                  <BrandPlaceholder label="FEATURED" />
+          <article class="story featured">
+            <span class="story-number">01</span>
+            <div class="story-media">
+              <img
+                src={featured.data.cover?.image || '/assets/articles/code.jpg'}
+                alt={featured.data.cover?.alt || featured.data.title}
+                loading="lazy"
+              />
+            </div>
+            <div class="story-content">
+              <div class="meta">
+                <span class="type">{featured.data.type === 'news' ? '新闻' : '博客'}</span>
+                <span>·</span>
+                <span>{featured.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                {featured.data.authors.length > 0 && (
+                  <>
+                    <span>·</span>
+                    <span>{featured.data.authors.join(' / ')}</span>
+                  </>
                 )}
-              </>
-              <div class="story-content">
-                <>
-                  <div class="eyebrow">
-                    {featured.data.type} · {featured.data.publishedAt.toLocaleDateString('zh-CN')}
-                  </div>
-                  <h3>{featured.data.title}</h3>
-                  <p>{featured.data.description}</p>
-                  <span class="arrow-link">
-                    阅读全文 <span aria-hidden="true">→</span>
-                  </span>
-                </>
               </div>
-            </>
-          </a>
+              <h2>
+                <a href={`/articles/${featured.id}`}>{featured.data.title}</a>
+              </h2>
+              <p>{featured.data.description}</p>
+              <a class="read-link" href={`/articles/${featured.id}`}>
+                阅读全文 <ArrowRight size={13} />
+              </a>
+            </div>
+          </article>
         )
       }
-      <div class="section-head-row article-feed-heading">
-        <SectionIntro eyebrow="Editorial Feed" title="慢慢读，也可以快速找到想看的。" /><ArrowLink
-          href="/join"
-          label="了解 CXCS"
-        />
-      </div>
-      <div class="editorial-grid">
-        {
-          rest.map((article) => (
-            <article class="editorial-item">
-              <a class="article-card" href={`/articles/${article.id}`}>
-                <>
-                  <div class="article-cover">
-                    {article.data.cover ? (
-                      <img src={article.data.cover.image} alt={article.data.cover.alt} loading="lazy" />
-                    ) : (
-                      <BrandPlaceholder label={article.data.type.toUpperCase()} />
-                    )}
-                  </div>
-                  <div class="article-meta">
-                    <>
-                      <span class="article-type">{article.data.type}</span>
-                      <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                    </>
-                  </div>
-                  <h3>{article.data.title}</h3>
-                  <p>{article.data.description}</p>
-                </>
+
+      {
+        rest.map((article, idx) => (
+          <article class="story">
+            <span class="story-number">{String(idx + 2).padStart(2, '0')}</span>
+            <div class="story-media">
+              <img
+                src={
+                  article.data.cover?.image ||
+                  (idx === 0 ? '/assets/articles/community.jpg' : '/assets/articles/code.jpg')
+                }
+                alt={article.data.title}
+                loading="lazy"
+              />
+            </div>
+            <div class="story-content">
+              <div class="meta">
+                <span class="type">{article.data.type === 'news' ? '新闻' : '博客'}</span>
+                <span>·</span>
+                <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+              </div>
+              <h2>
+                <a href={`/articles/${article.id}`}>{article.data.title}</a>
+              </h2>
+              <p>{article.data.description}</p>
+              <a class="read-link" href={`/articles/${article.id}`}>
+                阅读全文 <ArrowRight size={13} />
               </a>
-            </article>
-          ))
-        }
-      </div>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .articles-hero {
+    padding: calc(var(--header-height) + 54px) 0 42px;
+    background: var(--ice);
+    border-bottom: 1px solid var(--line);
+  }
+  .articles-hero h1 {
+    font-size: clamp(38px, 4.8vw, 56px);
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .articles-hero-copy {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.8;
+    margin: 0 0 28px;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.15s ease;
+  }
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--blue);
+  }
+  .filter-btn.is-active {
+    background: var(--blue);
+    color: #ffffff;
+    border-color: var(--blue);
+  }
+
+  .stories-section {
+    padding: 56px 0 84px;
+  }
+  .stories-feed {
+    display: flex;
+    flex-direction: column;
+  }
+  .story {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .story:first-child {
+    padding-top: 0;
+  }
+  .story.featured {
+    grid-template-columns: 36px 1.25fr 1fr;
+    padding-bottom: 56px;
+  }
+  .story-number {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 700;
+    padding-top: 6px;
+  }
+  .story-media {
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: var(--ice);
+  }
+  .story img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .story.featured img {
+    height: 340px;
+  }
+  .story:hover img {
+    transform: scale(1.02);
+  }
+  .story-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .meta .type {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .story h2 {
+    font-size: 26px;
+    line-height: 1.4;
+    font-weight: 650;
+    margin: 0 0 14px;
+  }
+  .story.featured h2 {
+    font-size: 34px;
+  }
+  .story h2 a {
+    transition: color 0.15s ease;
+  }
+  .story h2 a:hover {
+    color: var(--blue);
+  }
+  .story p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 22px;
+  }
+  .read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--blue);
+    align-self: flex-start;
+    transition: gap 0.15s ease;
+  }
+  .read-link:hover {
+    gap: 12px;
+  }
+
+  @media (max-width: 860px) {
+    .story,
+    .story.featured {
+      grid-template-columns: 28px 1fr;
+      gap: 20px;
+    }
+    .story-media,
+    .story.featured .story-media {
+      grid-column: 2;
+    }
+    .story-content,
+    .story.featured .story-content {
+      grid-column: 2;
+    }
+    .story img,
+    .story.featured img {
+      height: 220px;
+    }
+    .story.featured h2 {
+      font-size: 26px;
+    }
+    .story h2 {
+      font-size: 22px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .story {
+      padding: 32px 0;
+    }
+    .story-number {
+      display: none;
+    }
+    .story,
+    .story.featured {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .story-media,
+    .story-content,
+    .story.featured .story-media,
+    .story.featured .story-content {
+      grid-column: 1;
+    }
+  }
+</style>
