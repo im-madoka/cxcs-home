@@ -17,19 +17,23 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-grid" aria-hidden="true"></div>
 
-    <div class="hello" aria-hidden="true">HELLO</div>
+    <div class="hero-stage">
+      <div class="hero-title-lockup">
+        <div class="hello" aria-hidden="true">HELLO</div>
 
-    <img
-      class="hero-character"
-      src="/assets/characters/shurin-aran/hero.png"
-      alt="Shurin Aran，计协娘"
-      width="1024"
-      height="1536"
-      fetchpriority="high"
-      data-hero-mascot
-    />
+        <div class="world" aria-hidden="true">WORLD.</div>
+      </div>
 
-    <div class="world" aria-hidden="true">WORLD.</div>
+      <img
+        class="hero-character"
+        src="/assets/characters/shurin-aran/hero.png"
+        alt="Shurin Aran，计协娘"
+        width="1024"
+        height="1536"
+        fetchpriority="high"
+        data-hero-mascot
+      />
+    </div>
 
     <div class="hero-copy">
       <h1 id="hero-title">

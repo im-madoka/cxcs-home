@@ -88,7 +88,6 @@ if (!reduceMotion) {
 
   if (character) {
     gsap.from(character, {
-      y: 45,
       opacity: 0,
       duration: 1.2,
       delay: 0.15,

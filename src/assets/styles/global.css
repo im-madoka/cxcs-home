@@ -480,11 +480,33 @@ main {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 120px 120px;
   opacity: 0.35;
   z-index: -1;
+}
+.hero-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1440px, calc(100% - clamp(30px, 7vw, 112px)));
+  height: 100%;
+  --character-center-y: 50%;
+  --title-center-y: var(--character-center-y);
+  --title-world-offset: 210px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-title-lockup {
+  position: absolute;
+  inset-inline: 0;
+  top: var(--title-center-y);
+  height: calc(var(--title-world-offset) + 0.83em);
+  margin-top: calc((var(--title-world-offset) + 0.83em) / -2);
+  pointer-events: none;
+  font-size: clamp(110px, 13vw, 197px);
+  line-height: 0.83;
 }
 .hello,
 .world {
@@ -496,15 +518,15 @@ main {
 }
 .hello {
   font-size: clamp(120px, 14vw, 209px);
-  left: 3.5%;
-  top: clamp(90px, 14vh, 130px);
+  left: 0;
+  top: 0;
   color: var(--blue);
   z-index: 1;
 }
 .world {
-  font-size: clamp(110px, 13vw, 197px);
-  right: 3.6%;
-  top: clamp(280px, 38vh, 340px);
+  font-size: inherit;
+  right: 0;
+  top: var(--title-world-offset);
   color: var(--text);
   z-index: 3;
 }
@@ -513,13 +535,19 @@ main {
   height: min(85dvh, 830px);
   width: auto;
   max-width: none;
-  left: calc(50% - 328px);
-  bottom: 0;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
   z-index: 2;
-  transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+  transform: translate3d(
+    calc(-50% - var(--character-optical-shift, 38px) + var(--px, 0px)),
+    calc(-50% + var(--py, 0px)),
+    0
+  );
   filter: drop-shadow(0 18px 24px rgba(36, 100, 237, 0.1));
   transition: transform 0.1s ease-out;
   cursor: pointer;
+  pointer-events: auto;
 }
 .hero-copy {
   position: absolute;
@@ -957,11 +985,11 @@ main {
 @media (max-width: 1150px) {
   .hello {
     font-size: 163px;
-    top: 105px;
+    top: 0;
   }
   .world {
     font-size: 161px;
-    top: 302px;
+    top: var(--title-world-offset);
   }
   .hero-copy {
     left: 36px;
@@ -975,15 +1003,19 @@ main {
     width: 180px;
   }
   .hero-character {
-    left: calc(50% - 300px);
     height: min(80dvh, 720px);
+    --character-optical-shift: 34px;
+  }
+  .hero-stage {
+    --title-world-offset: 197px;
   }
 }
 
 @media (max-width: 1000px) {
   .desktop-nav,
   .header-actions .external-nav,
-  .header-actions .header-join {
+  .header-actions .header-join,
+  .header-actions .theme-switcher {
     display: none;
   }
   .mobile-header-tools {
@@ -1070,20 +1102,22 @@ main {
 }
 
 @media (max-width: 800px) {
+  .hero-stage {
+    --title-world-offset: 225px;
+  }
   .hello {
     font-size: 139px;
-    left: 20px;
-    top: 108px;
+    left: 0;
+    top: 0;
   }
   .world {
     font-size: 133px;
-    right: 20px;
-    top: 333px;
+    right: 0;
+    top: var(--title-world-offset);
   }
   .hero-character {
     height: min(72dvh, 600px);
-    left: calc(50% - 260px);
-    bottom: 0;
+    --character-optical-shift: 28px;
   }
   .hero-copy {
     left: 22px;
@@ -1147,19 +1181,23 @@ main {
     background-size: 78px 78px;
   }
   .hello {
-    font-size: 105px;
-    left: 15px;
-    top: 72px;
+    font-size: 88px;
+    left: 0;
+    top: 0;
   }
   .world {
-    font-size: 98px;
-    right: 14px;
-    top: 344px;
+    font-size: 80px;
+    right: 0;
+    top: var(--title-world-offset);
   }
   .hero-character {
     height: min(65dvh, 480px);
-    left: calc(50% - 240px);
-    bottom: 0;
+    --character-optical-shift: 22px;
+  }
+  .hero-stage {
+    --character-center-y: 50%;
+    --title-center-y: var(--character-center-y);
+    --title-world-offset: 272px;
   }
   .hero-copy {
     left: 18px;
