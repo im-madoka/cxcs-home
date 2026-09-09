@@ -540,10 +540,11 @@ main {
   bottom: auto;
   z-index: 2;
   transform: translate3d(
-    calc(-50% - var(--character-optical-shift, 38px) + var(--px, 0px)),
-    calc(-50% + var(--py, 0px)),
-    0
-  );
+      calc(-50% - var(--character-optical-shift, 38px) + var(--px, 0px)),
+      calc(-50% + var(--py, 0px)),
+      0
+    )
+    rotate(var(--character-click-rotate, 0deg)) scale(var(--character-click-scale, 1));
   filter: drop-shadow(0 18px 24px rgba(36, 100, 237, 0.1));
   transition: transform 0.1s ease-out;
   cursor: pointer;
@@ -1197,7 +1198,7 @@ main {
   .hero-stage {
     --character-center-y: 50%;
     --title-center-y: var(--character-center-y);
-    --title-world-offset: 272px;
+    --title-world-offset: 110px;
   }
   .hero-copy {
     left: 18px;

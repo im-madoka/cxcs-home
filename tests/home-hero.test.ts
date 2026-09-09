@@ -47,12 +47,20 @@ describe('homepage mascot hero', () => {
     expect(motionScript).not.toMatch(/gsap\.from\(character,\s*\{[\s\S]*y:\s*45/);
   });
 
+  test('keeps the mascot click animation separate from responsive positioning', () => {
+    expect(globalStyles).toContain('rotate(var(--character-click-rotate, 0deg))');
+    expect(globalStyles).toContain('scale(var(--character-click-scale, 1))');
+    expect(motionScript).toMatch(/['"]--character-click-scale['"]:\s*0\.94/);
+    expect(motionScript).toMatch(/['"]--character-click-rotate['"]:\s*['"]-1\.2deg['"]/);
+    expect(motionScript).not.toMatch(/\{\s*scale:\s*0\.94,\s*rotate:\s*-1\.2/);
+  });
+
   test('scales the mobile title while preserving the centered composition', () => {
     expect(globalStyles).toMatch(
       /@media \(max-width: 520px\) \{[\s\S]*?\.hello\s*\{[\s\S]*?font-size:\s*88px[\s\S]*?\.world\s*\{[\s\S]*?font-size:\s*80px[\s\S]*?\.hero-character\s*\{[\s\S]*?height:\s*min\(65dvh, 480px\)/,
     );
     expect(globalStyles).toMatch(
-      /@media \(max-width: 520px\) \{[\s\S]*?\.hero-stage\s*\{[\s\S]*?--character-center-y:\s*50%[\s\S]*?--title-center-y:\s*var\(--character-center-y\)[\s\S]*?--title-world-offset:\s*272px/,
+      /@media \(max-width: 520px\) \{[\s\S]*?\.hero-stage\s*\{[\s\S]*?--character-center-y:\s*50%[\s\S]*?--title-center-y:\s*var\(--character-center-y\)[\s\S]*?--title-world-offset:\s*110px/,
     );
   });
 

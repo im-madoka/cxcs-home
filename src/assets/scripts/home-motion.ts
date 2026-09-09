@@ -58,10 +58,10 @@ if (hero && character) {
     gsap.killTweensOf(character);
     gsap.fromTo(
       character,
-      { scale: 0.94, rotate: -1.2 },
+      { '--character-click-scale': 0.94, '--character-click-rotate': '-1.2deg' },
       {
-        scale: 1,
-        rotate: 0,
+        '--character-click-scale': 1,
+        '--character-click-rotate': '0deg',
         duration: 0.9,
         ease: 'elastic.out(1.2, 0.4)',
       },
