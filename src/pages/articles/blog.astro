@@ -35,7 +35,7 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
               <a class="article-card" href={`/articles/${article.id}`}>
                 <div class="article-cover">
                   <img
-                    src={article.data.cover?.image || '/assets/articles/code.jpg'}
+                    src={article.data.cover?.image || `/generated/article-covers/${article.id}.webp`}
                     alt={article.data.cover?.alt || article.data.title}
                     loading="lazy"
                   />

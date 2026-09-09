@@ -38,7 +38,7 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
           <a class="story-card" href={`/articles/${featured.id}`}>
             <img
               class="story-cover"
-              src={featured.data.cover?.image || '/assets/articles/code.jpg'}
+              src={featured.data.cover?.image || `/generated/article-covers/${featured.id}.webp`}
               alt={featured.data.cover?.alt || featured.data.title}
               loading="lazy"
             />
@@ -65,7 +65,7 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
               <a class="article-card" href={`/articles/${article.id}`}>
                 <div class="article-cover">
                   <img
-                    src={article.data.cover?.image || '/assets/articles/community.jpg'}
+                    src={article.data.cover?.image || `/generated/article-covers/${article.id}.webp`}
                     alt={article.data.cover?.alt || article.data.title}
                     loading="lazy"
                   />

@@ -29,7 +29,7 @@ const related = entries
 <BaseLayout
   title={`${entry.data.title} · ${siteData.shortName}`}
   description={entry.data.description}
-  image={entry.data.cover?.image}
+  image={entry.data.cover?.image || `/generated/article-covers/${entry.id}.webp`}
 >
   <div class="reading-progress" aria-hidden="true"></div>
 

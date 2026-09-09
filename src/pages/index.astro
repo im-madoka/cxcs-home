@@ -164,7 +164,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
             <img
               class="news-cover"
-              src={featuredArticle.data.cover?.image || '/assets/articles/code.jpg'}
+              src={featuredArticle.data.cover?.image || `/generated/article-covers/${featuredArticle.id}.webp`}
               alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
               loading="lazy"
             />
@@ -187,7 +187,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 
       <div class="side-stories">
         {
-          sideArticles.map((article, idx) => (
+          sideArticles.map((article) => (
             <a class="side-story" href={`/articles/${article.id}`}>
               <div>
                 <div class="meta">
@@ -198,15 +198,11 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
                 <h3>{article.data.title}</h3>
                 <p>{article.data.description}</p>
               </div>
-              {article.data.cover?.image ? (
-                <img src={article.data.cover.image} alt={article.data.title} loading="lazy" />
-              ) : idx === 0 ? (
-                <img src="/assets/articles/community.jpg" alt={article.data.title} loading="lazy" />
-              ) : (
-                <div class="story-art" aria-hidden="true">
-                  &lt;/&gt;
-                </div>
-              )}
+              <img
+                src={article.data.cover?.image || `/generated/article-covers/${article.id}.webp`}
+                alt={article.data.cover?.alt || article.data.title}
+                loading="lazy"
+              />
             </a>
           ))
         }
