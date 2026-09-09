@@ -95,33 +95,58 @@ import { navItems, siteData } from '../config';
 </div>
 
 <script>
-  const header = document.querySelector<HTMLElement>('[data-header]');
-  const overlay = document.querySelector<HTMLElement>('[data-mobile-overlay]');
-  const openButton = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
-  const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
-  const openMenu = () => {
-    overlay?.classList.add('is-open');
-    overlay?.removeAttribute('inert');
-    overlay?.setAttribute('aria-hidden', 'false');
-    openButton?.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('menu-open');
-    closeButton?.focus();
+  let cleanupHeader: (() => void) | null = null;
+
+  const initHeader = () => {
+    cleanupHeader?.();
+
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    const overlay = document.querySelector<HTMLElement>('[data-mobile-overlay]');
+    const openButton = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+    const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+    if (!overlay || !openButton || !closeButton) return;
+
+    const openMenu = () => {
+      overlay.classList.add('is-open');
+      overlay.removeAttribute('inert');
+      overlay.setAttribute('aria-hidden', 'false');
+      openButton.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('menu-open');
+      closeButton.focus();
+    };
+    const closeMenu = (restoreFocus = true) => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('inert', '');
+      overlay.setAttribute('aria-hidden', 'true');
+      openButton.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+      if (restoreFocus) openButton.focus();
+    };
+    const onKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && overlay.classList.contains('is-open')) closeMenu();
+    };
+    const onCloseClick = () => closeMenu();
+    const onLinkClick = () => closeMenu(false);
+    const syncHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 30);
+
+    openButton.addEventListener('click', openMenu);
+    closeButton.addEventListener('click', onCloseClick);
+    const links = Array.from(overlay.querySelectorAll('a'));
+    links.forEach((link) => link.addEventListener('click', onLinkClick));
+    document.addEventListener('keydown', onKeydown);
+    window.addEventListener('scroll', syncHeader, { passive: true });
+    syncHeader();
+
+    cleanupHeader = () => {
+      closeMenu(false);
+      openButton.removeEventListener('click', openMenu);
+      closeButton.removeEventListener('click', onCloseClick);
+      links.forEach((link) => link.removeEventListener('click', onLinkClick));
+      document.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('scroll', syncHeader);
+    };
   };
-  const closeMenu = () => {
-    overlay?.classList.remove('is-open');
-    overlay?.setAttribute('inert', '');
-    overlay?.setAttribute('aria-hidden', 'true');
-    openButton?.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('menu-open');
-    openButton?.focus();
-  };
-  openButton?.addEventListener('click', openMenu);
-  closeButton?.addEventListener('click', closeMenu);
-  overlay?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && overlay?.classList.contains('is-open')) closeMenu();
-  });
-  const syncHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 30);
-  syncHeader();
-  window.addEventListener('scroll', syncHeader, { passive: true });
+
+  document.addEventListener('astro:page-load', initHeader);
+  initHeader();
 </script>

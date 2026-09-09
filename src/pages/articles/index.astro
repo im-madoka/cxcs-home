@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
 import { siteData } from '../../config';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
@@ -15,14 +16,11 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
   title={`Articles · ${siteData.shortName}`}
   description="记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。"
 >
-  <!-- Page Hero -->
-  <section class="articles-hero">
-    <div class="wrap">
-      <div class="section-line"><span>05</span> CXCS EDITORIAL</div>
-      <h1>文章与动态。</h1>
-      <p class="articles-hero-copy">记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。</p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="CXCS EDITORIAL"
+    title="文章与动态。"
+    description="记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。"
+  />
 
   <!-- Feed Section -->
   <section class="section articles-section">
@@ -100,25 +98,6 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
 </BaseLayout>
 
 <style>
-  .articles-hero {
-    padding: calc(var(--header-height) + 54px) 0 42px;
-    background: var(--ice);
-    border-bottom: 1px solid var(--line);
-  }
-  .articles-hero h1 {
-    font-size: clamp(38px, 4.8vw, 56px);
-    line-height: 1.25;
-    font-weight: 700;
-    margin: 0 0 16px;
-  }
-  .articles-hero-copy {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.8;
-    margin: 0;
-  }
-
   .articles-section {
     padding: 42px 0 96px;
   }

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
 import { siteData } from '../../config';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft && data.type === 'blog')).sort(
@@ -10,14 +11,11 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 ---
 
 <BaseLayout title={`Blog · Articles · ${siteData.shortName}`} description="CXCS 成员的故事、项目复盘和有趣想法。">
-  <!-- Page Hero -->
-  <section class="articles-hero">
-    <div class="wrap">
-      <div class="section-line"><span>ARTICLES / BLOG</span></div>
-      <h1>写点有意思的。</h1>
-      <p class="articles-hero-copy">项目故事、成员随笔、技术旁路和一点不太严肃的观察。</p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="ARTICLES / BLOG"
+    title="写点有意思的。"
+    description="项目故事、成员随笔、技术旁路和一点不太严肃的观察。"
+  />
 
   <!-- Feed Section -->
   <section class="section articles-section">
@@ -70,25 +68,6 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 </BaseLayout>
 
 <style>
-  .articles-hero {
-    padding: calc(var(--header-height) + 54px) 0 42px;
-    background: var(--ice);
-    border-bottom: 1px solid var(--line);
-  }
-  .articles-hero h1 {
-    font-size: clamp(38px, 4.8vw, 56px);
-    line-height: 1.25;
-    font-weight: 700;
-    margin: 0 0 16px;
-  }
-  .articles-hero-copy {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.8;
-    margin: 0;
-  }
-
   .articles-section {
     padding: 42px 0 96px;
   }

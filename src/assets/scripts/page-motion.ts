@@ -1,12 +1,15 @@
 import { gsap } from 'gsap';
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let progressElement: HTMLElement | null = null;
+let progressHandler: (() => void) | null = null;
 
-if (!reduceMotion) {
+const initPageMotion = () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // Enhance inner pages (homepage is dedicatedly driven by home-motion.ts)
   const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
 
-  if (!isHomePage) {
+  if (!reduceMotion && !isHomePage) {
     // Page hero entrance
     const hero = document.querySelector('.page-hero, .detail-hero');
     if (hero) {
@@ -42,13 +45,20 @@ if (!reduceMotion) {
   }
 
   // Universal reading progress bar
-  const progress = document.querySelector<HTMLElement>('.reading-progress');
-  if (progress) {
-    const updateProgress = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0})`;
-    };
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
+  if (progressHandler) {
+    window.removeEventListener('scroll', progressHandler);
+    progressHandler = null;
   }
-}
+  progressElement = document.querySelector<HTMLElement>('.reading-progress');
+  if (progressElement) {
+    progressHandler = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressElement!.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0})`;
+    };
+    progressHandler();
+    window.addEventListener('scroll', progressHandler, { passive: true });
+  }
+};
+
+initPageMotion();
+document.addEventListener('astro:page-load', initPageMotion);

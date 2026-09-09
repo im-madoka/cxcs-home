@@ -1,6 +1,7 @@
 ---
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
 import { recruitment, siteData } from '../config';
 import { getRecruitmentStatus } from '../status';
 
@@ -63,21 +64,18 @@ const faqs = [
 ---
 
 <BaseLayout title={`Join Us · ${siteData.shortName}`} description="加入计算机协会，一起学、一起做、一起折腾。">
-  <!-- Page Hero -->
-  <section class="join-hero">
-    <div class="wrap">
-      <div class="section-line"><span>01 / RECRUITMENT</span> JOIN US</div>
-      <h1>加入计协，<br />把想法变成作品。</h1>
-      <p class="join-hero-copy">
-        这里没有繁琐的考核，只有一群愿意把时间花在有意思事情上的人。<br />
-        无论你是否会写第一行代码，只要你愿意动手，就随时欢迎。
-      </p>
-      <div class="status-indicator">
-        <span class={`status-badge status-${status}`}>{statusLabels[status] || statusLabels.open}</span>
-        <span class="status-tip">2026 年秋季纳新群已就绪</span>
-      </div>
+  <PageHero
+    eyebrow="JOIN US"
+    title="加入计协，把想法变成作品。"
+    description="这里没有繁琐的考核，只有一群愿意把时间花在有意思事情上的人。无论你是否会写第一行代码，只要你愿意动手，就随时欢迎。"
+    class="join-hero"
+  >
+    <Fragment slot="title">加入计协，<br />把想法变成作品。</Fragment>
+    <div slot="meta" class="status-indicator">
+      <span class={`status-badge status-${status}`}>{statusLabels[status] || statusLabels.open}</span>
+      <span class="status-tip">2026 年秋季纳新群已就绪</span>
     </div>
-  </section>
+  </PageHero>
 
   <!-- Who We Look For -->
   <section class="section">
@@ -224,23 +222,8 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .join-hero {
-    padding: calc(var(--header-height) + 54px) 0 54px;
-    background: var(--ice);
-    border-bottom: 1px solid var(--line);
-  }
-  .join-hero h1 {
-    font-size: clamp(38px, 4.8vw, 56px);
-    line-height: 1.25;
-    font-weight: 700;
-    margin: 0 0 16px;
-  }
-  .join-hero-copy {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.8;
-    margin: 0 0 28px;
+  .join-hero .page-hero-copy {
+    margin-bottom: 28px;
   }
   .status-indicator {
     display: flex;

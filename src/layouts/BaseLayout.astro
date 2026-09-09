@@ -4,6 +4,7 @@ import SiteFooter from './SiteFooter.astro';
 import BaseHead from './BaseHead.astro';
 import { siteData } from '../config';
 import '../assets/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 const {
   title = siteData.title,
   description = siteData.description,
@@ -16,6 +17,7 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
 <html lang="zh-CN" data-theme="system">
   <head>
     <BaseHead title={title} description={description} image={image} canonical={canonical} />
+    <ClientRouter />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳转到主要内容</a>

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
 import { siteData } from '../../config';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft && data.type === 'news')).sort(
@@ -10,14 +11,11 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 ---
 
 <BaseLayout title={`News · Articles · ${siteData.shortName}`} description="CXCS 的新闻、公告和活动动态。">
-  <!-- Page Hero -->
-  <section class="articles-hero">
-    <div class="wrap">
-      <div class="section-line"><span>ARTICLES / NEWS</span></div>
-      <h1>新闻正在发生。</h1>
-      <p class="articles-hero-copy">正式事件、活动消息和协会里值得被记下来的时刻。</p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="ARTICLES / NEWS"
+    title="新闻正在发生。"
+    description="正式事件、活动消息和协会里值得被记下来的时刻。"
+  />
 
   <!-- Feed Section -->
   <section class="section articles-section">
@@ -70,25 +68,6 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 </BaseLayout>
 
 <style>
-  .articles-hero {
-    padding: calc(var(--header-height) + 54px) 0 42px;
-    background: var(--ice);
-    border-bottom: 1px solid var(--line);
-  }
-  .articles-hero h1 {
-    font-size: clamp(38px, 4.8vw, 56px);
-    line-height: 1.25;
-    font-weight: 700;
-    margin: 0 0 16px;
-  }
-  .articles-hero-copy {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.8;
-    margin: 0;
-  }
-
   .articles-section {
     padding: 42px 0 96px;
   }

@@ -23,6 +23,16 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
   let activeTransition: ViewTransitionLike | null = null;
   let isForwardingClick = false;
 
+  const clearThemeTransition = () => {
+    if (activeTransition) {
+      try {
+        activeTransition.skipTransition();
+      } catch {}
+    }
+    delete document.documentElement.dataset.themeTransition;
+    activeTransition = null;
+  };
+
   const findInteractiveElementAt = (x: number, y: number): HTMLElement | null => {
     const selector = [
       'button',
@@ -91,11 +101,7 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
       const target = isDirectHit ? rawTarget : findInteractiveElementAt(event.clientX, event.clientY);
 
       if (target) {
-        const vt = activeTransition;
-        activeTransition = null;
-        try {
-          vt.skipTransition();
-        } catch {}
+        clearThemeTransition();
 
         if (!isDirectHit) {
           isForwardingClick = true;
@@ -152,15 +158,13 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
     }
 
     if (activeTransition) {
-      try {
-        activeTransition.skipTransition();
-      } catch {}
-      activeTransition = null;
+      clearThemeTransition();
     }
 
     if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.style.setProperty('--theme-x', `${x}px`);
       document.documentElement.style.setProperty('--theme-y', `${y}px`);
+      document.documentElement.dataset.themeTransition = 'true';
       try {
         const vt = document.startViewTransition(apply) as unknown as ViewTransitionLike;
         activeTransition = vt;
@@ -168,45 +172,54 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
           if (activeTransition === vt) {
             activeTransition = null;
           }
+          delete document.documentElement.dataset.themeTransition;
         });
       } catch {
+        clearThemeTransition();
         apply();
       }
     } else {
+      clearThemeTransition();
       apply();
     }
     closeAllMenus();
   };
 
-  // Bind all theme switcher triggers
-  document.querySelectorAll<HTMLElement>('.theme-switcher').forEach((switcher) => {
-    const trigger = switcher.querySelector<HTMLButtonElement>('.theme-trigger');
-    const menu = switcher.querySelector<HTMLDivElement>('.theme-menu');
+  const syncThemeUI = () => updateThemeUI(document.documentElement.dataset.theme || 'system');
 
-    trigger?.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const rect = trigger.getBoundingClientRect();
-      const isCurrentlyHidden = menu ? menu.hidden : true;
-      closeAllMenus();
-      if (menu) {
-        menu.hidden = !isCurrentlyHidden;
-        trigger.setAttribute('aria-expanded', String(!menu.hidden));
-        if (!menu.hidden) menu.querySelector('button')?.focus();
-      }
-      document.documentElement.style.setProperty('--theme-x', `${rect.left + rect.width / 2}px`);
-      document.documentElement.style.setProperty('--theme-y', `${rect.top + rect.height / 2}px`);
-    });
+  document.addEventListener('astro:before-preparation', clearThemeTransition);
+  document.addEventListener('astro:before-swap', (event) => {
+    const currentTheme = document.documentElement.dataset.theme || 'system';
+    event.newDocument.documentElement.dataset.theme = currentTheme;
+    clearThemeTransition();
   });
+  document.addEventListener('astro:page-load', syncThemeUI);
 
-  // Bind all buttons with data-theme-choice anywhere in document
-  document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
-    button.addEventListener('click', (event) => {
+  // Delegate controls so the same handlers continue working after an Astro page swap.
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const choiceButton = target?.closest<HTMLButtonElement>('[data-theme-choice]');
+    if (choiceButton) {
       event.stopPropagation();
-      const rect = button.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      setTheme(button.dataset.themeChoice, x, y);
-    });
+      const rect = choiceButton.getBoundingClientRect();
+      setTheme(choiceButton.dataset.themeChoice, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      return;
+    }
+
+    const trigger = target?.closest<HTMLButtonElement>('.theme-trigger');
+    if (!trigger) return;
+    event.stopPropagation();
+    const menu = trigger.closest<HTMLElement>('.theme-switcher')?.querySelector<HTMLDivElement>('.theme-menu');
+    const rect = trigger.getBoundingClientRect();
+    const isCurrentlyHidden = menu ? menu.hidden : true;
+    closeAllMenus();
+    if (menu) {
+      menu.hidden = !isCurrentlyHidden;
+      trigger.setAttribute('aria-expanded', String(!menu.hidden));
+      if (!menu.hidden) menu.querySelector('button')?.focus();
+    }
+    document.documentElement.style.setProperty('--theme-x', `${rect.left + rect.width / 2}px`);
+    document.documentElement.style.setProperty('--theme-y', `${rect.top + rect.height / 2}px`);
   });
 
   // Outside click/tap to close dropdown menus
@@ -221,7 +234,5 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
     }
   });
 
-  // Initialize UI with current theme
-  const initialTheme = document.documentElement.dataset.theme || 'system';
-  updateThemeUI(initialTheme);
+  syncThemeUI();
 </script>

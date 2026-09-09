@@ -379,6 +379,30 @@ main {
 .section-line span {
   color: var(--blue);
 }
+
+/* Shared inner-page hero */
+.page-hero {
+  --page-hero-height: 460px;
+  height: var(--page-hero-height);
+  padding: calc(var(--header-height) + 40px) 0 40px;
+  display: flex;
+  align-items: center;
+  background: var(--ice);
+  border-bottom: 1px solid var(--line);
+}
+.page-hero h1 {
+  font-size: clamp(38px, 4.8vw, 56px);
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+.page-hero-copy {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.8;
+  margin: 0;
+}
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -968,11 +992,11 @@ main {
 ::view-transition-new(root) {
   pointer-events: none;
 }
-::view-transition-old(root),
-::view-transition-new(root) {
+:root[data-theme-transition='true']::view-transition-old(root),
+:root[data-theme-transition='true']::view-transition-new(root) {
   animation-duration: 2000ms;
 }
-::view-transition-new(root) {
+:root[data-theme-transition='true']::view-transition-new(root) {
   clip-path: circle(0 at var(--theme-x) var(--theme-y));
   animation: theme-reveal 2000ms cubic-bezier(0.22, 0.9, 0.25, 1) forwards;
 }
@@ -1175,6 +1199,11 @@ main {
 }
 
 @media (max-width: 520px) {
+  .page-hero {
+    --page-hero-height: 520px;
+    padding-top: calc(var(--header-height) + 32px);
+    padding-bottom: 32px;
+  }
   .hero {
     min-height: 100dvh;
   }

@@ -1,23 +1,23 @@
 ---
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
 import { siteData } from '../config';
 ---
 
 <BaseLayout title={`About · ${siteData.shortName}`} description="我们是一群喜欢计算机，也喜欢折腾的人。">
-  <!-- Page Hero -->
-  <section class="about-hero">
-    <div class="wrap">
-      <div class="section-line"><span>ABOUT CXCS</span></div>
-      <h1>喜欢计算机，<br />也喜欢折腾。</h1>
-      <p class="about-hero-intro">有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。</p>
-      <div class="hero-meta">
-        <span>东南大学成贤学院计算机协会</span>
-        <span>·</span>
-        <span>EST. 校园技术社区</span>
-      </div>
+  <PageHero
+    eyebrow="ABOUT CXCS"
+    title="喜欢计算机，也喜欢折腾。"
+    description="有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。"
+  >
+    <Fragment slot="title">喜欢计算机，<br />也喜欢折腾。</Fragment>
+    <div slot="meta" class="hero-meta">
+      <span>东南大学成贤学院计算机协会</span>
+      <span>·</span>
+      <span>EST. 校园技术社区</span>
     </div>
-  </section>
+  </PageHero>
 
   <!-- What is CXCS -->
   <section class="section">
@@ -133,30 +133,13 @@ import { siteData } from '../config';
 </BaseLayout>
 
 <style>
-  .about-hero {
-    padding: calc(var(--header-height) + 54px) 0 48px;
-    background: var(--ice);
-    border-bottom: 1px solid var(--line);
-  }
-  .about-hero h1 {
-    font-size: clamp(38px, 4.8vw, 56px);
-    line-height: 1.25;
-    font-weight: 700;
-    margin: 0 0 16px;
-  }
-  .about-hero-intro {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.8;
-    margin: 0 0 20px;
-  }
   .hero-meta {
     display: flex;
     align-items: center;
     gap: 12px;
     font-size: 11px;
     color: var(--muted);
+    margin-top: 20px;
   }
 
   .about-intro-grid {
