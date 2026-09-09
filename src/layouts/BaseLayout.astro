@@ -2,9 +2,11 @@
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import BaseHead from './BaseHead.astro';
-import { siteData } from '../config';
+import config from '../config';
 import '../assets/styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+
+const { site: siteData } = config;
 const {
   title = siteData.title,
   description = siteData.description,

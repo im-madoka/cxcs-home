@@ -2,9 +2,10 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import { recruitment, siteData } from '../config';
+import config from '../config';
 import { getRecruitmentStatus } from '../status';
 
+const { recruitment, site: siteData } = config;
 const status =
   recruitment.opensAt && recruitment.closesAt
     ? getRecruitmentStatus(recruitment.opensAt, recruitment.closesAt)
@@ -123,10 +124,10 @@ const faqs = [
 
           <div class="qq-block">
             <span class="qq-label">官方纳新群号</span>
-            <span class="qq-number">{recruitment.qqGroup || '870131425'}</span>
+            <span class="qq-number">{recruitment.qqGroup}</span>
             <a
               class="button button-primary qq-action"
-              href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup || '870131425'}`}
+              href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -205,11 +206,11 @@ const faqs = [
         <div class="cta-actions">
           <a
             class="button button-primary"
-            href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup || '870131425'}`}
+            href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            加群：{recruitment.qqGroup || '870131425'}
+            加群：{recruitment.qqGroup}
             <ArrowUpRight size={14} />
           </a>
           <a class="button button-secondary" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">

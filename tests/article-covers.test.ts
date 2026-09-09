@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 
 const projectRoot = process.cwd();
-const generatedCover = '/generated/article-covers/blue-hour.webp';
+const generatedCover = '/generated/article-covers/blog/blue-hour.webp';
 let articlesPage = '';
 let blogPage = '';
 let homePage = '';
@@ -47,8 +47,8 @@ describe('generated article covers', () => {
   });
 
   test('uses the same generated cover everywhere the article is listed', () => {
-    expect(articleCard(articlesPage, 'blue-hour')).toContain(`src="${generatedCover}"`);
-    expect(articleCard(blogPage, 'blue-hour')).toContain(`src="${generatedCover}"`);
-    expect(articleCard(homePage, 'blue-hour')).toContain(`src="${generatedCover}"`);
+    expect(articleCard(articlesPage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
+    expect(articleCard(blogPage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
+    expect(articleCard(homePage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
   });
 });

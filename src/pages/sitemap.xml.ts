@@ -1,11 +1,13 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import config from '../config';
 
-export const GET: APIRoute = async ({ site }) => {
+export const GET: APIRoute = async () => {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
-  const paths = ['/', '/about', '/articles', '/articles/news', '/articles/blog', '/join'];
+  const paths = ['/', '/about', '/articles', '/join'];
+  paths.push(...Object.keys(config.articles.categories).map((type) => `/articles/${type}`));
   paths.push(...articles.map((item) => '/articles/' + item.id));
-  const base = site?.toString().replace(/\/$/, '') || 'https://cxcs.dev';
+  const base = config.site.url.replace(/\/$/, '');
   const body = paths.map((path) => '<url><loc>' + base + path + '</loc></url>').join('');
   return new Response(
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +

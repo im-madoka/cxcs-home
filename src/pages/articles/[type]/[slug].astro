@@ -1,8 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft } from 'lucide-astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { siteData } from '../../config';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import config from '../../../config';
+import { getArticleCategory, getArticleCover } from '../../../articles';
+const { site: siteData } = config;
 
 const entries = await getCollection('articles');
 
@@ -10,11 +12,12 @@ export async function getStaticPaths() {
   const allEntries = await getCollection('articles');
   return allEntries
     .filter((entry) => !entry.data.draft)
-    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+    .map((entry) => ({ params: { type: entry.data.type, slug: entry.id.split('/')[1] }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const category = getArticleCategory(entry.data.type);
 
 const related = entries
   .filter(
@@ -29,7 +32,7 @@ const related = entries
 <BaseLayout
   title={`${entry.data.title} · ${siteData.shortName}`}
   description={entry.data.description}
-  image={entry.data.cover?.image || `/generated/article-covers/${entry.id}.webp`}
+  image={getArticleCover(entry)}
 >
   <div class="reading-progress" aria-hidden="true"></div>
 
@@ -46,7 +49,7 @@ const related = entries
         <p class="detail-desc">{entry.data.description}</p>
         <div class="detail-byline">
           {entry.data.authors.length > 0 && <span>作者 / {entry.data.authors.join('、')}</span>}
-          <span>{entry.data.type === 'news' ? 'CXCS 官方发布' : 'CXCS Editorial'}</span>
+          <span>{category.byline}</span>
         </div>
       </div>
     </header>
@@ -55,7 +58,8 @@ const related = entries
     {
       entry.data.cover?.image && (
         <div class="wrap detail-cover-wrap">
-          <img class="detail-cover" src={entry.data.cover.image} alt={entry.data.cover.alt || entry.data.title} />
+          <img class="detail-cover" src={getArticleCover(entry)} alt={entry.data.cover.alt || entry.data.title} />
+          {entry.data.cover.caption && <p class="detail-cover-caption">{entry.data.cover.caption}</p>}
         </div>
       )
     }
@@ -148,6 +152,11 @@ const related = entries
     border-radius: 6px;
     border: 1px solid var(--line);
   }
+  .detail-cover-caption {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+  }
 
   .article-body-container {
     padding: 56px 0 72px;
@@ -179,6 +188,11 @@ const related = entries
   .article-body :global(p) {
     margin: 0 0 22px;
     color: var(--text);
+  }
+  .article-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
   }
   .article-body :global(ul),
   .article-body :global(ol) {

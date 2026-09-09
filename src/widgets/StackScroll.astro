@@ -1,6 +1,7 @@
 ---
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
-import { siteData } from '../config';
+import config from '../config';
+const { site: siteData } = config;
 
 interface Props {
   id?: string;

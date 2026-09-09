@@ -1,6 +1,6 @@
 ---
-import { ArrowUpRight, Github } from 'lucide-astro';
-import { footerGroups, siteData } from '../config';
+import config from '../config';
+const { footer: footerGroups, recruitment } = config;
 ---
 
 <footer class="footer">
@@ -51,14 +51,7 @@ import { footerGroups, siteData } from '../config';
       <div class="footer-group">
         <strong class="group-title">CONTACT</strong>
         <div class="footer-links">
-          <span class="contact-number">{siteData.contact || 'QQ群：870131425'}</span>
-          {
-            siteData.githubUrl && (
-              <a href={siteData.githubUrl} target="_blank" rel="noopener noreferrer" class="contact-gh">
-                <Github size={13} /> GitHub <ArrowUpRight size={11} />
-              </a>
-            )
-          }
+          <span class="contact-number">QQ群：{recruitment.qqGroup}</span>
         </div>
       </div>
     </div>
@@ -129,11 +122,6 @@ import { footerGroups, siteData } from '../config';
   }
   .footer-links a:hover {
     color: var(--blue);
-  }
-  .contact-gh {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
   }
   .footer-bottom {
     border-top: 1px solid var(--line);

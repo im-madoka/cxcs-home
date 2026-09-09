@@ -1,0 +1,70 @@
+---
+import config from '../config';
+
+interface Props {
+  activeType?: string;
+}
+
+const { activeType } = Astro.props;
+---
+
+<nav class="filter-tabs" aria-label="文章分类">
+  <a
+    class:list={['tab-link', { 'is-active': !activeType }]}
+    href="/articles"
+    aria-current={!activeType ? 'page' : undefined}>全部</a
+  >
+  {
+    Object.entries(config.articles.categories).map(([type, category]) => (
+      <a
+        class:list={['tab-link', { 'is-active': activeType === type }]}
+        href={`/articles/${type}`}
+        aria-current={activeType === type ? 'page' : undefined}
+      >
+        {category.label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .filter-tabs {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab-link {
+    position: relative;
+    flex-shrink: 0;
+    padding: 0 2px 14px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+  .tab-link:hover,
+  .tab-link.is-active {
+    color: var(--text);
+  }
+  .tab-link.is-active {
+    font-weight: 600;
+  }
+  .tab-link.is-active::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--blue);
+    border-radius: 1px;
+    content: '';
+  }
+  @media (max-width: 640px) {
+    .filter-tabs {
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+  }
+</style>

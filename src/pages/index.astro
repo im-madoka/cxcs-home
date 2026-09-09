@@ -2,9 +2,11 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteData, recruitment } from '../config';
+import config from '../config';
 import StackScroll from '../widgets/StackScroll.astro';
+import { getArticleCategory, getArticleCover } from '../articles';
 
+const { site: siteData, recruitment } = config;
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
@@ -164,12 +166,12 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
             <img
               class="news-cover"
-              src={featuredArticle.data.cover?.image || `/generated/article-covers/${featuredArticle.id}.webp`}
+              src={getArticleCover(featuredArticle)}
               alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
               loading="lazy"
             />
             <div class="meta">
-              <span class="type">{featuredArticle.data.type === 'news' ? '新闻' : '博客'}</span>
+              <span class="type">{getArticleCategory(featuredArticle.data.type).label}</span>
               <span>·</span>
               <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
               {featuredArticle.data.authors.length > 0 && (
@@ -191,18 +193,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
             <a class="side-story" href={`/articles/${article.id}`}>
               <div>
                 <div class="meta">
-                  <span class="type">{article.data.type === 'news' ? '新闻' : '博客'}</span>
+                  <span class="type">{getArticleCategory(article.data.type).label}</span>
                   <span>·</span>
                   <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
                 </div>
                 <h3>{article.data.title}</h3>
                 <p>{article.data.description}</p>
               </div>
-              <img
-                src={article.data.cover?.image || `/generated/article-covers/${article.id}.webp`}
-                alt={article.data.cover?.alt || article.data.title}
-                loading="lazy"
-              />
+              <img src={getArticleCover(article)} alt={article.data.cover?.alt || article.data.title} loading="lazy" />
             </a>
           ))
         }
@@ -278,9 +276,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
             来一起做点有意思的事 <ArrowRight size={14} />
           </a>
           <span class="join-status">
-            {recruitment.title} · 公开 QQ 交流群 {
-              siteData.contact ? siteData.contact.replace('QQ群：', '') : '870131425'
-            }
+            {recruitment.title} · 公开 QQ 交流群 {recruitment.qqGroup}
           </span>
         </div>
       </div>

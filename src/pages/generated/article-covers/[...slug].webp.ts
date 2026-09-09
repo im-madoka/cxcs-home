@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import satori from 'satori';
 import sharp from 'sharp';
+import config from '../../../config';
+import { getArticleCategory } from '../../../articles';
 
 type Props = {
   entry: CollectionEntry<'articles'>;
@@ -31,9 +33,9 @@ function titleFontSize(title: string) {
 
 export const GET: APIRoute<Props> = async ({ props }) => {
   const { entry } = props;
-  const isNews = entry.data.type === 'news';
-  const accent = isNews ? '#f05a28' : '#1479f5';
-  const label = isNews ? 'NEWS / CXCS' : 'BLOG / CXCS EDITORIAL';
+  const category = getArticleCategory(entry.data.type);
+  const accent = category.accent;
+  const label = category.coverLabel;
   const publishedAt = entry.data.publishedAt.toLocaleDateString('zh-CN');
 
   const svg = await satori(
@@ -113,7 +115,7 @@ export const GET: APIRoute<Props> = async ({ props }) => {
                       fontWeight: 700,
                     },
                     children: [
-                      { type: 'span', props: { children: 'CXCS.DEV' } },
+                      { type: 'span', props: { children: new URL(config.site.url).hostname.toUpperCase() } },
                       { type: 'span', props: { children: entry.id.toUpperCase() } },
                     ],
                   },

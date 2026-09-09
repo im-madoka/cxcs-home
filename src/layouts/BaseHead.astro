@@ -1,11 +1,13 @@
 ---
-import { siteData } from '../config';
+import config from '../config';
+const { site: siteData } = config;
 const {
   title = siteData.title,
   description = siteData.description,
   image = 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=85',
   canonical = siteData.url,
 } = Astro.props;
+const imageUrl = new URL(image, siteData.url).toString();
 ---
 
 <meta charset="UTF-8" />
@@ -17,11 +19,11 @@ const {
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={imageUrl} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={image} />
+<meta name="twitter:image" content={imageUrl} />
 <link rel="icon" type="image/png" href="/assets/brand/association-emblem.png" />
 <link rel="apple-touch-icon" href="/assets/brand/association-emblem.png" />
 <title>{title}</title>
