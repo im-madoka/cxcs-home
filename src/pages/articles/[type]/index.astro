@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowRight } from 'lucide-astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import ArticleTabs from '../../../components/ArticleTabs.astro';
+import { getArticleCover } from '../../../articles';
+import config from '../../../config';
+const { site: siteData } = config;
+
+export function getStaticPaths() {
+  return Object.entries(config.articles.categories).map(([type, category]) => ({
+    params: { type },
+    props: { type, category },
+  }));
+}
+
+const { type, category } = Astro.props;
+const articles = (await getCollection('articles', ({ data }) => !data.draft && data.type === type)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+---
+
+<BaseLayout title={`${category.label} · Articles · ${siteData.shortName}`} description={category.description}>
+  <PageHero eyebrow={`ARTICLES / ${type.toUpperCase()}`} title={category.title} description={category.description} />
+
+  <!-- Feed Section -->
+  <section class="section articles-section">
+    <div class="wrap">
+      <!-- Underline Filter Tabs -->
+      <ArticleTabs activeType={type} />
+      {articles.length === 0 && <p class="empty-state">这个分类还没有文章。</p>}
+
+      <!-- Normal Article Grid -->
+      <div class="editorial-grid">
+        {
+          articles.map((article) => (
+            <article class="editorial-item">
+              <a class="article-card" href={`/articles/${article.id}`}>
+                <div class="article-cover">
+                  <img
+                    src={getArticleCover(article)}
+                    alt={article.data.cover?.alt || article.data.title}
+                    loading="lazy"
+                  />
+                </div>
+                <div class="article-body">
+                  <div class="article-meta">
+                    <span class="article-type">{category.label}</span>
+                    <span>·</span>
+                    <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                    {article.data.authors.length > 0 && (
+                      <>
+                        <span>·</span>
+                        <span>{article.data.authors.join(' / ')}</span>
+                      </>
+                    )}
+                  </div>
+                  <h3>{article.data.title}</h3>
+                  <p>{article.data.description}</p>
+                  <span class="article-more">
+                    阅读全文 <ArrowRight size={13} />
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .articles-section {
+    padding: 42px 0 96px;
+  }
+
+  /* Normal Editorial Grid */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .editorial-item {
+    display: flex;
+  }
+
+  /* Full-bleed Top Image Card */
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .article-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+    box-shadow: var(--shadow);
+  }
+  .article-cover {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-strong);
+  }
+  .article-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .article-card:hover .article-cover img {
+    transform: scale(1.04);
+  }
+  .article-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 22px 24px 24px;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .article-type {
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .article-card h3 {
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.4;
+    margin: 0 0 10px;
+    color: var(--text);
+    transition: color 0.15s ease;
+  }
+  .article-card:hover h3 {
+    color: var(--blue);
+  }
+  .article-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    transition: gap 0.15s ease;
+  }
+  .article-card:hover .article-more {
+    gap: 10px;
+  }
+
+  @media (max-width: 980px) {
+    .editorial-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .editorial-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

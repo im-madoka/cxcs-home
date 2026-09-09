@@ -1,8 +1,12 @@
 ---
-import SiteHeader from '../widgets/global/SiteHeader.astro';
-import SiteFooter from '../widgets/global/SiteFooter.astro';
-import { siteData } from '../data/site';
-import '../styles/global.css';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import BaseHead from './BaseHead.astro';
+import config from '../config';
+import '../assets/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+
+const { site: siteData } = config;
 const {
   title = siteData.title,
   description = siteData.description,
@@ -14,40 +18,18 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
 <!doctype html>
 <html lang="zh-CN" data-theme="system">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="theme-color" content="#FAFAFA" />
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
-    <link rel="icon" type="image/png" href="/assets/brand/association-emblem.png" />
-    <link rel="apple-touch-icon" href="/assets/brand/association-emblem.png" />
-    <title>{title}</title>
-    <script is:inline>
-      (() => {
-        try {
-          const choice = localStorage.getItem('cxcs-theme') || 'system';
-          document.documentElement.dataset.theme = choice;
-        } catch {
-          document.documentElement.dataset.theme = 'system';
-        }
-      })();
-    </script>
+    <BaseHead title={title} description={description} image={image} canonical={canonical} />
+    <ClientRouter />
   </head>
   <body>
+    <div class="navigation-progress" data-state="idle" aria-hidden="true" transition:persist="navigation-progress">
+    </div>
     <a class="skip-link" href="#main-content">跳转到主要内容</a>
     <SiteHeader />
     <main id="main-content"><slot /></main>
     <SiteFooter />
-    <script src="../scripts/temporal-status.ts"></script>
-    <script src="../scripts/page-motion.ts"></script>
+    <script src="../assets/scripts/temporal-status.ts"></script>
+    <script src="../assets/scripts/page-motion.ts"></script>
+    <script src="../assets/scripts/navigation-progress.ts"></script>
   </body>
 </html>
