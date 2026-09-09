@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, test } from 'bun:test';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const projectRoot = process.cwd();
 let baseLayout = '';
 let pageMotion = '';
+let navigationProgress = '';
 let globalStyles = '';
 let themeSwitcher = '';
 const pages: Array<[string, string]> = [
@@ -23,6 +24,8 @@ beforeAll(() => {
   });
   baseLayout = readFileSync(join(projectRoot, 'src/layouts/BaseLayout.astro'), 'utf8');
   pageMotion = readFileSync(join(projectRoot, 'src/assets/scripts/page-motion.ts'), 'utf8');
+  const navigationProgressPath = join(projectRoot, 'src/assets/scripts/navigation-progress.ts');
+  navigationProgress = existsSync(navigationProgressPath) ? readFileSync(navigationProgressPath, 'utf8') : '';
   globalStyles = readFileSync(join(projectRoot, 'src/assets/styles/global.css'), 'utf8');
   themeSwitcher = readFileSync(join(projectRoot, 'src/components/ThemeSwitcher.astro'), 'utf8');
 }, 30_000);
@@ -33,6 +36,18 @@ describe('inner page shell', () => {
     expect(baseLayout).toContain('<ClientRouter />');
     expect(baseLayout).not.toContain('transition:name="page-main"');
     expect(pageMotion).toContain("document.addEventListener('astro:page-load'");
+  });
+
+  test('shows persistent progress while Astro prepares a new page', () => {
+    expect(baseLayout).toContain('class="navigation-progress"');
+    expect(baseLayout).toContain('transition:persist="navigation-progress"');
+    expect(baseLayout).toContain('navigation-progress.ts');
+    expect(navigationProgress).toContain("document.addEventListener('astro:before-preparation'");
+    expect(navigationProgress).toContain("document.addEventListener('astro:after-preparation'");
+    expect(navigationProgress).toContain("document.addEventListener('astro:page-load'");
+    expect(navigationProgress).toContain("event.signal.addEventListener('abort'");
+    expect(globalStyles).toMatch(/\.navigation-progress\s*\{[\s\S]*position:\s*fixed/);
+    expect(globalStyles).toMatch(/\.navigation-progress\[data-state='active'\]\s*\{[\s\S]*opacity:\s*1/);
   });
 
   test('uses one shared hero height and the current page name on every target page', () => {

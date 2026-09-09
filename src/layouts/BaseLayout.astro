@@ -20,11 +20,14 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
     <ClientRouter />
   </head>
   <body>
+    <div class="navigation-progress" data-state="idle" aria-hidden="true" transition:persist="navigation-progress">
+    </div>
     <a class="skip-link" href="#main-content">跳转到主要内容</a>
     <SiteHeader />
     <main id="main-content"><slot /></main>
     <SiteFooter />
     <script src="../assets/scripts/temporal-status.ts"></script>
     <script src="../assets/scripts/page-motion.ts"></script>
+    <script src="../assets/scripts/navigation-progress.ts"></script>
   </body>
 </html>
