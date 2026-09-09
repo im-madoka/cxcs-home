@@ -2,7 +2,8 @@
 import { ArrowUpRight, Menu, Monitor, Moon, Sun, X } from 'lucide-astro';
 import ThemeSwitcher from '../components/ThemeSwitcher.astro';
 import config from '../config';
-const { nav: navItems, site: siteData } = config;
+const navItems = config.nav.filter((item) => !item.external);
+const externalNav = config.nav.filter((item) => item.external);
 ---
 
 <header class="site-header" data-header>
@@ -24,12 +25,13 @@ const { nav: navItems, site: siteData } = config;
     {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
   </nav>
   <div class="header-actions">
-    <a class="external-nav" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
-      >Guide <ArrowUpRight size={13} /></a
-    >
-    <a class="external-nav" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
-      >Page <ArrowUpRight size={13} /></a
-    >
+    {
+      externalNav.map((item) => (
+        <a class="external-nav" href={item.href} target="_blank" rel="noopener noreferrer">
+          {item.label} <ArrowUpRight size={13} />
+        </a>
+      ))
+    }
     <ThemeSwitcher />
     <a class="header-join" href="/join">Join Us <span aria-hidden="true">↗</span></a>
   </div>
@@ -69,14 +71,19 @@ const { nav: navItems, site: siteData } = config;
     {
       navItems.map((item) => (
         <a href={item.href}>
-          {item.label}
+          {item.mobileLabel ?? item.label}
           <span aria-hidden="true">→</span>
         </a>
       ))
     }
     <a href="/join">Join Us <span aria-hidden="true">→</span></a>
-    <a href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">CXCS Guide <ArrowUpRight size={15} /></a>
-    <a href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">CXCS Page <ArrowUpRight size={15} /></a>
+    {
+      externalNav.map((item) => (
+        <a href={item.href} target="_blank" rel="noopener noreferrer">
+          {item.mobileLabel ?? item.label} <ArrowUpRight size={15} />
+        </a>
+      ))
+    }
   </nav>
   <div class="mobile-theme-row">
     <span class="mobile-theme-label">主题模式</span>

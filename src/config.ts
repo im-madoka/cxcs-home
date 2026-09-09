@@ -1,4 +1,6 @@
-const site = {
+import type { NavItem, RecruitmentConfig, SiteConfig, SiteInfo } from './types/config';
+
+const site: SiteInfo = {
   shortName: 'CXCS',
   title: 'CXCS · 东南大学成贤学院计算机协会',
   description: '一起学习，一起折腾，一起做点有意思的东西。',
@@ -7,10 +9,19 @@ const site = {
   pageUrl: 'https://cxcs.page',
 };
 
-const nav = [
+const nav: NavItem[] = [
   { label: 'About', href: '/about' },
   { label: 'Articles', href: '/articles' },
+  { label: 'Guide', mobileLabel: 'CXCS Guide', href: site.guideUrl, external: true },
+  { label: 'Page', mobileLabel: 'CXCS Page', href: site.pageUrl, external: true },
 ];
+
+const recruitment: RecruitmentConfig = {
+  title: '下一次招新信息待确认',
+  opensAt: undefined,
+  closesAt: undefined,
+  qqGroup: '870131425',
+};
 
 export default {
   site,
@@ -34,26 +45,11 @@ export default {
         coverLabel: 'BLOG / CXCS EDITORIAL',
         accent: '#1479f5',
       },
-    } satisfies Record<
-      string,
-      {
-        label: string;
-        title: string;
-        description: string;
-        byline: string;
-        coverLabel: string;
-        accent: string;
-      }
-    >,
+    },
   },
-  recruitment: {
-    title: '下一次招新信息待确认',
-    opensAt: undefined as string | undefined,
-    closesAt: undefined as string | undefined,
-    qqGroup: '870131425',
-  },
+  recruitment,
   footer: [
-    { title: 'Explore', links: nav.concat([{ label: 'Join', href: '/join' }]) },
+    { title: 'Explore', links: nav.filter((item) => !item.external).concat([{ label: 'Join', href: '/join' }]) },
     {
       title: 'CXCS Online',
       links: [
@@ -69,4 +65,4 @@ export default {
       ],
     },
   ],
-};
+} satisfies SiteConfig;
