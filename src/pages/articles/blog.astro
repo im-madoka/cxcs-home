@@ -10,56 +10,61 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 ---
 
 <BaseLayout title={`Blog · Articles · ${siteData.shortName}`} description="CXCS 成员的故事、项目复盘和有趣想法。">
+  <!-- Page Hero -->
   <section class="articles-hero">
     <div class="wrap">
       <div class="section-line"><span>ARTICLES / BLOG</span></div>
       <h1>写点有意思的。</h1>
       <p class="articles-hero-copy">项目故事、成员随笔、技术旁路和一点不太严肃的观察。</p>
-
-      <nav class="filter-tabs" aria-label="文章分类">
-        <a class="filter-btn" href="/articles">全部</a>
-        <a class="filter-btn" href="/articles/news">新闻</a>
-        <a class="filter-btn is-active" href="/articles/blog" aria-current="page">博客</a>
-      </nav>
     </div>
   </section>
 
-  <section class="section stories-section">
-    <div class="wrap stories-feed">
-      {
-        articles.map((article, idx) => (
-          <article class="story">
-            <span class="story-number">{String(idx + 1).padStart(2, '0')}</span>
-            <div class="story-media">
-              <img
-                src={article.data.cover?.image || '/assets/articles/code.jpg'}
-                alt={article.data.title}
-                loading="lazy"
-              />
-            </div>
-            <div class="story-content">
-              <div class="meta">
-                <span class="type">博客</span>
-                <span>·</span>
-                <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                {article.data.authors.length > 0 && (
-                  <>
+  <!-- Feed Section -->
+  <section class="section articles-section">
+    <div class="wrap">
+      <!-- Underline Filter Tabs -->
+      <nav class="filter-tabs" aria-label="文章分类">
+        <a class="tab-link" href="/articles">全部</a>
+        <a class="tab-link" href="/articles/news">新闻</a>
+        <a class="tab-link is-active" href="/articles/blog" aria-current="page">博客</a>
+      </nav>
+
+      <!-- Normal Article Grid -->
+      <div class="editorial-grid">
+        {
+          articles.map((article) => (
+            <article class="editorial-item">
+              <a class="article-card" href={`/articles/${article.id}`}>
+                <div class="article-cover">
+                  <img
+                    src={article.data.cover?.image || '/assets/articles/code.jpg'}
+                    alt={article.data.cover?.alt || article.data.title}
+                    loading="lazy"
+                  />
+                </div>
+                <div class="article-body">
+                  <div class="article-meta">
+                    <span class="article-type">博客</span>
                     <span>·</span>
-                    <span>{article.data.authors.join(' / ')}</span>
-                  </>
-                )}
-              </div>
-              <h2>
-                <a href={`/articles/${article.id}`}>{article.data.title}</a>
-              </h2>
-              <p>{article.data.description}</p>
-              <a class="read-link" href={`/articles/${article.id}`}>
-                阅读全文 <ArrowRight size={13} />
+                    <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                    {article.data.authors.length > 0 && (
+                      <>
+                        <span>·</span>
+                        <span>{article.data.authors.join(' / ')}</span>
+                      </>
+                    )}
+                  </div>
+                  <h3>{article.data.title}</h3>
+                  <p>{article.data.description}</p>
+                  <span class="article-more">
+                    阅读全文 <ArrowRight size={13} />
+                  </span>
+                </div>
               </a>
-            </div>
-          </article>
-        ))
-      }
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -81,157 +86,158 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
     color: var(--muted);
     max-width: 580px;
     line-height: 1.8;
-    margin: 0 0 28px;
+    margin: 0;
   }
+
+  .articles-section {
+    padding: 42px 0 96px;
+  }
+
+  /* Filter Tabs with Active Underline Indicator */
   .filter-tabs {
     display: flex;
-    gap: 8px;
-  }
-  .filter-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    background: var(--surface);
-    color: var(--muted);
-    transition: all 0.15s ease;
-  }
-  .filter-btn:hover {
-    color: var(--text);
-    border-color: var(--blue);
-  }
-  .filter-btn.is-active {
-    background: var(--blue);
-    color: #ffffff;
-    border-color: var(--blue);
-  }
-
-  .stories-section {
-    padding: 56px 0 84px;
-  }
-  .stories-feed {
-    display: flex;
-    flex-direction: column;
-  }
-  .story {
-    display: grid;
-    grid-template-columns: 36px 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-    padding: 44px 0;
+    gap: 32px;
+    margin-bottom: 40px;
     border-bottom: 1px solid var(--line);
   }
-  .story:first-child {
-    padding-top: 0;
-  }
-  .story-number {
-    font-size: 12px;
-    color: var(--orange);
-    font-weight: 700;
-    padding-top: 6px;
-  }
-  .story-media {
-    overflow: hidden;
-    border-radius: 5px;
-    border: 1px solid var(--line);
-    background: var(--ice);
-  }
-  .story img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-  .story:hover img {
-    transform: scale(1.02);
-  }
-  .story-content {
-    display: flex;
-    flex-direction: column;
-  }
-  .meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 11px;
+  .tab-link {
+    position: relative;
+    padding: 0 2px 14px;
     color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .meta .type {
-    color: var(--blue);
-    font-weight: 600;
-  }
-  .story h2 {
-    font-size: 26px;
-    line-height: 1.4;
-    font-weight: 650;
-    margin: 0 0 14px;
-  }
-  .story h2 a {
+    font-size: 14px;
+    font-weight: 500;
     transition: color 0.15s ease;
   }
-  .story h2 a:hover {
-    color: var(--blue);
+  .tab-link:hover {
+    color: var(--text);
   }
-  .story p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.8;
-    margin: 0 0 22px;
+  .tab-link.is-active,
+  .tab-link[aria-current='page'] {
+    color: var(--text);
+    font-weight: 600;
   }
-  .read-link {
-    display: inline-flex;
+  .tab-link.is-active::after,
+  .tab-link[aria-current='page']::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--blue);
+    border-radius: 1px;
+    content: '';
+  }
+
+  /* Normal Editorial Grid */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .editorial-item {
+    display: flex;
+  }
+
+  /* Full-bleed Top Image Card */
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .article-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+    box-shadow: var(--shadow);
+  }
+  .article-cover {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-strong);
+  }
+  .article-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .article-card:hover .article-cover img {
+    transform: scale(1.04);
+  }
+  .article-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 22px 24px 24px;
+  }
+  .article-meta {
+    display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .article-type {
     color: var(--blue);
+    font-weight: 700;
+  }
+  .article-card h3 {
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.4;
+    margin: 0 0 10px;
+    color: var(--text);
+    transition: color 0.15s ease;
+  }
+  .article-card:hover h3 {
+    color: var(--blue);
+  }
+  .article-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    font-size: 12px;
     font-weight: 600;
-    padding-bottom: 4px;
-    border-bottom: 1px solid var(--blue);
-    align-self: flex-start;
+    color: var(--blue);
     transition: gap 0.15s ease;
   }
-  .read-link:hover {
-    gap: 12px;
+  .article-card:hover .article-more {
+    gap: 10px;
   }
 
-  @media (max-width: 860px) {
-    .story {
-      grid-template-columns: 28px 1fr;
+  @media (max-width: 980px) {
+    .editorial-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .filter-tabs {
       gap: 20px;
+      margin-bottom: 28px;
     }
-    .story-media {
-      grid-column: 2;
-    }
-    .story-content {
-      grid-column: 2;
-    }
-    .story img {
-      height: 220px;
-    }
-    .story h2 {
-      font-size: 22px;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .story {
-      padding: 32px 0;
-    }
-    .story-number {
-      display: none;
-    }
-    .story {
+    .editorial-grid {
       grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    .story-media,
-    .story-content {
-      grid-column: 1;
     }
   }
 </style>
