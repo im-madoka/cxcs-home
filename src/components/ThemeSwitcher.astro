@@ -169,10 +169,11 @@ import { Monitor, Moon, Sun } from 'lucide-astro';
         const vt = document.startViewTransition(apply) as unknown as ViewTransitionLike;
         activeTransition = vt;
         vt.finished.finally(() => {
+          // An interrupted transition must not clear its replacement's animation state.
           if (activeTransition === vt) {
             activeTransition = null;
+            delete document.documentElement.dataset.themeTransition;
           }
-          delete document.documentElement.dataset.themeTransition;
         });
       } catch {
         clearThemeTransition();
