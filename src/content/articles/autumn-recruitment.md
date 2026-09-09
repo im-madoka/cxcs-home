@@ -1,5 +1,5 @@
 ---
-title: 2026 年计算机协会秋季招新正式开始
+title: "2026 年计算机协\u2060会秋季招新正\u2060式\u2060开\u2060始"
 description: 这一次，从 Hello World 开始认识计协。
 type: news
 publishedAt: 2026-09-05

@@ -1,0 +1,2109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#f5f8ff" />
+    <title>CXCS · 东南大学成贤学院计算机协会</title>
+    <style>
+      @font-face {
+        font-family: Geist;
+        src: url('assets/geist.woff2') format('woff2');
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      :root {
+        --bg: #fafafa;
+        --surface: #fff;
+        --ice: #eef4ff;
+        --ink: #181a1e;
+        --muted: #657083;
+        --line: #dbe2ed;
+        --blue: #2464ed;
+        --orange: #bd4c21;
+        --header: rgba(250, 250, 250, 0.93);
+      }
+      :root[data-theme='dark'] {
+        --bg: #232323;
+        --surface: #2b2b2b;
+        --ice: #282f3d;
+        --ink: #f4f5f8;
+        --muted: #bbc2cf;
+        --line: #444952;
+        --blue: #8aafff;
+        --orange: #ff996c;
+        --header: rgba(35, 35, 35, 0.93);
+      }
+      * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          15px/1.75 Geist,
+          -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button,
+      select {
+        font: inherit;
+      }
+      button,
+      a,
+      select,
+      summary {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        cursor: pointer;
+      }
+      a:hover {
+        color: var(--blue);
+      }
+      a:focus-visible,
+      button:focus-visible,
+      select:focus-visible,
+      summary:focus-visible {
+        outline: 2px solid var(--orange);
+        outline-offset: 5px;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      button {
+        color: inherit;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+      .wrap {
+        width: min(1296px, calc(100% - 112px));
+        margin: auto;
+      }
+      .skip {
+        position: fixed;
+        left: 16px;
+        top: -70px;
+        background: var(--surface);
+        padding: 12px 20px;
+        z-index: 100;
+      }
+      .skip:focus {
+        top: 10px;
+      }
+      .header {
+        height: 72px;
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: var(--header);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(16px);
+      }
+      .header-inner {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 34px;
+      }
+      .brand {
+        font-size: 27px;
+        font-weight: 790;
+        line-height: 1;
+      }
+      .brand b {
+        color: var(--blue);
+      }
+      .brand-name {
+        font-size: 10px;
+        font-weight: 450;
+        display: block;
+        line-height: 1.4;
+        margin-top: 5px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 23px;
+        margin-left: auto;
+        font-size: 12px;
+      }
+      .nav a {
+        white-space: nowrap;
+      }
+      .header-tools {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+      }
+      .theme {
+        font-size: 11px;
+        max-width: 91px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 6px 1px;
+        background: transparent;
+        color: var(--muted);
+      }
+      .theme option {
+        background: var(--surface);
+        color: var(--ink);
+      }
+      .join-nav {
+        font-size: 12px;
+        color: var(--blue);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .menu-button {
+        background: transparent;
+        border: 0;
+        padding: 8px;
+        font-size: 24px;
+        line-height: 1;
+      }
+      .menu-button[hidden] {
+        display: none;
+      }
+      .menu-dialog {
+        background: var(--bg);
+        color: var(--ink);
+        border: 0;
+        max-width: none;
+        max-height: none;
+        width: 100%;
+        height: 100svh;
+        margin: 0;
+        padding: 25px;
+      }
+      .menu-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .close {
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        font:
+          26px/1 Geist,
+          sans-serif;
+        width: 42px;
+        height: 42px;
+      }
+      .menu-dialog nav {
+        display: grid;
+        gap: 21px;
+        margin-top: 55px;
+        font-size: 27px;
+      }
+      .menu-dialog::backdrop {
+        background: #18203380;
+      }
+      .fallback-nav {
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+      .hero {
+        height: calc(100svh - 112px);
+        min-height: 630px;
+        max-height: 870px;
+        background: var(--ice);
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        border-bottom: 1px solid var(--line);
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 120px 120px;
+        opacity: 0.35;
+        z-index: -1;
+      }
+      .hero-kicker {
+        position: absolute;
+        top: 28px;
+        left: 56px;
+        color: var(--muted);
+        font-size: 10px;
+        display: flex;
+        gap: 24px;
+      }
+      .hero-kicker span:first-child {
+        color: var(--blue);
+      }
+      .hello,
+      .world {
+        position: absolute;
+        font-weight: 800;
+        line-height: 0.83;
+        margin: 0;
+        user-select: none;
+      }
+      .hello {
+        font-size: 209px;
+        left: 3.5%;
+        top: 112px;
+        color: var(--blue);
+        z-index: 1;
+      }
+      .world {
+        font-size: 197px;
+        right: 3.6%;
+        top: 320px;
+        color: var(--ink);
+        z-index: 3;
+      }
+      .hero-character {
+        position: absolute;
+        height: calc(100% - 37px);
+        width: auto;
+        max-width: none;
+        left: calc(50% - 328px);
+        top: 7px;
+        z-index: 2;
+        transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+        filter: drop-shadow(0 18px 20px #6c8aac13);
+      }
+      .hero-copy {
+        position: absolute;
+        left: 56px;
+        bottom: 104px;
+        z-index: 5;
+        max-width: 390px;
+      }
+      .hero-copy h1 {
+        font-size: 22px;
+        line-height: 1.55;
+        font-weight: 620;
+        margin: 0 0 11px;
+      }
+      .hero-copy h1 span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 5px;
+        font-weight: 450;
+      }
+      .hero-copy p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.85;
+        margin: 0;
+      }
+      .hero-actions {
+        position: absolute;
+        left: 56px;
+        bottom: 32px;
+        display: flex;
+        gap: 12px;
+        z-index: 6;
+      }
+      .button {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 28px;
+        min-height: 43px;
+        padding: 12px 19px;
+        background: var(--blue);
+        color: var(--bg);
+        font-size: 12px;
+        line-height: 1.4;
+        border: 1px solid var(--blue);
+        border-radius: 3px;
+        transition: transform 0.2s;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+        color: var(--bg);
+      }
+      .button.secondary {
+        background: var(--surface);
+        color: var(--ink);
+        border-color: var(--line);
+      }
+      .hero-aside {
+        position: absolute;
+        right: 56px;
+        bottom: 40px;
+        width: 220px;
+        font-size: 12px;
+        z-index: 5;
+      }
+      .hero-aside small {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+        margin-top: 10px;
+      }
+      .hero-index {
+        position: absolute;
+        right: 56px;
+        top: 29px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .section {
+        padding: 91px 0;
+      }
+      .section-line {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        font-size: 10px;
+        color: var(--muted);
+        margin-bottom: 19px;
+      }
+      .section-line:before {
+        content: '';
+        width: 19px;
+        height: 2px;
+        background: var(--blue);
+      }
+      .section-line span {
+        color: var(--blue);
+      }
+      .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 35px;
+        margin-bottom: 36px;
+      }
+      .section-heading h2 {
+        font-size: 39px;
+        line-height: 1.4;
+        font-weight: 590;
+        margin: 0;
+      }
+      .section-heading p {
+        font-size: 13px;
+        color: var(--muted);
+        max-width: 340px;
+        margin: 0;
+      }
+      .small-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 12px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+      .bento {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 15px;
+      }
+      .daily {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 30px;
+        min-height: 235px;
+        position: relative;
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .daily:nth-child(1),
+      .daily:nth-child(4) {
+        grid-column: span 7;
+      }
+      .daily:nth-child(2),
+      .daily:nth-child(3) {
+        grid-column: span 5;
+      }
+      .daily:nth-child(1) {
+        background: #2464ed;
+        color: white;
+        border-color: #2464ed;
+      }
+      .daily:nth-child(4) {
+        background: var(--ice);
+      }
+      .daily-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 38px;
+      }
+      .daily:nth-child(1) .daily-top {
+        color: #d9e6ff;
+      }
+      .daily h3 {
+        font-size: 23px;
+        font-weight: 550;
+        margin: 0 0 9px;
+        position: relative;
+        z-index: 1;
+      }
+      .daily p {
+        font-size: 12px;
+        max-width: 310px;
+        color: var(--muted);
+        margin: 0;
+        position: relative;
+        z-index: 1;
+      }
+      .daily:nth-child(1) p {
+        color: #e5edff;
+      }
+      .daily-symbol {
+        position: absolute;
+        right: 29px;
+        bottom: 8px;
+        font-size: 86px;
+        line-height: 1;
+        color: var(--blue);
+        opacity: 0.15;
+        font-weight: 600;
+      }
+      .daily:nth-child(1) .daily-symbol {
+        color: white;
+        opacity: 0.22;
+        font-size: 73px;
+      }
+      .daily-symbol.orange {
+        color: var(--orange);
+        opacity: 0.28;
+      }
+      .start {
+        background: var(--ice);
+        padding: 74px 0 84px;
+      }
+      .start-intro {
+        text-align: center;
+        margin-bottom: 54px;
+      }
+      .start-intro p {
+        font-size: 15px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .start-intro h2 {
+        font-size: 45px;
+        font-weight: 570;
+        line-height: 1.3;
+        margin: 0;
+      }
+      .start-intro h2 span {
+        color: var(--blue);
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+      }
+      .step {
+        border-top: 1px solid var(--line);
+        padding: 24px 31px 0 0;
+        position: relative;
+      }
+      .step:not(:first-child) {
+        padding-left: 31px;
+        border-left: 1px solid var(--line);
+      }
+      .step-number {
+        font-size: 11px;
+        color: var(--orange);
+        margin-bottom: 28px;
+        display: block;
+      }
+      .step h3 {
+        font-size: 22px;
+        font-weight: 580;
+        margin-bottom: 13px;
+      }
+      .step p {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 26px;
+      }
+      .step .small-link {
+        color: var(--blue);
+      }
+      .latest-grid {
+        display: grid;
+        grid-template-columns: 1.42fr 1fr;
+        gap: 30px;
+      }
+      .news-cover {
+        width: 100%;
+        height: 315px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .meta {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        font-size: 10px;
+        color: var(--muted);
+        margin: 17px 0 12px;
+      }
+      .meta .type {
+        color: var(--blue);
+      }
+      .lead-story h3 {
+        font-size: 28px;
+        font-weight: 550;
+        line-height: 1.45;
+        margin: 0 0 10px;
+      }
+      .lead-story p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .side-story {
+        display: grid;
+        grid-template-columns: 1fr 144px;
+        gap: 21px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 25px;
+      }
+      .side-story + .side-story {
+        padding-top: 26px;
+      }
+      .side-story .meta {
+        margin: 0 0 12px;
+      }
+      .side-story h3 {
+        font-size: 21px;
+        font-weight: 560;
+        line-height: 1.55;
+        margin: 0 0 11px;
+      }
+      .side-story p {
+        font-size: 11px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .side-story img {
+        height: 147px;
+        width: 144px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .story-art {
+        width: 144px;
+        height: 147px;
+        background: var(--ice);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 49px;
+        font-weight: 650;
+        color: var(--blue);
+      }
+      .latest-note {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 25px;
+        display: flex;
+        gap: 10px;
+      }
+      .latest-note span {
+        color: var(--orange);
+      }
+      .projects {
+        padding: 79px 0 87px;
+        background: var(--ice);
+        overflow: hidden;
+      }
+      .project-heading h2 {
+        font-size: 43px;
+      }
+      .project-display {
+        background: #e0eaff;
+        border: 1px solid #cbd9f4;
+        border-radius: 6px;
+        overflow: hidden;
+        padding: 29px 46px 0;
+        max-width: 1100px;
+        margin: auto;
+      }
+      .project-display img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 7px 25px #1c43891a;
+      }
+      .project-description {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 75px;
+        margin-top: 29px;
+        align-items: start;
+      }
+      .project-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 11px;
+      }
+      .project-title h3 {
+        font-size: 30px;
+        line-height: 1.2;
+        font-weight: 650;
+        margin: 0;
+      }
+      .project-title span {
+        font-size: 10px;
+        color: var(--orange);
+      }
+      .project-description p {
+        font-size: 13px;
+        color: var(--muted);
+        max-width: 475px;
+        margin-bottom: 21px;
+      }
+      .deploy-flow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 17px;
+        padding: 9px 0;
+        font-size: 11px;
+      }
+      .deploy-flow span {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 11px;
+      }
+      .deploy-flow b {
+        color: var(--blue);
+        margin-right: 10px;
+        font-weight: 500;
+      }
+      .ecosystem {
+        padding-top: 79px;
+      }
+      .ecosystem > .wrap {
+        padding-bottom: 36px;
+      }
+      .ecosystem .section-heading {
+        margin: 0;
+      }
+      .eco-panel {
+        min-height: 570px;
+        position: sticky;
+        top: 72px;
+        display: flex;
+        align-items: center;
+        padding: 58px 0;
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+      }
+      .eco-panel .wrap {
+        display: grid;
+        grid-template-columns: 1fr 1.12fr;
+        align-items: center;
+        gap: 62px;
+      }
+      .eco-website {
+        background: var(--surface);
+        z-index: 1;
+      }
+      .eco-guide {
+        background: #2464ed;
+        color: white;
+        z-index: 2;
+        border-color: #2464ed;
+      }
+      .eco-page {
+        background: #171b23;
+        color: white;
+        z-index: 3;
+        border-color: #171b23;
+      }
+      .eco-number {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 39px;
+      }
+      .eco-guide .eco-number,
+      .eco-page .eco-number {
+        color: #c1d3ff;
+      }
+      .eco-name {
+        font-size: 81px;
+        line-height: 1.05;
+        font-weight: 660;
+        margin: 0 0 20px;
+      }
+      .eco-panel h3 {
+        font-size: 25px;
+        line-height: 1.5;
+        font-weight: 520;
+        margin: 0 0 16px;
+      }
+      .eco-panel p {
+        font-size: 13px;
+        max-width: 370px;
+        color: var(--muted);
+        margin: 0 0 25px;
+      }
+      .eco-guide p,
+      .eco-page p {
+        color: #d3ddef;
+      }
+      .eco-panel .small-link {
+        border-color: currentColor;
+      }
+      .eco-guide a:hover,
+      .eco-page a:hover {
+        color: #fff;
+      }
+      .eco-visual {
+        min-width: 0;
+        position: relative;
+      }
+      .eco-visual img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+      }
+      .eco-website .eco-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 340px;
+        border: 1px solid var(--line);
+      }
+      .eco-website .eco-visual:after {
+        content: 'CXCS.DEV';
+        position: absolute;
+        bottom: 18px;
+        left: 22px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .eco-website .eco-visual img {
+        width: 226px;
+        height: 226px;
+        object-fit: contain;
+      }
+      .eco-guide .eco-visual img,
+      .eco-page .eco-visual img {
+        box-shadow: 0 20px 45px #091a4b30;
+      }
+      .theater {
+        padding: 86px 0 80px;
+        position: relative;
+        background: var(--bg);
+        z-index: 4;
+      }
+      .theater .section-heading {
+        align-items: center;
+      }
+      .theater-name {
+        font-size: 72px;
+        line-height: 0.95;
+        font-weight: 700;
+        margin: 0 0 12px;
+        color: var(--blue);
+      }
+      .theater-title {
+        font-size: 24px;
+        font-weight: 560;
+        margin: 0;
+      }
+      .theater-note {
+        font-size: 13px;
+        color: var(--muted);
+        max-width: 370px;
+      }
+      .character-sheet {
+        margin: 0;
+        background: #fff;
+        border: 1px solid var(--line);
+        padding: 25px 25px 13px;
+        position: relative;
+      }
+      .character-sheet img {
+        width: 100%;
+        height: auto;
+        max-height: 470px;
+        object-fit: contain;
+      }
+      .character-sheet figcaption {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        border-top: 1px solid #e2e5eb;
+        padding-top: 13px;
+        margin-top: 14px;
+        font-size: 10px;
+        color: #627086;
+      }
+      .character-caption {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 45px;
+        margin-top: 27px;
+      }
+      .character-caption h3 {
+        font-size: 21px;
+        line-height: 1.4;
+        font-weight: 550;
+        margin: 0;
+      }
+      .character-caption p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .join-section {
+        padding: 92px 0 86px;
+        background: var(--ice);
+        position: relative;
+        z-index: 5;
+      }
+      .join-inner {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 70px;
+        align-items: center;
+      }
+      .join-section h2 {
+        font-size: 45px;
+        line-height: 1.45;
+        font-weight: 580;
+        margin: 0;
+      }
+      .join-section p {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0 0 23px;
+      }
+      .join-status {
+        font-size: 11px;
+        color: var(--orange);
+        margin-top: 20px;
+        display: block;
+      }
+      .footer {
+        position: relative;
+        z-index: 6;
+        background: var(--bg);
+        padding: 41px 0 22px;
+        border-top: 1px solid var(--line);
+      }
+      .footer-main {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        gap: 35px;
+        padding-bottom: 32px;
+      }
+      .footer-brand {
+        font-size: 37px;
+        font-weight: 750;
+        line-height: 1;
+      }
+      .footer-main p {
+        font-size: 10px;
+        color: var(--muted);
+        margin: 13px 0 0;
+      }
+      .footer-group {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        font-size: 11px;
+      }
+      .footer-group strong {
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--muted);
+        margin-bottom: 3px;
+      }
+      .footer-group .contact-number {
+        font-size: 17px;
+        user-select: all;
+      }
+      .footer-bottom {
+        padding-top: 19px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .revealed {
+        animation: reveal 0.7s ease both;
+      }
+      @keyframes reveal {
+        from {
+          opacity: 0.35;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (min-width: 1650px) {
+        .hello {
+          font-size: 245px;
+          left: 7%;
+        }
+        .world {
+          font-size: 233px;
+          right: 7%;
+        }
+        .hero-kicker,
+        .hero-copy,
+        .hero-actions {
+          left: 7%;
+        }
+        .hero-index,
+        .hero-aside {
+          right: 7%;
+        }
+      }
+      @media (max-width: 1150px) {
+        .wrap {
+          width: calc(100% - 72px);
+        }
+        .header-inner {
+          gap: 21px;
+        }
+        .nav {
+          gap: 15px;
+          font-size: 11px;
+        }
+        .brand-name {
+          display: none;
+        }
+        .hello {
+          font-size: 163px;
+          top: 105px;
+        }
+        .world {
+          font-size: 161px;
+          top: 302px;
+        }
+        .hero-copy {
+          left: 36px;
+          max-width: 320px;
+        }
+        .hero-actions,
+        .hero-kicker {
+          left: 36px;
+        }
+        .hero-aside,
+        .hero-index {
+          right: 36px;
+        }
+        .hero-character {
+          left: calc(50% - 300px);
+          height: calc(100% - 20px);
+        }
+        .hero-aside {
+          width: 180px;
+        }
+        .section-heading h2 {
+          font-size: 33px;
+        }
+        .daily {
+          padding: 25px;
+        }
+        .daily p {
+          max-width: 270px;
+        }
+        .daily-symbol {
+          right: 14px;
+          font-size: 64px;
+        }
+        .side-story {
+          grid-template-columns: 1fr 113px;
+        }
+        .side-story img,
+        .story-art {
+          width: 113px;
+          height: 136px;
+        }
+        .eco-panel .wrap {
+          gap: 38px;
+        }
+        .eco-name {
+          font-size: 68px;
+        }
+        .eco-panel {
+          min-height: 525px;
+        }
+        .project-display {
+          padding: 22px 30px 0;
+        }
+        .section {
+          padding: 70px 0;
+        }
+      }
+      @media (max-width: 800px) {
+        .wrap {
+          width: calc(100% - 44px);
+        }
+        .header {
+          height: 64px;
+        }
+        .nav {
+          display: none;
+        }
+        .header-tools {
+          margin-left: auto;
+          gap: 17px;
+        }
+        .menu-button:not([hidden]) {
+          display: block;
+        }
+        .header .join-nav {
+          display: none;
+        }
+        .brand-name {
+          display: block;
+          font-size: 8px;
+        }
+        .brand {
+          font-size: 24px;
+        }
+        .hero {
+          height: calc(100svh - 104px);
+          min-height: 650px;
+        }
+        .hero-kicker {
+          left: 22px;
+          top: 23px;
+        }
+        .hero-index {
+          right: 22px;
+          top: 23px;
+        }
+        .hello {
+          font-size: 139px;
+          left: 20px;
+          top: 108px;
+        }
+        .world {
+          font-size: 133px;
+          right: 20px;
+          top: 333px;
+        }
+        .hero-character {
+          height: 615px;
+          left: calc(50% - 270px);
+          top: 24px;
+        }
+        .hero-copy {
+          left: 22px;
+          bottom: 99px;
+          max-width: 290px;
+        }
+        .hero-copy h1 {
+          font-size: 20px;
+        }
+        .hero-copy p {
+          font-size: 11px;
+        }
+        .hero-actions {
+          left: 22px;
+          bottom: 28px;
+        }
+        .hero-aside {
+          right: 22px;
+          width: 156px;
+          bottom: 40px;
+          font-size: 11px;
+        }
+        .section-heading {
+          gap: 25px;
+        }
+        .section-heading h2 {
+          font-size: 29px;
+        }
+        .section-heading p {
+          font-size: 12px;
+          max-width: 270px;
+        }
+        .bento {
+          gap: 12px;
+        }
+        .daily:nth-child(n) {
+          grid-column: span 6;
+          min-height: 240px;
+        }
+        .daily h3 {
+          font-size: 20px;
+        }
+        .daily p {
+          font-size: 11px;
+        }
+        .daily-symbol {
+          font-size: 55px;
+          bottom: 8px;
+        }
+        .daily-top {
+          margin-bottom: 39px;
+        }
+        .daily:nth-child(1) .daily-symbol {
+          font-size: 57px;
+        }
+        .start-intro h2 {
+          font-size: 37px;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+        .step,
+        .step:not(:first-child) {
+          border: 0;
+          border-top: 1px solid var(--line);
+          padding: 21px 0 0;
+          display: grid;
+          grid-template-columns: 55px 1fr;
+          gap: 0 15px;
+        }
+        .step-number {
+          grid-row: 1/4;
+          margin: 5px 0;
+        }
+        .step h3 {
+          font-size: 23px;
+          margin-bottom: 8px;
+        }
+        .step p {
+          margin-bottom: 14px;
+        }
+        .step .small-link {
+          grid-column: 2;
+          justify-self: start;
+        }
+        .latest-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .news-cover {
+          height: 330px;
+        }
+        .side-story {
+          grid-template-columns: 1fr 160px;
+        }
+        .side-story img,
+        .story-art {
+          width: 160px;
+          height: 135px;
+        }
+        .latest-note {
+          margin-bottom: 0;
+        }
+        .project-description {
+          gap: 25px;
+        }
+        .deploy-flow {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .eco-panel {
+          top: 64px;
+          min-height: 570px;
+        }
+        .eco-panel .wrap {
+          grid-template-columns: 1fr 1fr;
+          gap: 28px;
+        }
+        .eco-name {
+          font-size: 52px;
+        }
+        .eco-panel h3 {
+          font-size: 21px;
+        }
+        .eco-panel p {
+          font-size: 12px;
+        }
+        .eco-website .eco-visual {
+          min-height: 290px;
+        }
+        .eco-website .eco-visual img {
+          width: 185px;
+          height: 185px;
+        }
+        .theater-name {
+          font-size: 53px;
+        }
+        .theater-note {
+          font-size: 12px;
+          max-width: 280px;
+        }
+        .character-sheet {
+          padding: 15px;
+        }
+        .character-caption {
+          gap: 25px;
+        }
+        .join-inner {
+          gap: 32px;
+        }
+        .join-section h2 {
+          font-size: 33px;
+        }
+        .footer-main {
+          grid-template-columns: 1.4fr 1fr 1fr;
+          gap: 25px;
+        }
+        .footer-group:last-child {
+          grid-column: 1/-1;
+          flex-direction: row;
+          align-items: center;
+          gap: 15px;
+        }
+        .footer-group:last-child strong {
+          margin: 0;
+        }
+        .footer-group .contact-number {
+          font-size: 14px;
+        }
+      }
+      @media (min-width: 801px) {
+        .menu-button:not([hidden]) {
+          display: none;
+        }
+      }
+      @media (max-width: 520px) {
+        .wrap {
+          width: calc(100% - 36px);
+        }
+        .header-inner {
+          gap: 18px;
+        }
+        .theme {
+          font-size: 10px;
+          max-width: 78px;
+        }
+        .header-tools {
+          gap: 11px;
+        }
+        .brand-name {
+          font-size: 7px;
+        }
+        .hero {
+          height: calc(100svh - 100px);
+          min-height: 622px;
+          max-height: 780px;
+        }
+        .hero-grid {
+          background-size: 78px 78px;
+        }
+        .hero-kicker {
+          left: 18px;
+          font-size: 8px;
+          gap: 14px;
+          top: 21px;
+        }
+        .hero-index {
+          font-size: 8px;
+          right: 18px;
+          top: 21px;
+        }
+        .hello {
+          font-size: 105px;
+          left: 15px;
+          top: 72px;
+        }
+        .world {
+          font-size: 98px;
+          right: 14px;
+          top: 344px;
+        }
+        .hero-character {
+          height: 486px;
+          left: calc(50% - 251px);
+          top: 63px;
+        }
+        .hero-copy {
+          left: 18px;
+          right: 18px;
+          bottom: 93px;
+          max-width: none;
+        }
+        .hero-copy h1 {
+          font-size: 20px;
+          line-height: 1.5;
+          margin-bottom: 9px;
+        }
+        .hero-copy h1 span {
+          font-size: 10px;
+          margin-bottom: 4px;
+        }
+        .hero-copy p {
+          font-size: 11px;
+          max-width: 280px;
+        }
+        .hero-aside {
+          display: none;
+        }
+        .hero-actions {
+          left: 18px;
+          right: 18px;
+          bottom: 29px;
+          gap: 10px;
+        }
+        .button {
+          padding: 12px 14px;
+          gap: 16px;
+          font-size: 11px;
+        }
+        .hero-actions .button:first-child {
+          flex: 1;
+        }
+        .hero-actions .button.secondary {
+          flex: 0.7;
+        }
+        .section {
+          padding: 49px 0;
+        }
+        .section-line {
+          font-size: 9px;
+          margin-bottom: 14px;
+        }
+        .section-heading {
+          display: block;
+          margin-bottom: 25px;
+        }
+        .section-heading h2 {
+          font-size: 28px;
+          line-height: 1.5;
+        }
+        .section-heading p {
+          margin-top: 16px;
+          max-width: 310px;
+          font-size: 12px;
+        }
+        .section-heading > .small-link {
+          margin-top: 18px;
+        }
+        .bento {
+          grid-template-columns: 1fr;
+          gap: 11px;
+        }
+        .daily:nth-child(n) {
+          grid-column: auto;
+          min-height: 192px;
+          padding: 24px;
+        }
+        .daily-top {
+          margin-bottom: 24px;
+          font-size: 10px;
+        }
+        .daily h3 {
+          font-size: 21px;
+        }
+        .daily p {
+          max-width: 245px;
+          font-size: 12px;
+        }
+        .daily-symbol {
+          right: 18px;
+          bottom: 12px;
+          font-size: 61px;
+        }
+        .daily:nth-child(1) .daily-symbol {
+          font-size: 54px;
+        }
+        .start {
+          padding: 47px 0 50px;
+        }
+        .start-intro {
+          margin-bottom: 34px;
+          text-align: left;
+        }
+        .start-intro p {
+          font-size: 12px;
+        }
+        .start-intro h2 {
+          font-size: 33px;
+        }
+        .step,
+        .step:not(:first-child) {
+          grid-template-columns: 32px 1fr;
+          gap: 0 13px;
+        }
+        .step h3 {
+          font-size: 22px;
+        }
+        .step p {
+          font-size: 12px;
+        }
+        .news-cover {
+          height: 219px;
+        }
+        .lead-story h3 {
+          font-size: 23px;
+        }
+        .meta {
+          font-size: 9px;
+          gap: 12px;
+        }
+        .side-story {
+          grid-template-columns: 1fr 95px;
+          gap: 15px;
+          padding-bottom: 23px;
+        }
+        .side-story + .side-story {
+          padding-top: 23px;
+        }
+        .side-story h3 {
+          font-size: 18px;
+          line-height: 1.6;
+        }
+        .side-story img,
+        .story-art {
+          width: 95px;
+          height: 114px;
+        }
+        .story-art {
+          font-size: 34px;
+        }
+        .side-story p {
+          font-size: 10px;
+        }
+        .latest-note {
+          font-size: 10px;
+        }
+        .projects {
+          padding: 46px 0 48px;
+        }
+        .project-display {
+          padding: 14px 12px 0;
+          border-radius: 4px;
+          margin-left: -5px;
+          margin-right: -5px;
+        }
+        .project-description {
+          grid-template-columns: 1fr;
+          gap: 22px;
+          margin-top: 23px;
+        }
+        .project-title h3 {
+          font-size: 27px;
+        }
+        .project-description p {
+          font-size: 12px;
+        }
+        .deploy-flow {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          font-size: 10px;
+        }
+        .ecosystem {
+          padding-top: 47px;
+        }
+        .ecosystem > .wrap {
+          padding-bottom: 27px;
+        }
+        .eco-panel {
+          position: relative;
+          top: auto;
+          min-height: 0;
+          padding: 38px 0;
+        }
+        .eco-panel .wrap {
+          grid-template-columns: 1fr;
+          gap: 27px;
+        }
+        .eco-number {
+          margin-bottom: 20px;
+          font-size: 10px;
+        }
+        .eco-name {
+          font-size: 67px;
+          margin-bottom: 16px;
+        }
+        .eco-panel h3 {
+          font-size: 22px;
+          margin-bottom: 12px;
+        }
+        .eco-panel p {
+          font-size: 12px;
+          max-width: 305px;
+          margin-bottom: 20px;
+        }
+        .eco-website .eco-visual {
+          min-height: 242px;
+        }
+        .eco-website .eco-visual img {
+          width: 175px;
+          height: 175px;
+        }
+        .eco-visual img {
+          border-radius: 3px;
+        }
+        .theater {
+          padding: 49px 0 45px;
+        }
+        .theater-name {
+          font-size: 49px;
+        }
+        .theater-title {
+          font-size: 22px;
+        }
+        .theater-note {
+          font-size: 12px;
+          max-width: 310px;
+          margin-top: 19px;
+        }
+        .character-sheet {
+          padding: 9px 9px 12px;
+          margin-left: -4px;
+          margin-right: -4px;
+        }
+        .character-sheet figcaption {
+          font-size: 8px;
+          gap: 12px;
+          padding-top: 10px;
+          margin-top: 8px;
+        }
+        .character-caption {
+          grid-template-columns: 1fr;
+          gap: 11px;
+          margin-top: 20px;
+        }
+        .character-caption h3 {
+          font-size: 19px;
+        }
+        .character-caption p {
+          font-size: 11px;
+        }
+        .join-section {
+          padding: 49px 0 48px;
+        }
+        .join-inner {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .join-section h2 {
+          font-size: 33px;
+        }
+        .join-section p {
+          font-size: 12px;
+          margin-bottom: 20px;
+        }
+        .join-status {
+          font-size: 10px;
+          margin-top: 16px;
+        }
+        .footer {
+          padding: 32px 0 20px;
+        }
+        .footer-main {
+          grid-template-columns: 1fr 1fr;
+          gap: 25px 20px;
+          padding-bottom: 25px;
+        }
+        .footer-identity {
+          grid-column: 1/-1;
+        }
+        .footer-brand {
+          font-size: 32px;
+        }
+        .footer-main p {
+          margin-top: 9px;
+        }
+        .footer-group {
+          font-size: 10px;
+        }
+        .footer-bottom {
+          font-size: 9px;
+          gap: 15px;
+          flex-wrap: wrap;
+        }
+      }
+      @media (max-width: 370px) {
+        .hello {
+          font-size: 97px;
+        }
+        .world {
+          font-size: 90px;
+        }
+        .hero-copy h1 {
+          font-size: 19px;
+        }
+        .hero {
+          min-height: 615px;
+        }
+        .hero-character {
+          height: 468px;
+          top: 67px;
+          left: calc(50% - 242px);
+        }
+        .hero-copy {
+          bottom: 93px;
+        }
+        .hero-kicker {
+          gap: 8px;
+        }
+        .hero-index {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .hero-character {
+          transform: none;
+        }
+        .eco-panel {
+          position: relative;
+          top: auto;
+        }
+        .revealed {
+          animation: none;
+        }
+        .button {
+          transition: none;
+        }
+        .button:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">跳至正文</a>
+    <header class="header">
+      <div class="wrap header-inner">
+        <a class="brand" href="index.html" aria-label="CXCS 首页"
+          >CXCS<b>·</b><span class="brand-name">东南大学成贤学院计算机协会</span></a
+        >
+        <nav class="nav" aria-label="主导航">
+          <a href="#what">认识计协</a><a href="articles.html">文章</a><a href="#projects">项目</a
+          ><a href="#theater">小剧场</a
+          ><a href="https://guide.cxcs.dev" target="_blank" rel="noopener noreferrer">Guide ↗</a>
+        </nav>
+        <div class="header-tools">
+          <select class="theme" aria-label="选择显示主题">
+            <option value="system">跟随系统</option>
+            <option value="light">浅色</option>
+            <option value="dark">深色</option></select
+          ><a class="join-nav" href="join.html">加入我们 →</a
+          ><button class="menu-button" data-menu-open aria-label="打开导航菜单" hidden>☰</button>
+        </div>
+      </div>
+    </header>
+    <dialog class="menu-dialog" id="mobile-menu" aria-label="网站导航">
+      <div class="menu-top">
+        <span class="brand">CXCS<b>·</b></span
+        ><button class="close" data-menu-close aria-label="关闭导航菜单" autofocus>×</button>
+      </div>
+      <nav>
+        <a href="index.html">首页</a><a href="#what">认识计协</a><a href="articles.html">文章</a
+        ><a href="#projects">项目</a><a href="#theater">小剧场</a
+        ><a href="https://guide.cxcs.dev" target="_blank" rel="noopener noreferrer">Guide ↗</a
+        ><a href="join.html">加入我们 →</a>
+      </nav>
+    </dialog>
+    <noscript
+      ><nav class="fallback-nav">
+        <a href="#what">认识计协</a><a href="articles.html">文章</a><a href="#projects">项目</a
+        ><a href="#theater">小剧场</a><a href="join.html">加入我们</a>
+      </nav></noscript
+    >
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-kicker"><span>CXCS / CAMPUS &amp; CURIOSITY</span><span>从一个想法开始</span></div>
+        <span class="hero-index">01 / 08</span>
+        <div class="hello" aria-hidden="true">HELLO</div>
+        <img
+          class="hero-character"
+          src="assets/aran.png"
+          alt="身穿蓝色连帽衫、戴着 Rust 发卡的计协娘"
+          width="1024"
+          height="1536"
+          fetchpriority="high"
+        />
+        <div class="world" aria-hidden="true">WORLD.</div>
+        <div class="hero-copy">
+          <h1 id="hero-title"><span>欢迎来到</span>东南大学成贤学院<br />计算机协会</h1>
+          <p>一起学习，一起折腾，<br />一起做点有意思的东西。</p>
+        </div>
+        <div class="hero-actions">
+          <a class="button" href="#what">看看我们在做什么 <span aria-hidden="true">↓</span></a
+          ><a class="button secondary" href="join.html">加入计协 <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-aside">
+          不必先成为高手。<br />从“有点好奇”开始，就很好。<small>LEARN. BUILD. DEPLOY. SHARE.</small>
+        </div>
+      </section>
+      <section class="section wrap" id="what" aria-labelledby="what-title">
+        <div class="section-line"><span>02</span> WHAT WE DO</div>
+        <div class="section-heading">
+          <h2 id="what-title">所以，我们平时<br />到底在干嘛？</h2>
+          <p>这里有代码、有项目，也有很多还没想明白的问题。大家一起，让想法往前走一点。</p>
+        </div>
+        <div class="bento">
+          <article class="daily" data-reveal>
+            <div class="daily-top"><span>01 / LEARN</span><span>从好奇出发</span></div>
+            <h3>学点新东西</h3>
+            <p>编程、电脑、软件、开发板……<br />感兴趣的东西，都可以一起研究。</p>
+            <span class="daily-symbol" aria-hidden="true">&lt;/&gt;</span>
+          </article>
+          <article class="daily" data-reveal>
+            <div class="daily-top"><span>02 / BUILD</span><span>动手比空想有趣</span></div>
+            <h3>做点有意思的项目</h3>
+            <p>网站、小游戏、机器人、小工具。<br />想到了，就试着把它做出来。</p>
+            <span class="daily-symbol orange" aria-hidden="true">↗</span>
+          </article>
+          <article class="daily" data-reveal>
+            <div class="daily-top"><span>03 / TEAM UP</span><span>一起想办法</span></div>
+            <h3>一起参加比赛</h3>
+            <p>有队友、有经验分享，<br />也有人陪你一起踩坑。</p>
+            <span class="daily-symbol" aria-hidden="true">{ }</span>
+          </article>
+          <article class="daily" data-reveal>
+            <div class="daily-top"><span>04 / TOGETHER</span><span>找到你的同伴</span></div>
+            <h3>认识一群爱折腾的人</h3>
+            <p>技术很重要，但找到一群<br />志同道合的人也很重要。</p>
+            <span class="daily-symbol" aria-hidden="true">++</span>
+          </article>
+        </div>
+      </section>
+      <section class="start" id="start" aria-labelledby="start-title">
+        <div class="wrap">
+          <div class="section-line"><span>03</span> START HERE</div>
+          <div class="start-intro">
+            <p>“可是……我什么都不会。”</p>
+            <h2 id="start-title">那就，<span>从零开始。</span></h2>
+          </div>
+          <div class="steps">
+            <article class="step" data-reveal>
+              <span class="step-number">01 →</span>
+              <h3>从零开始</h3>
+              <p>第一次写代码？没关系。<br />先找到一条适合自己的学习路线。</p>
+              <a class="small-link" href="https://guide.cxcs.dev" target="_blank" rel="noopener noreferrer"
+                >打开 CXCS Guide <span>↗</span></a
+              >
+            </article>
+            <article class="step" data-reveal>
+              <span class="step-number">02 →</span>
+              <h3>做点自己的东西</h3>
+              <p>学会一点，就用起来。<br />把一个想法变成看得见的小项目。</p>
+              <a class="small-link" href="#projects">看看我们的项目 <span>→</span></a>
+            </article>
+            <article class="step" data-reveal>
+              <span class="step-number">03 ↗</span>
+              <h3>把它分享出去</h3>
+              <p>给做好的网站一个地址。<br />让作品被打开，也让新的交流发生。</p>
+              <a class="small-link" href="https://cxcs.page" target="_blank" rel="noopener noreferrer"
+                >用 CXCS Page 发布 <span>↗</span></a
+              >
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section wrap" id="latest" aria-labelledby="latest-title">
+        <div class="section-line"><span>04</span> LATEST FROM CXCS</div>
+        <div class="section-heading">
+          <h2 id="latest-title">我们最近，<br />又折腾了些什么。</h2>
+          <a class="small-link" href="articles.html">全部文章 <span>→</span></a>
+        </div>
+        <div class="latest-grid">
+          <article class="lead-story" data-reveal>
+            <a href="articles.html#story-page"
+              ><img
+                class="news-cover"
+                src="assets/code.jpg"
+                alt="代码编辑器与终端"
+                width="1800"
+                height="1200"
+                loading="lazy"
+              />
+              <div class="meta">
+                <span class="type">博客</span><time datetime="2026-09-01">2026.09.01</time><span>Lin</span>
+              </div>
+              <h3>我们为什么做了 CXCS Page</h3>
+              <p>从一个很简单的问题开始：能不能让协会成员更容易发布自己的网站？</p></a
+            >
+          </article>
+          <div>
+            <article class="side-story" data-reveal>
+              <div>
+                <div class="meta"><span class="type">新闻</span><time datetime="2026-09-05">2026.09.05</time></div>
+                <h3><a href="articles.html#story-recruitment">2026 年计算机协会秋季招新</a></h3>
+                <p>从 Hello World 开始认识计协。零基础也欢迎。</p>
+              </div>
+              <img src="assets/community.jpg" alt="同学们围桌交流" width="1800" height="1200" loading="lazy" />
+            </article>
+            <article class="side-story" data-reveal>
+              <div>
+                <div class="meta"><span class="type">博客</span><time datetime="2026-08-22">2026.08.22</time></div>
+                <h3><a href="articles.html#story-webpage">把一个想法变成一个网页，需要几步？</a></h3>
+                <p>从纸上的草图，到浏览器里真的能打开的页面。</p>
+              </div>
+              <div class="story-art" aria-hidden="true">&lt;/&gt;</div>
+            </article>
+            <p class="latest-note"><span>↗</span> 记录尝试，也分享走过的路。</p>
+          </div>
+        </div>
+      </section>
+      <section class="projects" id="projects" aria-labelledby="project-title">
+        <div class="wrap">
+          <div class="section-line"><span>05</span> PROJECTS</div>
+          <div class="section-heading project-heading">
+            <h2 id="project-title">我们真的会<br />做点东西。</h2>
+            <p>先解决一个身边的小问题，<br />再把它变成大家都用得上的工具。</p>
+          </div>
+          <a
+            class="project-display"
+            style="display: block"
+            href="https://cxcs.page"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="访问 CXCS Page"
+            ><img src="assets/page-screen.png" alt="CXCS Page 网站的真实界面" width="1440" height="1000" loading="lazy"
+          /></a>
+          <div class="project-description">
+            <div>
+              <div class="project-title">
+                <h3>CXCS Page</h3>
+                <span>FEATURED</span>
+              </div>
+              <p>你负责把网站做好，我们帮它被看见。连接代码仓库，完成构建，就能拿到一个真正可以访问的网址。</p>
+              <a class="small-link" href="https://cxcs.page" target="_blank" rel="noopener noreferrer"
+                >发布你的网站 <span>↗</span></a
+              >
+            </div>
+            <div class="deploy-flow" aria-label="网站发布流程">
+              <span><b>01</b>获取项目代码</span><span><b>02</b>安装项目依赖</span><span><b>03</b>构建完成</span
+              ><span><b>04</b>网站已经上线 ↗</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="ecosystem" id="ecosystem" aria-labelledby="ecosystem-title">
+        <div class="wrap">
+          <div class="section-line"><span>06</span> CXCS ECOSYSTEM</div>
+          <div class="section-heading">
+            <h2 id="ecosystem-title">从认识我们，<br />到做出你的作品。</h2>
+            <p>三个站点，连起一段完整的旅程。</p>
+          </div>
+        </div>
+        <article class="eco-panel eco-website">
+          <div class="wrap">
+            <div>
+              <div class="eco-number">01 / MEET</div>
+              <h3 class="eco-name" style="font-size: inherit">
+                <span style="display: block; font-size: clamp(52px, 5rem, 81px); line-height: 1.05; font-weight: 660"
+                  >Website</span
+                >
+              </h3>
+              <h3>从这里，认识计协。</h3>
+              <p>我们是谁，最近在做什么，做过哪些项目，以及怎样加入。关于协会的故事，都在这里。</p>
+              <a class="small-link" href="#what">认识计算机协会 <span>→</span></a>
+            </div>
+            <div class="eco-visual">
+              <img
+                src="assets/emblem.png"
+                alt="东南大学成贤学院计算机协会完整社徽"
+                width="2000"
+                height="2000"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </article>
+        <article class="eco-panel eco-guide">
+          <div class="wrap">
+            <div>
+              <div class="eco-number">02 / LEARN</div>
+              <div class="eco-name">Guide</div>
+              <h3>学一点，再多一点。</h3>
+              <p>从环境配置到学习路线，从第一段代码到项目实践。把走过的路整理下来，成为下一位同学的起点。</p>
+              <a class="small-link" href="https://guide.cxcs.dev" target="_blank" rel="noopener noreferrer"
+                >前往 CXCS Guide <span>↗</span></a
+              >
+            </div>
+            <div class="eco-visual">
+              <img
+                src="assets/guide-screen.png"
+                alt="CXCS Guide 学习指南的真实网页界面"
+                width="1440"
+                height="1000"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </article>
+        <article class="eco-panel eco-page">
+          <div class="wrap">
+            <div>
+              <div class="eco-number">03 / DEPLOY</div>
+              <div class="eco-name">Page</div>
+              <h3>让你的作品，有个地址。</h3>
+              <p>从项目文件夹到互联网上的一个网站。把发布交给 CXCS Page，把时间留给下一次想做的东西。</p>
+              <a class="small-link" href="https://cxcs.page" target="_blank" rel="noopener noreferrer"
+                >前往 CXCS Page <span>↗</span></a
+              >
+            </div>
+            <div class="eco-visual">
+              <img
+                src="assets/page-screen.png"
+                alt="CXCS Page 网站的真实界面"
+                width="1440"
+                height="1000"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="theater" id="theater" aria-labelledby="theater-title">
+        <div class="wrap">
+          <div class="section-line"><span>07</span> THEATER</div>
+          <div class="section-heading">
+            <div>
+              <div class="theater-name" aria-hidden="true">OFF THE<br />CLOCK.</div>
+              <h2 class="theater-title" id="theater-title">代码之外，认识计协娘。</h2>
+            </div>
+            <p class="theater-note">CXCS 看板娘。看起来很正常，<br />Rust 发卡不这么认为。</p>
+          </div>
+          <figure class="character-sheet">
+            <img
+              src="assets/aran-turnaround.jpg"
+              alt="计协娘角色设定图，展示蓝色连帽衫、Rust 发卡及不同角度的角色形象"
+              width="1536"
+              height="1024"
+              loading="lazy"
+            />
+            <figcaption><span>CXCS CHARACTER / 计协娘</span><span>角色设定 · 多视角</span></figcaption>
+          </figure>
+          <div class="character-caption">
+            <h3>好奇心，也是她的日常。</h3>
+            <p>一件蓝色连帽衫，一枚有自己想法的 Rust 发卡。<br />先从这张角色设定，认识计协的另一面。</p>
+          </div>
+        </div>
+      </section>
+      <section class="join-section" id="join" aria-labelledby="join-title">
+        <div class="wrap">
+          <div class="section-line"><span>08</span> JOIN US</div>
+          <div class="join-inner">
+            <h2 id="join-title">下一段故事，<br />等你一起写。</h2>
+            <div>
+              <p>不会编程没关系。<br />有兴趣，就已经是一个很好的开始。</p>
+              <a class="button" href="join.html">来一起做点有意思的事 <span>→</span></a
+              ><span class="join-status">招新时间待确认 · 公开 QQ 交流群 870131425</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-main">
+          <div class="footer-identity">
+            <a class="footer-brand" href="index.html">CXCS.</a>
+            <p>东南大学成贤学院计算机协会<br />一起学习，一起折腾，一起做点有意思的东西。</p>
+          </div>
+          <div class="footer-group">
+            <strong>EXPLORE</strong><a href="#what">认识计协</a><a href="articles.html">文章与动态</a
+            ><a href="join.html">加入我们</a>
+          </div>
+          <div class="footer-group">
+            <strong>CXCS ONLINE</strong
+            ><a href="https://guide.cxcs.dev" target="_blank" rel="noopener noreferrer">CXCS Guide ↗</a
+            ><a href="https://cxcs.page" target="_blank" rel="noopener noreferrer">CXCS Page ↗</a>
+          </div>
+          <div class="footer-group"><strong>公开 QQ 交流群</strong><span class="contact-number">870131425</span></div>
+        </div>
+        <div class="footer-bottom"><span>© 2026 CXCS</span><span>02 / PANORAMA</span></div>
+      </div>
+    </footer>
+    <script>
+      (() => {
+        const root = document.documentElement,
+          select = document.querySelector('.theme'),
+          media = matchMedia('(prefers-color-scheme: dark)');
+        let chosen = 'system';
+        try {
+          chosen = localStorage.getItem('cxcs-theme') || 'system';
+        } catch {}
+        if (!['light', 'dark', 'system'].includes(chosen)) chosen = 'system';
+        select.value = chosen;
+        const apply = () => (root.dataset.theme = chosen === 'system' ? (media.matches ? 'dark' : 'light') : chosen);
+        apply();
+        select.addEventListener('change', () => {
+          chosen = select.value;
+          try {
+            localStorage.setItem('cxcs-theme', chosen);
+          } catch {}
+          apply();
+        });
+        media.addEventListener('change', apply);
+        const menu = document.getElementById('mobile-menu'),
+          opener = document.querySelector('[data-menu-open]');
+        opener.hidden = false;
+        opener.addEventListener('click', () => menu.showModal());
+        document.querySelector('[data-menu-close]').addEventListener('click', () => menu.close());
+        menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => menu.close()));
+        menu.addEventListener('close', () => opener.focus());
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver(
+              (entries) =>
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                  }
+                }),
+              { threshold: 0.15 },
+            );
+            document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+          }
+          if (matchMedia('(pointer:fine)').matches) {
+            const hero = document.querySelector('.hero'),
+              character = document.querySelector('.hero-character');
+            hero.addEventListener('pointermove', (event) => {
+              const bounds = hero.getBoundingClientRect();
+              character.style.setProperty('--px', `${(event.clientX - bounds.left - bounds.width / 2) * 0.012}px`);
+              character.style.setProperty('--py', `${(event.clientY - bounds.top - bounds.height / 2) * 0.008}px`);
+            });
+            hero.addEventListener('pointerleave', () => {
+              character.style.setProperty('--px', '0px');
+              character.style.setProperty('--py', '0px');
+            });
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

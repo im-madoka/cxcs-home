@@ -1,0 +1,152 @@
+---
+import { ArrowUpRight, Menu, Monitor, Moon, Sun, X } from 'lucide-astro';
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
+import { navItems, siteData } from '../config';
+---
+
+<header class="site-header" data-header>
+  <a class="brand" href="/" aria-label="CXCS 首页">
+    <img
+      class="brand-emblem"
+      src="/assets/brand/association-emblem.png"
+      alt=""
+      width="32"
+      height="32"
+      decoding="async"
+    />
+    <span class="brand-text">
+      <span class="brand-wordmark" aria-hidden="true"></span>
+      <span class="brand-fallback">CXCS</span>
+    </span>
+  </a>
+  <nav class="desktop-nav" aria-label="主导航">
+    {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+  <div class="header-actions">
+    <a class="external-nav" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
+      >Guide <ArrowUpRight size={13} /></a
+    >
+    <a class="external-nav" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
+      >Page <ArrowUpRight size={13} /></a
+    >
+    <ThemeSwitcher />
+    <a class="header-join" href="/join">Join Us <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="mobile-header-tools">
+    <ThemeSwitcher />
+    <button
+      class="mobile-menu-button icon-button"
+      type="button"
+      aria-label="打开菜单"
+      aria-expanded="false"
+      data-menu-trigger
+    >
+      <Menu size={20} />
+    </button>
+  </div>
+</header>
+
+<div class="mobile-overlay" data-mobile-overlay aria-hidden="true" inert>
+  <div class="mobile-overlay-top">
+    <a class="brand" href="/" aria-label="CXCS 首页">
+      <img
+        class="brand-emblem"
+        src="/assets/brand/association-emblem.png"
+        alt=""
+        width="32"
+        height="32"
+        decoding="async"
+      />
+      <span class="brand-text">
+        <span class="brand-wordmark" aria-hidden="true"></span>
+        <span class="brand-fallback">CXCS</span>
+      </span>
+    </a>
+    <button class="icon-button" type="button" aria-label="关闭菜单" data-menu-close><X size={21} /></button>
+  </div>
+  <nav aria-label="移动端主导航">
+    {
+      navItems.map((item) => (
+        <a href={item.href}>
+          {item.label}
+          <span aria-hidden="true">→</span>
+        </a>
+      ))
+    }
+    <a href="/join">Join Us <span aria-hidden="true">→</span></a>
+    <a href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">CXCS Guide <ArrowUpRight size={15} /></a>
+    <a href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">CXCS Page <ArrowUpRight size={15} /></a>
+  </nav>
+  <div class="mobile-theme-row">
+    <span class="mobile-theme-label">主题模式</span>
+    <div class="mobile-theme-group">
+      <button type="button" class="mobile-theme-btn" data-theme-choice="system">
+        <Monitor size={14} /> 系统
+      </button>
+      <button type="button" class="mobile-theme-btn" data-theme-choice="light">
+        <Sun size={14} /> 浅色
+      </button>
+      <button type="button" class="mobile-theme-btn" data-theme-choice="dark">
+        <Moon size={14} /> 深色
+      </button>
+    </div>
+  </div>
+  <p class="mobile-overlay-note">Learn. Build. Deploy. Share.</p>
+</div>
+
+<script>
+  let cleanupHeader: (() => void) | null = null;
+
+  const initHeader = () => {
+    cleanupHeader?.();
+
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    const overlay = document.querySelector<HTMLElement>('[data-mobile-overlay]');
+    const openButton = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+    const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+    if (!overlay || !openButton || !closeButton) return;
+
+    const openMenu = () => {
+      overlay.classList.add('is-open');
+      overlay.removeAttribute('inert');
+      overlay.setAttribute('aria-hidden', 'false');
+      openButton.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('menu-open');
+      closeButton.focus();
+    };
+    const closeMenu = (restoreFocus = true) => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('inert', '');
+      overlay.setAttribute('aria-hidden', 'true');
+      openButton.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+      if (restoreFocus) openButton.focus();
+    };
+    const onKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && overlay.classList.contains('is-open')) closeMenu();
+    };
+    const onCloseClick = () => closeMenu();
+    const onLinkClick = () => closeMenu(false);
+    const syncHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 30);
+
+    openButton.addEventListener('click', openMenu);
+    closeButton.addEventListener('click', onCloseClick);
+    const links = Array.from(overlay.querySelectorAll('a'));
+    links.forEach((link) => link.addEventListener('click', onLinkClick));
+    document.addEventListener('keydown', onKeydown);
+    window.addEventListener('scroll', syncHeader, { passive: true });
+    syncHeader();
+
+    cleanupHeader = () => {
+      closeMenu(false);
+      openButton.removeEventListener('click', openMenu);
+      closeButton.removeEventListener('click', onCloseClick);
+      links.forEach((link) => link.removeEventListener('click', onLinkClick));
+      document.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('scroll', syncHeader);
+    };
+  };
+
+  document.addEventListener('astro:page-load', initHeader);
+  initHeader();
+</script>

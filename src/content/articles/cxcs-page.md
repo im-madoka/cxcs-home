@@ -1,5 +1,5 @@
 ---
-title: 我们为什么做了 CXCS Page
+title: "我们为什么做了 CXCS\u00A0Page"
 description: 从一个很简单的问题开始：能不能让协会成员更容易发布自己的网站？
 type: blog
 publishedAt: 2026-09-01

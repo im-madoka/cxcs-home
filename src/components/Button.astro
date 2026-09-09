@@ -1,0 +1,14 @@
+---
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+const { href, label, variant = 'primary', external = false, class: className = '' } = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class={`button button-${variant} ${className}`}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <span>{label}</span>{external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
+</Tag>

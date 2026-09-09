@@ -1,19 +1,89 @@
 ---
+import { ArrowLeft, ArrowRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ArrowLink from '../components/ArrowLink.astro';
-import { siteData } from '../data/site';
+import { siteData } from '../config';
 ---
 
 <BaseLayout title={`404 · ${siteData.shortName}`} description="这个页面不存在，也可能已经被移动到了别的地方。">
   <section class="not-found">
-    <div class="container">
-      <p class="eyebrow">Error / 404</p><h1>404</h1><h2>好像走错地方了。</h2><p>
-        这个页面不存在，也可能已经被移动到了别的地方。
-      </p><div class="terminal">&gt; cd /somewhere<br /><span>cd: no such file or directory</span></div><div
-        class="hero-actions"
-      >
-        <a class="button button-primary" href="/">返回首页 →</a><ArrowLink href="/articles" label="看看最近的内容" />
+    <div class="wrap">
+      <div class="section-line"><span>ERROR / 404</span></div>
+      <h1 class="error-code">404</h1>
+      <h2>好像走错地方了。</h2>
+      <p class="error-desc">这个页面不存在，也可能已经被移动到了别的地方。</p>
+
+      <div class="terminal">
+        <span class="term-line">&gt; cd /somewhere</span>
+        <span class="term-err">cd: no such file or directory: /somewhere</span>
+      </div>
+
+      <div class="error-actions">
+        <a class="button button-primary" href="/">
+          <ArrowLeft size={14} /> 返回首页
+        </a>
+        <a class="button button-secondary" href="/articles">
+          看看最近的内容 <ArrowRight size={14} />
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .not-found {
+    padding: calc(var(--header-height) + 64px) 0 84px;
+    min-height: calc(100dvh - var(--header-height));
+    display: flex;
+    align-items: center;
+    background: var(--ice);
+  }
+  .error-code {
+    font-size: clamp(72px, 10vw, 120px);
+    font-weight: 800;
+    line-height: 0.9;
+    color: var(--blue);
+    margin: 0 0 16px;
+    letter-spacing: -0.04em;
+  }
+  .not-found h2 {
+    font-size: 28px;
+    font-weight: 650;
+    margin: 0 0 12px;
+  }
+  .error-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 0 28px;
+    line-height: 1.8;
+  }
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 22px;
+    font-family: monospace;
+    font-size: 13px;
+    max-width: 460px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .term-line {
+    color: var(--blue);
+  }
+  .term-err {
+    color: var(--muted);
+  }
+  .error-actions {
+    display: flex;
+    gap: 14px;
+  }
+
+  @media (max-width: 520px) {
+    .error-actions {
+      flex-direction: column;
+    }
+  }
+</style>

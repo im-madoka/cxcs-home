@@ -1,67 +1,310 @@
 ---
+import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ArrowLink from '../components/ArrowLink.astro';
-import SectionIntro from '../components/SectionIntro.astro';
-import { siteData } from '../data/site';
+import PageHero from '../components/PageHero.astro';
+import { siteData } from '../config';
 ---
 
 <BaseLayout title={`About · ${siteData.shortName}`} description="我们是一群喜欢计算机，也喜欢折腾的人。">
-  <section class="page-hero">
-    <div class="container page-hero-inner">
+  <PageHero
+    eyebrow="ABOUT CXCS"
+    title="喜欢计算机，也喜欢折腾。"
+    description="有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。"
+  >
+    <Fragment slot="title">喜欢计算机，<br />也喜欢折腾。</Fragment>
+    <div slot="meta" class="hero-meta">
+      <span>东南大学成贤学院计算机协会</span>
+      <span>·</span>
+      <span>EST. 校园技术社区</span>
+    </div>
+  </PageHero>
+
+  <!-- What is CXCS -->
+  <section class="section">
+    <div class="wrap about-intro-grid">
       <div>
-        <p class="eyebrow">About CXCS</p><h1>喜欢计算机，<br />也喜欢折腾。</h1><p class="page-hero-copy">
-          有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。
+        <div class="section-line"><span>COMMUNITY</span></div>
+        <h2>不是培训班，<br />是一群人的社区。</h2>
+      </div>
+      <div class="about-copy">
+        <p>不知道从哪里开始，可以大家一起学。网站、工具、社群 Bot、开发板，想到什么就试着动手做点什么。</p>
+        <p>
+          计算机不一定只能一个人坐在电脑前研究。找到愿意一起踩坑、一起分享代码与技术乐趣的同伴，也是大学里一件非常重要且酷的事情。
         </p>
-      </div><div class="about-seal" aria-label="CXCS 完整社徽视觉占位">
-        <span>CXCS</span><i>&lt;/&gt;</i><small>Computer Association</small>
+        <a class="small-link" href="/join">
+          加入计算机协会 <ArrowRight size={13} />
+        </a>
       </div>
     </div>
   </section>
-  <section class="band">
-    <div class="container about-grid">
-      <div><p class="eyebrow">What is CXCS</p><h2>不是培训班，<br />是一群人的社区。</h2></div><div class="about-copy">
-        <p>不知道从哪里开始，可以一起学。网站、工具、Bot、开发板，想到什么就试着做点什么。</p><p>
-          计算机不一定只能一个人坐在电脑前研究。找到愿意一起踩坑、一起分享的人，也是一件很重要的事。
-        </p><ArrowLink href="/join" label="加入计算机协会" />
+
+  <!-- Values Grid -->
+  <section class="section values-section">
+    <div class="wrap">
+      <div class="section-line"><span>04 / VALUES</span></div>
+      <div class="section-heading">
+        <h2>我们在意的原则。</h2>
+        <p>技术在变，但推动我们聚在一起的东西一直没变。</p>
+      </div>
+
+      <div class="values-grid">
+        <article class="val-card">
+          <span class="val-num">01</span>
+          <h3>Curiosity</h3>
+          <p>保持好奇。允许自己先问一个简单的小问题，这是所有伟大工程的起点。</p>
+        </article>
+
+        <article class="val-card">
+          <span class="val-num">02</span>
+          <h3>Build</h3>
+          <p>动手去造。让想法真正跑起来，获得一个在屏幕上可以被点击、被体验的形状。</p>
+        </article>
+
+        <article class="val-card">
+          <span class="val-num">03</span>
+          <h3>Share</h3>
+          <p>乐于分享。把踩过的坑写成文档，把走过的路留给后来的人，也倾听不同的见解。</p>
+        </article>
+
+        <article class="val-card">
+          <span class="val-num">04</span>
+          <h3>Together</h3>
+          <p>共同成长。不把“懂不懂编程”当作门槛，只要愿意尝试，这里永远有你的位置。</p>
+        </article>
       </div>
     </div>
-    <div class="container values-grid">
-      <article class="value-card">
-        <span>01</span><h3>Curiosity</h3><p>保持好奇，允许自己先问一个简单问题。</p>
-      </article><article class="value-card">
-        <span>02</span><h3>Build</h3><p>动手去做，让想法获得可以被看见的形状。</p>
-      </article><article class="value-card">
-        <span>03</span><h3>Share</h3><p>愿意把经验留下，也愿意听听不同的方法。</p>
-      </article><article class="value-card">
-        <span>04</span><h3>Together</h3><p>一起成长，不把会不会当成进入社区的门槛。</p>
-      </article>
-    </div>
   </section>
-  <section class="band band-soft">
-    <div class="container">
-      <SectionIntro
-        eyebrow="CXCS Online"
-        title="我们也在搭自己的数字空间。"
-        description="同一个 CXCS，不同的职责。"
-      /><div class="ecosystem-list">
-        <a href={siteData.url}
-          ><strong>cxcs.dev</strong><span>协会官方网站、动态、项目和招新入口</span><span class="eco-arrow">→</span></a
-        ><a href={siteData.guideUrl} target="_blank" rel="noopener noreferrer"
-          ><strong>guide.cxcs.dev</strong><span>学习指南与知识库</span><span class="eco-arrow">↗</span></a
-        ><a href={siteData.pageUrl} target="_blank" rel="noopener noreferrer"
-          ><strong>cxcs.page</strong><span>成员网站部署与托管平台</span><span class="eco-arrow">↗</span></a
-        >
+
+  <!-- Digital Space (Ecosystem Links) -->
+  <section class="section ecosystem-links-section">
+    <div class="wrap">
+      <div class="section-line"><span>ONLINE SITES</span></div>
+      <div class="section-heading">
+        <h2>我们也在搭建<br />自己的数字空间。</h2>
+        <p>同一个计算机协会，不同维度的探索与支持。</p>
+      </div>
+
+      <div class="eco-cards">
+        <a class="eco-card" href={siteData.url}>
+          <div>
+            <span class="eco-domain">cxcs.dev</span>
+            <h4>协会官方网站</h4>
+            <p>协会动态、项目展示与招新入口汇总。</p>
+          </div>
+          <span class="eco-go"><ArrowRight size={16} /></span>
+        </a>
+
+        <a class="eco-card" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+          <div>
+            <span class="eco-domain">guide.cxcs.dev</span>
+            <h4>学习指南与知识库</h4>
+            <p>从新手入门到进阶实践，体系化经验沉淀。</p>
+          </div>
+          <span class="eco-go"><ArrowUpRight size={16} /></span>
+        </a>
+
+        <a class="eco-card" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
+          <div>
+            <span class="eco-domain">cxcs.page</span>
+            <h4>成员作品部署平台</h4>
+            <p>一键托管静态站点与网页项目，即刻上线分享。</p>
+          </div>
+          <span class="eco-go"><ArrowUpRight size={16} /></span>
+        </a>
       </div>
     </div>
   </section>
-  <section class="join-band">
-    <div class="container">
-      <p class="eyebrow">Next Step</p><h2>了解得差不多了。<br />来认识一下我们？</h2><div class="hero-actions">
-        <a class="button button-primary" href="/join">加入计算机协会 →</a><a
-          class="button button-secondary"
-          href="/activities">看看最近的活动 →</a
-        >
+
+  <!-- Next Step -->
+  <section class="closing">
+    <div class="wrap">
+      <h2>了解得差不多了。<br />来认识一下我们？</h2>
+      <p>随时欢迎你的加入，或者只是来 QQ 群里聊聊技术。</p>
+      <div class="closing-actions">
+        <a class="button button-primary" href="/join">
+          加入计算机协会 <ArrowRight size={14} />
+        </a>
+        <a class="button button-secondary" href="/articles">
+          浏览近期文章 <ArrowRight size={14} />
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 20px;
+  }
+
+  .about-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 72px;
+    align-items: start;
+    padding: 24px 0;
+  }
+  .about-intro-grid h2 {
+    font-size: 34px;
+    font-weight: 650;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .about-copy p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.85;
+    margin: 0 0 20px;
+  }
+
+  .values-section {
+    background: var(--ice);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .val-card {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 7px;
+    padding: 26px 24px;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .val-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
+  }
+  .val-num {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .val-card h3 {
+    font-size: 19px;
+    font-weight: 650;
+    margin: 0 0 10px;
+  }
+  .val-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .ecosystem-links-section {
+    padding: 68px 0;
+  }
+  .eco-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .eco-card {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 7px;
+    padding: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .eco-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--blue);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  }
+  .eco-domain {
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .eco-card h4 {
+    font-size: 17px;
+    font-weight: 650;
+    margin: 0 0 6px;
+  }
+  .eco-card p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .eco-go {
+    color: var(--muted);
+    transition:
+      color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .eco-card:hover .eco-go {
+    color: var(--blue);
+    transform: translate(2px, -2px);
+  }
+
+  .closing {
+    padding: 72px 0 84px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+    background: var(--ice);
+  }
+  .closing h2 {
+    font-size: 32px;
+    font-weight: 650;
+    margin: 0 0 12px;
+  }
+  .closing p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 24px;
+  }
+  .closing-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  @media (max-width: 960px) {
+    .values-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .eco-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .about-intro-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    .closing-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>

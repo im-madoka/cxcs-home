@@ -1,9 +1,33 @@
 ---
-const { eyebrow, title, description = '', align = 'left' } = Astro.props;
+const {
+  eyebrow,
+  title,
+  titleLines,
+  description = '',
+  align = 'left',
+} = Astro.props as {
+  eyebrow: string;
+  title: string;
+  titleLines?: string[];
+  description?: string;
+  align?: string;
+};
+const lines = titleLines ?? [];
 ---
 
 <div class={`section-intro align-${align}`}>
   <p class="eyebrow">{eyebrow}</p>
-  <h2>{title}</h2>
-  {description && <p class="section-description">{description}</p>}
+  <h2 class="cjk-heading">
+    {
+      lines.length > 0
+        ? lines.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))
+        : title
+    }
+  </h2>
+  {description && <p class="section-description cjk-copy">{description}</p>}
 </div>
