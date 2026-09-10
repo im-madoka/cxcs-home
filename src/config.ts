@@ -33,7 +33,7 @@ export default {
         label: '新闻',
         title: '新闻正在发生。',
         description: '正式事件、活动消息和协会里值得被记下来的时刻。',
-        byline: 'CXCS 官方发布',
+        byline: '成贤计协官方发布',
         coverLabel: 'NEWS / CXCS',
         accent: '#f05a28',
       },
