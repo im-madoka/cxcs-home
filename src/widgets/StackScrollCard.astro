@@ -1,0 +1,42 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'article'> {
+  /** Any CSS background value, including a color, gradient, or CSS variable. */
+  background?: string;
+  color?: string;
+  borderColor?: string;
+}
+
+const {
+  background = 'var(--surface, #ffffff)',
+  color = 'var(--text, #181a1e)',
+  borderColor = 'var(--line, #dbe2ed)',
+  class: className,
+  style,
+  ...attributes
+} = Astro.props;
+const colors = { background, color, 'border-color': borderColor };
+const cardStyle =
+  typeof style === 'string'
+    ? `${Object.entries(colors)
+        .map(([property, value]) => `${property}: ${value}`)
+        .join('; ')}; ${style}`
+    : { ...colors, ...style };
+---
+
+<article {...attributes} class:list={['stack-scroll-card', className]} style={cardStyle}>
+  <slot />
+</article>
+
+<style>
+  .stack-scroll-card {
+    box-sizing: border-box;
+    position: sticky;
+    top: var(--stack-scroll-top, 72px);
+    height: 570px;
+    overflow: auto;
+    border-top: 1px solid;
+    box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.05);
+  }
+</style>

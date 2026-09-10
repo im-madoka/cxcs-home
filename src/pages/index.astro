@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import config from '../config';
 import StackScroll from '../widgets/StackScroll.astro';
+import StackScrollCard from '../widgets/StackScrollCard.astro';
 import { getArticleCategory, getArticleCover } from '../articles';
 
 const { site: siteData, recruitment } = config;
@@ -210,8 +211,85 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     </div>
   </section>
 
-<!-- Section 06 / Ecosystem Stacking Scroll Component -->
-  <StackScroll />
+  <!-- Section 06 / Ecosystem -->
+  <section class="ecosystem" id="ecosystem" aria-labelledby="ecosystem-title">
+    <div class="wrap">
+      <div class="section-line">CXCS ECOSYSTEM</div>
+      <div class="section-heading">
+        <h2 id="ecosystem-title">从初次探索，<br />到独立交付。</h2>
+        <p>贯穿学习、实践与创造的完整过程。</p>
+      </div>
+    </div>
+
+    <StackScroll>
+      <StackScrollCard>
+        <div class="wrap eco-panel eco-website">
+          <div class="eco-content">
+            <div class="eco-number">01 / MEET</div>
+            <h3 class="eco-name">Website</h3>
+            <h4 class="eco-headline">认识我们，也找到彼此。</h4>
+            <p>记录协会的前沿动态、开源项目与成员轨迹。这里是对外开放的窗口，也是你与一群志同道合者相遇的起点。</p>
+            <a class="small-link" href="#what">认识计算机协会 <ArrowRight size={14} /></a>
+          </div>
+          <div class="eco-visual">
+            <img
+              src="/assets/ecosystem/emblem.png"
+              alt="东南大学成贤学院计算机协会完整社徽"
+              width="226"
+              height="226"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </StackScrollCard>
+
+      <StackScrollCard background="#2464ed" color="#ffffff" borderColor="#2464ed">
+        <div class="wrap eco-panel eco-guide">
+          <div class="eco-content">
+            <div class="eco-number">02 / LEARN</div>
+            <h3 class="eco-name">Guide</h3>
+            <h4 class="eco-headline">前人踩过的坑，你的起点。</h4>
+            <p>从开发环境配置到进阶技术路线。历届成员把踩过的坑和积累的经验整理成册，让你不必在迷茫中独自摸索。</p>
+            <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+              前往 CXCS Guide <ArrowUpRight size={14} />
+            </a>
+          </div>
+          <div class="eco-visual">
+            <img
+              src="/assets/ecosystem/guide-screen.png"
+              alt="CXCS Guide 学习指南的真实网页界面"
+              width="1440"
+              height="1000"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </StackScrollCard>
+
+      <StackScrollCard background="#171b23" color="#ffffff" borderColor="#171b23">
+        <div class="wrap eco-panel eco-page">
+          <div class="eco-content">
+            <div class="eco-number">03 / DEPLOY</div>
+            <h3 class="eco-name">Page</h3>
+            <h4 class="eco-headline">把项目交托上线，专注创造本身。</h4>
+            <p>免去繁琐的服务器运维门槛。关联代码仓库即可自动完成构建，把更多时间留给写出真正有价值的代码。</p>
+            <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
+              前往 CXCS Page <ArrowUpRight size={14} />
+            </a>
+          </div>
+          <div class="eco-visual">
+            <img
+              src="/assets/ecosystem/page-screen.png"
+              alt="CXCS Page 网站的真实界面"
+              width="1440"
+              height="1000"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </StackScrollCard>
+    </StackScroll>
+  </section>
 
   <!-- Section 07 / Join Us -->
   <section class="join-section" id="join-us" aria-labelledby="join-title">
@@ -237,3 +315,140 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 </BaseLayout>
 
 <script src="../assets/scripts/home-motion.ts"></script>
+
+<style>
+  .ecosystem {
+    padding-top: 79px;
+  }
+  .ecosystem > .wrap {
+    padding-bottom: clamp(64px, 7vw, 96px);
+  }
+  .ecosystem .section-heading {
+    margin: 0;
+  }
+  .ecosystem .eco-panel {
+    height: 100%;
+    padding: 58px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    align-items: center;
+    gap: 62px;
+  }
+  .ecosystem .eco-number {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 39px;
+  }
+  .ecosystem .eco-guide .eco-number,
+  .ecosystem .eco-page .eco-number {
+    color: #c1d3ff;
+  }
+  .ecosystem .eco-name {
+    font-size: clamp(52px, 5.5vw, 81px);
+    line-height: 1.05;
+    font-weight: 700;
+    margin: 0 0 20px;
+  }
+  .ecosystem .eco-headline {
+    font-size: 25px;
+    line-height: 1.25;
+    font-weight: 650;
+    margin: 0 0 14px;
+  }
+  .ecosystem .eco-content p {
+    font-size: 13px;
+    max-width: 440px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 31px;
+  }
+  .ecosystem .eco-guide .eco-content p,
+  .ecosystem .eco-page .eco-content p {
+    color: #e5edff;
+  }
+  .ecosystem .eco-guide .small-link,
+  .ecosystem .eco-page .small-link {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  .ecosystem .eco-visual {
+    background: var(--ice);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 30px;
+    height: 388px;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ecosystem .eco-website .eco-visual {
+    background: #d8e5ff;
+    border-color: #bfd4ff;
+  }
+  :root[data-theme='dark'] .ecosystem .eco-website .eco-visual {
+    background: #1d2535;
+    border-color: #2b384f;
+  }
+  .ecosystem .eco-website .eco-visual img {
+    width: 226px;
+    height: 226px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 28px rgba(36, 100, 237, 0.22));
+    transition: transform 0.3s ease;
+  }
+  .ecosystem .eco-website:hover .eco-visual img {
+    transform: scale(1.05);
+  }
+  .ecosystem .eco-guide .eco-visual {
+    background: #184cc2;
+    border-color: #2c65e8;
+  }
+  .ecosystem .eco-page .eco-visual {
+    background: #0f1218;
+    border-color: #252b37;
+  }
+  .ecosystem .eco-guide .eco-visual img,
+  .ecosystem .eco-page .eco-visual img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  .ecosystem .eco-panel:hover .eco-visual img {
+    transform: translateY(-4px);
+  }
+
+  @media (max-width: 900px) {
+    .ecosystem .eco-panel {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 20px;
+      padding: 28px 0;
+    }
+    .ecosystem .eco-number {
+      margin-bottom: 12px;
+    }
+    .ecosystem .eco-name {
+      font-size: 44px;
+      margin-bottom: 12px;
+    }
+    .ecosystem .eco-headline {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .ecosystem .eco-content p {
+      margin-bottom: 16px;
+    }
+    .ecosystem .eco-visual {
+      height: 100%;
+      padding: 16px;
+    }
+  }
+</style>
