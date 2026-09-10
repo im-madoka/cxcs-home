@@ -1,4 +1,5 @@
 ---
+import IconButton from '../components/IconButton.astro';
 import { ArrowUpRight, Menu, Monitor, Moon, Sun, X } from 'lucide-astro';
 import ThemeSwitcher from '../components/ThemeSwitcher.astro';
 import config from '../config';
@@ -37,15 +38,9 @@ const externalNav = config.nav.filter((item) => item.external);
   </div>
   <div class="mobile-header-tools">
     <ThemeSwitcher />
-    <button
-      class="mobile-menu-button icon-button"
-      type="button"
-      aria-label="打开菜单"
-      aria-expanded="false"
-      data-menu-trigger
-    >
+    <IconButton class="mobile-menu-button" type="button" aria-label="打开菜单" aria-expanded="false" data-menu-trigger>
       <Menu size={20} />
-    </button>
+    </IconButton>
   </div>
 </header>
 
@@ -65,7 +60,7 @@ const externalNav = config.nav.filter((item) => item.external);
         <span class="brand-fallback">CXCS</span>
       </span>
     </a>
-    <button class="icon-button" type="button" aria-label="关闭菜单" data-menu-close><X size={21} /></button>
+    <IconButton type="button" aria-label="关闭菜单" data-menu-close><X size={21} /></IconButton>
   </div>
   <nav aria-label="移动端主导航">
     {
@@ -158,3 +153,209 @@ const externalNav = config.nav.filter((item) => item.external);
   document.addEventListener('astro:page-load', initHeader);
   initHeader();
 </script>
+
+<style>
+  :global(body.menu-open) {
+    overflow: hidden;
+  }
+  .site-header {
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    height: var(--header-height);
+    padding: 0 clamp(20px, 4.5vw, 48px);
+    transition:
+      background 0.3s ease,
+      backdrop-filter 0.3s ease,
+      height 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .site-header[data-scrolled] {
+    height: 64px;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+  .brand-emblem {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+  .brand-text {
+    display: inline-flex;
+    align-items: center;
+  }
+  .brand-wordmark {
+    display: inline-block;
+    width: 130px;
+    height: 28px;
+    background-color: var(--text);
+    -webkit-mask: url('/assets/brand/association-wordmark.svg') left center / contain no-repeat;
+    mask: url('/assets/brand/association-wordmark.svg') left center / contain no-repeat;
+    transition: background-color 0.2s ease;
+  }
+  .brand:hover .brand-wordmark {
+    background-color: var(--blue);
+  }
+  .brand-fallback {
+    display: none;
+  }
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+  }
+  .desktop-nav a,
+  .external-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 13px;
+    transition: color 0.2s ease;
+  }
+  .desktop-nav a:hover,
+  .external-nav:hover {
+    color: var(--text);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    background: var(--blue);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease;
+  }
+  .header-join:hover {
+    transform: translateY(-2px);
+    background: var(--blue-deep);
+    color: #ffffff;
+  }
+  .header-join:active {
+    transform: translateY(0);
+  }
+  .mobile-header-tools {
+    display: none;
+  }
+  .mobile-menu-button,
+  .mobile-overlay {
+    display: none;
+  }
+
+  @media (max-width: 1000px) {
+    .desktop-nav,
+    .header-actions .external-nav,
+    .header-actions .header-join,
+    .header-actions :global(.theme-switcher) {
+      display: none;
+    }
+    .mobile-header-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+    .mobile-menu-button {
+      display: grid;
+    }
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      padding: 24px clamp(20px, 5vw, 40px);
+      background: var(--bg);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    }
+    .mobile-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .mobile-overlay-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .mobile-overlay nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-overlay nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-theme-row {
+      margin-top: auto;
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-theme-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .mobile-theme-group {
+      display: flex;
+      gap: 6px;
+    }
+    .mobile-theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .mobile-overlay-note {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+  }
+</style>

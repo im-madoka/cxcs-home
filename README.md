@@ -91,3 +91,8 @@ bun run format:check
 - `src/widgets/`：由基础控件组成的页面模块，例如首页能力栈滚动卡片。
 - `src/assets/styles/` 与 `src/assets/scripts/`：全站通用样式和脚本。
 - `src/pages/`、`src/content/`：Astro 页面与支持 MDX 的内容集合。
+
+样式和浏览器脚本按所属结构就地维护：页面专属代码放在页面的 `<style>`、`<script>` 中，
+component、widget 和 layout 的专属代码放在各自的 `.astro` 文件中，响应式规则和动画也随所属文件维护。
+全局样式仅包含设计变量、字体、基础规则和跨页面工具类；全局脚本仅提供共享能力，由页面或组件选择自己的元素并调用。
+浏览器脚本需兼容 Astro 客户端导航，避免首次进入页面时重复初始化，并在离页时清理元素事件、定时器和滚动监听。

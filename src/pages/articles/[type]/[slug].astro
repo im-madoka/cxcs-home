@@ -1,4 +1,5 @@
 ---
+import Button from '../../../components/Button.astro';
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft } from 'lucide-astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
@@ -74,9 +75,9 @@ const related = entries
     <!-- Footer & Related -->
     <footer class="article-footer wrap">
       <div class="footer-nav-back">
-        <a class="button button-secondary" href="/articles">
+        <Button variant="secondary" href="/articles">
           <ArrowLeft size={14} /> 返回文章列表
-        </a>
+        </Button>
       </div>
 
       {
@@ -100,6 +101,42 @@ const related = entries
     </footer>
   </article>
 </BaseLayout>
+
+<script>
+  import { onPageLoad } from '../../../assets/scripts/page-load';
+  import { reveal } from '../../../assets/scripts/reveal';
+
+  let progressElement: HTMLElement | null = null;
+  let progressHandler: (() => void) | null = null;
+
+  const clearReadingProgress = () => {
+    if (progressHandler) window.removeEventListener('scroll', progressHandler);
+    progressHandler = null;
+    progressElement = null;
+  };
+
+  onPageLoad(() => {
+    const hero = document.querySelector('.detail-hero');
+    reveal(hero?.querySelectorAll('h1, .detail-byline'), {
+      y: 20,
+      duration: 0.65,
+      stagger: 0.08,
+    });
+
+    clearReadingProgress();
+    progressElement = document.querySelector<HTMLElement>('.reading-progress');
+    if (progressElement) {
+      progressHandler = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progressElement!.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0})`;
+      };
+      progressHandler();
+      window.addEventListener('scroll', progressHandler, { passive: true });
+    }
+  });
+
+  document.addEventListener('astro:before-swap', clearReadingProgress);
+</script>
 
 <style>
   .reading-progress {

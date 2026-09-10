@@ -26,7 +26,7 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
   />
 
   <!-- Feed Section -->
-  <section class="section articles-section">
+  <section class="section articles-section" data-article-list="all">
     <div class="wrap">
       <!-- Underline Filter Tabs -->
       <ArticleTabs />
@@ -94,6 +94,21 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { onPageLoad } from '../../assets/scripts/page-load';
+  import { reveal } from '../../assets/scripts/reveal';
+
+  onPageLoad(() => {
+    const list = document.querySelector('[data-article-list="all"]');
+    reveal(list?.querySelectorAll('.editorial-item'), {
+      y: 24,
+      duration: 0.6,
+      stagger: 0.06,
+      delay: 0.15,
+    });
+  });
+</script>
 
 <style>
   .articles-section {

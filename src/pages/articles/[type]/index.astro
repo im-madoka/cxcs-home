@@ -25,7 +25,7 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
   <PageHero eyebrow={`ARTICLES / ${type.toUpperCase()}`} title={category.title} description={category.description} />
 
   <!-- Feed Section -->
-  <section class="section articles-section">
+  <section class="section articles-section" data-article-list="category">
     <div class="wrap">
       <!-- Underline Filter Tabs -->
       <ArticleTabs activeType={type} />
@@ -70,6 +70,21 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { onPageLoad } from '../../../assets/scripts/page-load';
+  import { reveal } from '../../../assets/scripts/reveal';
+
+  onPageLoad(() => {
+    const list = document.querySelector('[data-article-list="category"]');
+    reveal(list?.querySelectorAll('.editorial-item'), {
+      y: 24,
+      duration: 0.6,
+      stagger: 0.06,
+      delay: 0.15,
+    });
+  });
+</script>
 
 <style>
   .articles-section {

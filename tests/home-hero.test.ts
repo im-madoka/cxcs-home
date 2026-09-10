@@ -5,7 +5,8 @@ import { join } from 'node:path';
 
 const projectRoot = process.cwd();
 let homepage = '';
-let globalStyles = '';
+let homeStyles = '';
+let headerStyles = '';
 let motionScript = '';
 
 beforeAll(() => {
@@ -14,32 +15,33 @@ beforeAll(() => {
     stdio: 'pipe',
   });
   homepage = readFileSync(join(projectRoot, 'dist/index.html'), 'utf8');
-  globalStyles = readFileSync(join(projectRoot, 'src/assets/styles/global.css'), 'utf8');
-  motionScript = readFileSync(join(projectRoot, 'src/assets/scripts/home-motion.ts'), 'utf8');
+  homeStyles = readFileSync(join(projectRoot, 'src/pages/index.astro'), 'utf8');
+  headerStyles = readFileSync(join(projectRoot, 'src/layouts/SiteHeader.astro'), 'utf8');
+  motionScript = homeStyles.match(/<script>([\s\S]*?)<\/script>/)?.[1] || '';
 }, 30_000);
 
 describe('homepage mascot hero', () => {
   test('groups the title lockup and mascot inside one centered stage', () => {
     expect(homepage).toMatch(
-      /<div class="hero-stage">[\s\S]*<div class="hero-title-lockup">[\s\S]*class="hello"[\s\S]*class="world"[\s\S]*class="hero-character"/,
+      /<div class="hero-stage"[^>]*>[\s\S]*<div class="hero-title-lockup"[^>]*>[\s\S]*class="hello"[\s\S]*class="world"[\s\S]*class="hero-character"/,
     );
   });
 
   test('centers the title lockup vertically from the mascot stage center', () => {
-    expect(homepage).toContain('<div class="hero-title-lockup">');
-    expect(globalStyles).toMatch(
+    expect(homepage).toMatch(/<div class="hero-title-lockup"[^>]*>/);
+    expect(homeStyles).toMatch(
       /\.hero-title-lockup\s*\{[\s\S]*top:\s*var\(--title-center-y\)[\s\S]*margin-top:\s*calc\(\(var\(--title-world-offset\) \+ 0\.83em\) \/ -2\)/,
     );
-    expect(globalStyles).toMatch(
+    expect(homeStyles).toMatch(
       /\.hero-stage\s*\{[\s\S]*--character-center-y:\s*50%[\s\S]*--title-center-y:\s*var\(--character-center-y\)/,
     );
-    expect(globalStyles).toMatch(/\.hero-character\s*\{[\s\S]*top:\s*50%[\s\S]*bottom:\s*auto/);
-    expect(globalStyles).toContain('calc(-50% + var(--py, 0px))');
+    expect(homeStyles).toMatch(/\.hero-character\s*\{[\s\S]*top:\s*50%[\s\S]*bottom:\s*auto/);
+    expect(homeStyles).toContain('calc(-50% + var(--py, 0px))');
   });
 
   test('keeps WORLD above the mascot in the visual stacking order', () => {
-    expect(globalStyles).toMatch(/\.world\s*\{[\s\S]*z-index:\s*3/);
-    expect(globalStyles).not.toMatch(/\.hero-title-lockup\s*\{[\s\S]*transform:\s*translateY\(-50%\)/);
+    expect(homeStyles).toMatch(/\.world\s*\{[\s\S]*z-index:\s*3/);
+    expect(homeStyles).not.toMatch(/\.hero-title-lockup\s*\{[\s\S]*transform:\s*translateY\(-50%\)/);
   });
 
   test('does not start the mascot entrance below its centered position', () => {
@@ -48,25 +50,25 @@ describe('homepage mascot hero', () => {
   });
 
   test('keeps the mascot click animation separate from responsive positioning', () => {
-    expect(globalStyles).toContain('rotate(var(--character-click-rotate, 0deg))');
-    expect(globalStyles).toContain('scale(var(--character-click-scale, 1))');
+    expect(homeStyles).toContain('rotate(var(--character-click-rotate, 0deg))');
+    expect(homeStyles).toContain('scale(var(--character-click-scale, 1))');
     expect(motionScript).toMatch(/['"]--character-click-scale['"]:\s*0\.94/);
     expect(motionScript).toMatch(/['"]--character-click-rotate['"]:\s*['"]-1\.2deg['"]/);
     expect(motionScript).not.toMatch(/\{\s*scale:\s*0\.94,\s*rotate:\s*-1\.2/);
   });
 
   test('scales the mobile title while preserving the centered composition', () => {
-    expect(globalStyles).toMatch(
+    expect(homeStyles).toMatch(
       /@media \(max-width: 520px\) \{[\s\S]*?\.hello\s*\{[\s\S]*?font-size:\s*88px[\s\S]*?\.world\s*\{[\s\S]*?font-size:\s*80px[\s\S]*?\.hero-character\s*\{[\s\S]*?height:\s*min\(65dvh, 480px\)/,
     );
-    expect(globalStyles).toMatch(
+    expect(homeStyles).toMatch(
       /@media \(max-width: 520px\) \{[\s\S]*?\.hero-stage\s*\{[\s\S]*?--character-center-y:\s*50%[\s\S]*?--title-center-y:\s*var\(--character-center-y\)[\s\S]*?--title-world-offset:\s*110px/,
     );
   });
 
   test('keeps one theme control in the mobile header', () => {
-    expect(globalStyles).toMatch(
-      /@media \(max-width: 1000px\) \{[\s\S]*?\.header-actions \.theme-switcher\s*\{\s*display:\s*none;/,
+    expect(headerStyles).toMatch(
+      /@media \(max-width: 1000px\) \{[\s\S]*?\.header-actions :global\(\.theme-switcher\)\s*\{\s*display:\s*none;/,
     );
   });
 

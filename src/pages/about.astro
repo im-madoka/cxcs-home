@@ -1,4 +1,5 @@
 ---
+import Button from '../components/Button.astro';
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
@@ -122,12 +123,12 @@ const { site: siteData } = config;
       <h2>了解得差不多了。<br />来认识一下我们？</h2>
       <p>随时欢迎你的加入，或者只是来 QQ 群里聊聊技术。</p>
       <div class="closing-actions">
-        <a class="button button-primary" href="/join">
+        <Button variant="primary" href="/join">
           加入计算机协会 <ArrowRight size={14} />
-        </a>
-        <a class="button button-secondary" href="/articles">
+        </Button>
+        <Button variant="secondary" href="/articles">
           浏览近期文章 <ArrowRight size={14} />
-        </a>
+        </Button>
       </div>
     </div>
   </section>

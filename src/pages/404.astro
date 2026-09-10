@@ -1,4 +1,5 @@
 ---
+import Button from '../components/Button.astro';
 import { ArrowLeft, ArrowRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import config from '../config';
@@ -19,12 +20,12 @@ const { site: siteData } = config;
       </div>
 
       <div class="error-actions">
-        <a class="button button-primary" href="/">
+        <Button variant="primary" href="/">
           <ArrowLeft size={14} /> 返回首页
-        </a>
-        <a class="button button-secondary" href="/articles">
+        </Button>
+        <Button variant="secondary" href="/articles">
           看看最近的内容 <ArrowRight size={14} />
-        </a>
+        </Button>
       </div>
     </div>
   </section>

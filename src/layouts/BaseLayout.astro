@@ -28,8 +28,126 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
     <SiteHeader />
     <main id="main-content"><slot /></main>
     <SiteFooter />
-    <script src="../assets/scripts/temporal-status.ts"></script>
-    <script src="../assets/scripts/page-motion.ts"></script>
-    <script src="../assets/scripts/navigation-progress.ts"></script>
+    <script>
+      import type { TransitionBeforePreparationEvent } from 'astro:transitions/client';
+
+      const START_PROGRESS = 0.08;
+      const PREPARED_PROGRESS = 0.9;
+      const TRICKLE_LIMIT = 0.86;
+      const TRICKLE_INTERVAL = 180;
+      const RESET_DELAY = 320;
+
+      let activeSignal: AbortSignal | null = null;
+      let progress = 0;
+      let trickleTimer: number | undefined;
+      let resetTimer: number | undefined;
+
+      const getProgressElement = () => document.querySelector<HTMLElement>('.navigation-progress');
+
+      const clearTimers = () => {
+        if (trickleTimer !== undefined) {
+          window.clearInterval(trickleTimer);
+          trickleTimer = undefined;
+        }
+        if (resetTimer !== undefined) {
+          window.clearTimeout(resetTimer);
+          resetTimer = undefined;
+        }
+      };
+
+      const renderProgress = (value: number, state: 'idle' | 'active' | 'complete') => {
+        progress = value;
+        const element = getProgressElement();
+        if (!element) return;
+
+        element.style.setProperty('--navigation-progress', String(value));
+        element.dataset.state = state;
+      };
+
+      const resetProgress = (signal: AbortSignal) => {
+        if (signal !== activeSignal) return;
+
+        clearTimers();
+        activeSignal = null;
+        renderProgress(0, 'idle');
+      };
+
+      document.addEventListener('astro:before-preparation', (rawEvent) => {
+        const event = rawEvent as TransitionBeforePreparationEvent;
+
+        clearTimers();
+        activeSignal = event.signal;
+        renderProgress(START_PROGRESS, 'active');
+
+        event.signal.addEventListener('abort', () => resetProgress(event.signal), { once: true });
+        trickleTimer = window.setInterval(() => {
+          if (event.signal !== activeSignal) return;
+
+          const nextProgress = progress + Math.max(0.01, (TRICKLE_LIMIT - progress) * 0.12);
+          renderProgress(Math.min(TRICKLE_LIMIT, nextProgress), 'active');
+        }, TRICKLE_INTERVAL);
+      });
+
+      document.addEventListener('astro:after-preparation', () => {
+        if (!activeSignal) return;
+        renderProgress(Math.max(progress, PREPARED_PROGRESS), 'active');
+      });
+
+      document.addEventListener('astro:page-load', () => {
+        if (!activeSignal) return;
+
+        const completedSignal = activeSignal;
+        clearTimers();
+        renderProgress(1, 'complete');
+        resetTimer = window.setTimeout(() => resetProgress(completedSignal), RESET_DELAY);
+      });
+    </script>
   </body>
 </html>
+
+<style>
+  .navigation-progress {
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--blue);
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleX(var(--navigation-progress, 0));
+    transform-origin: left center;
+    transition:
+      transform 180ms ease-out,
+      opacity 120ms ease;
+  }
+  .navigation-progress[data-state='active'] {
+    opacity: 1;
+  }
+  .navigation-progress[data-state='complete'] {
+    opacity: 0;
+    transition:
+      transform 120ms ease-out,
+      opacity 180ms ease 100ms;
+  }
+
+  .skip-link {
+    position: fixed;
+    z-index: 100;
+    top: 10px;
+    left: 10px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: var(--bg);
+    transform: translateY(-150%);
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+  main {
+    overflow: clip;
+  }
+</style>

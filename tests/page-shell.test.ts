@@ -1,13 +1,13 @@
 import { beforeAll, describe, expect, test } from 'bun:test';
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const projectRoot = process.cwd();
 let baseLayout = '';
-let pageMotion = '';
+let pageLoad = '';
+let pageHero = '';
 let navigationProgress = '';
-let globalStyles = '';
 let themeSwitcher = '';
 const pages: Array<[string, string]> = [
   ['about', 'ABOUT CXCS'],
@@ -23,10 +23,9 @@ beforeAll(() => {
     stdio: 'pipe',
   });
   baseLayout = readFileSync(join(projectRoot, 'src/layouts/BaseLayout.astro'), 'utf8');
-  pageMotion = readFileSync(join(projectRoot, 'src/assets/scripts/page-motion.ts'), 'utf8');
-  const navigationProgressPath = join(projectRoot, 'src/assets/scripts/navigation-progress.ts');
-  navigationProgress = existsSync(navigationProgressPath) ? readFileSync(navigationProgressPath, 'utf8') : '';
-  globalStyles = readFileSync(join(projectRoot, 'src/assets/styles/global.css'), 'utf8');
+  pageLoad = readFileSync(join(projectRoot, 'src/assets/scripts/page-load.ts'), 'utf8');
+  pageHero = readFileSync(join(projectRoot, 'src/components/PageHero.astro'), 'utf8');
+  navigationProgress = baseLayout;
   themeSwitcher = readFileSync(join(projectRoot, 'src/components/ThemeSwitcher.astro'), 'utf8');
 }, 30_000);
 
@@ -35,27 +34,27 @@ describe('inner page shell', () => {
     expect(baseLayout).toContain("import { ClientRouter } from 'astro:transitions';");
     expect(baseLayout).toContain('<ClientRouter />');
     expect(baseLayout).not.toContain('transition:name="page-main"');
-    expect(pageMotion).toContain("document.addEventListener('astro:page-load'");
+    expect(pageHero).toContain('onPageLoad(');
+    expect(pageLoad).toContain("document.addEventListener('astro:page-load'");
   });
 
   test('shows persistent progress while Astro prepares a new page', () => {
     expect(baseLayout).toContain('class="navigation-progress"');
     expect(baseLayout).toContain('transition:persist="navigation-progress"');
-    expect(baseLayout).toContain('navigation-progress.ts');
     expect(navigationProgress).toContain("document.addEventListener('astro:before-preparation'");
     expect(navigationProgress).toContain("document.addEventListener('astro:after-preparation'");
     expect(navigationProgress).toContain("document.addEventListener('astro:page-load'");
     expect(navigationProgress).toContain("event.signal.addEventListener('abort'");
-    expect(globalStyles).toMatch(/\.navigation-progress\s*\{[\s\S]*position:\s*fixed/);
-    expect(globalStyles).toMatch(/\.navigation-progress\[data-state='active'\]\s*\{[\s\S]*opacity:\s*1/);
+    expect(baseLayout).toMatch(/\.navigation-progress\s*\{[\s\S]*position:\s*fixed/);
+    expect(baseLayout).toMatch(/\.navigation-progress\[data-state='active'\]\s*\{[\s\S]*opacity:\s*1/);
   });
 
   test('uses one shared hero height and the current page name on every target page', () => {
-    expect(globalStyles).toMatch(/\.page-hero\s*\{[\s\S]*--page-hero-height:/);
+    expect(pageHero).toMatch(/\.page-hero\s*\{[\s\S]*--page-hero-height:/);
 
     for (const [path, label] of pages) {
       const html = readFileSync(join(projectRoot, 'dist', path, 'index.html'), 'utf8');
-      const hero = html.match(/<section class="page-hero[^"]*">[\s\S]*?<\/section>/)?.[0] || '';
+      const hero = html.match(/<section class="page-hero[^"]*"[^>]*>[\s\S]*?<\/section>/)?.[0] || '';
       expect(hero).toContain('class="page-hero');
       expect(hero).toContain(label);
       expect(hero).not.toContain('>05<');
@@ -76,9 +75,9 @@ describe('inner page shell', () => {
     expect(themeSwitcher).toContain(
       'Delegate controls so the same handlers continue working after an Astro page swap.',
     );
-    expect(globalStyles).toMatch(/:root\[data-theme-transition='true'\]::view-transition-new\(root\)/);
-    expect(globalStyles).toContain('animation: theme-reveal');
-    expect(globalStyles).not.toMatch(/(?:^|\n)::view-transition-new\(root\)\s*\{\s*clip-path:\s*circle/);
+    expect(themeSwitcher).toMatch(/:root\[data-theme-transition='true'\]::view-transition-new\(root\)/);
+    expect(themeSwitcher).toContain('animation: theme-reveal');
+    expect(themeSwitcher).not.toMatch(/:global\(::view-transition-new\(root\)\)\s*\{\s*clip-path:\s*circle/);
     expect(siteHeader).not.toContain('transition:persist');
     expect(siteFooter).not.toContain('transition:persist');
   });

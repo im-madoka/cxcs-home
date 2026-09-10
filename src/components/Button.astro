@@ -1,14 +1,73 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
-const { href, label, variant = 'primary', external = false, class: className = '' } = Astro.props;
+
+type Props = HTMLAttributes<'a'> &
+  HTMLAttributes<'button'> & {
+    label?: string;
+    variant?: 'primary' | 'secondary';
+    external?: boolean;
+  };
+
+const { href, label, variant = 'primary', external = false, class: className, ...attributes } = Astro.props;
 const Tag = href ? 'a' : 'button';
 ---
 
 <Tag
-  class={`button button-${variant} ${className}`}
+  class:list={['button', `button-${variant}`, className]}
   href={href}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
+  {...attributes}
 >
-  <span>{label}</span>{external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
+  <slot><span>{label}</span>{external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}</slot>
 </Tag>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 42px;
+    padding: 10px 20px;
+    background: var(--blue);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--blue);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .button:hover {
+    transform: translateY(-2px);
+    color: #ffffff;
+  }
+  .button:active {
+    transform: translateY(0);
+  }
+  .button-primary {
+    background: var(--blue);
+    color: #ffffff;
+    border-color: var(--blue);
+  }
+  .button-primary:hover {
+    background: var(--blue-deep);
+    border-color: var(--blue-deep);
+  }
+  .button-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--line);
+  }
+  .button-secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: var(--surface);
+  }
+</style>

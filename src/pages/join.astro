@@ -1,4 +1,5 @@
 ---
+import Button from '../components/Button.astro';
 import { ArrowRight, ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
@@ -125,14 +126,15 @@ const faqs = [
           <div class="qq-block">
             <span class="qq-label">官方纳新群号</span>
             <span class="qq-number">{recruitment.qqGroup}</span>
-            <a
-              class="button button-primary qq-action"
+            <Button
+              variant="primary"
+              class="qq-action"
               href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               一键加群 <ArrowUpRight size={14} />
-            </a>
+            </Button>
           </div>
         </div>
 
@@ -204,18 +206,18 @@ const faqs = [
         <h2>准备好了？立刻出发。</h2>
         <p>期待在下一个项目、下一场比赛，或者下一次技术沙龙里看见你的名字。</p>
         <div class="cta-actions">
-          <a
-            class="button button-primary"
+          <Button
+            variant="primary"
             href={`https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&noverify=0&group_code=${recruitment.qqGroup}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             加群：{recruitment.qqGroup}
             <ArrowUpRight size={14} />
-          </a>
-          <a class="button button-secondary" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+          </Button>
+          <Button variant="secondary" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
             先读读 CXCS Guide <ArrowRight size={14} />
-          </a>
+          </Button>
         </div>
       </div>
     </div>
