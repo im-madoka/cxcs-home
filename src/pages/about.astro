@@ -1,6 +1,6 @@
 ---
 import Button from '../components/Button.astro';
-import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import config from '../config';
@@ -13,7 +13,11 @@ const { site: siteData } = config;
     title="喜欢计算机，也喜欢折腾。"
     description="有人第一次写代码，有人做项目、打比赛、折腾服务器，也有人只是觉得这些东西挺有意思。"
   >
-    <Fragment slot="title">喜欢计算机，<br />也喜欢折腾。</Fragment>
+    <Fragment slot="title">
+      喜欢计算机，
+      <br />
+      也喜欢折腾。
+    </Fragment>
     <div slot="meta" class="hero-meta">
       <span>东南大学成贤学院计算机协会</span>
       <span>·</span>
@@ -25,8 +29,14 @@ const { site: siteData } = config;
   <section class="section">
     <div class="wrap about-intro-grid">
       <div>
-        <div class="section-line"><span>COMMUNITY</span></div>
-        <h2>不是培训班，<br />是一群人的社区。</h2>
+        <div class="section-line">
+          <span>COMMUNITY</span>
+        </div>
+        <h2>
+          不是培训班，
+          <br />
+          是一群人的社区。
+        </h2>
       </div>
       <div class="about-copy">
         <p>不知道从哪里开始，可以大家一起学。网站、工具、社群 Bot、开发板，想到什么就试着动手做点什么。</p>
@@ -43,7 +53,9 @@ const { site: siteData } = config;
   <!-- Values Grid -->
   <section class="section values-section">
     <div class="wrap">
-      <div class="section-line"><span>04 / VALUES</span></div>
+      <div class="section-line">
+        <span>04 / VALUES</span>
+      </div>
       <div class="section-heading">
         <h2>我们在意的原则。</h2>
         <p>技术在变，但推动我们聚在一起的东西一直没变。</p>
@@ -80,9 +92,15 @@ const { site: siteData } = config;
   <!-- Digital Space (Ecosystem Links) -->
   <section class="section ecosystem-links-section">
     <div class="wrap">
-      <div class="section-line"><span>ONLINE SITES</span></div>
+      <div class="section-line">
+        <span>ONLINE SITES</span>
+      </div>
       <div class="section-heading">
-        <h2>我们也在搭建<br />自己的数字空间。</h2>
+        <h2>
+          我们也在搭建
+          <br />
+          自己的数字空间。
+        </h2>
         <p>同一个计算机协会，不同维度的探索与支持。</p>
       </div>
 
@@ -93,7 +111,9 @@ const { site: siteData } = config;
             <h4>协会官方网站</h4>
             <p>协会动态、项目展示与招新入口汇总。</p>
           </div>
-          <span class="eco-go"><ArrowRight size={16} /></span>
+          <span class="eco-go">
+            <ArrowRight size={16} />
+          </span>
         </a>
 
         <a class="eco-card" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
@@ -102,7 +122,9 @@ const { site: siteData } = config;
             <h4>学习指南与知识库</h4>
             <p>从新手入门到进阶实践，体系化经验沉淀。</p>
           </div>
-          <span class="eco-go"><ArrowUpRight size={16} /></span>
+          <span class="eco-go">
+            <ArrowUpRight size={16} />
+          </span>
         </a>
 
         <a class="eco-card" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
@@ -111,7 +133,9 @@ const { site: siteData } = config;
             <h4>成员作品部署平台</h4>
             <p>一键托管静态站点与网页项目，即刻上线分享。</p>
           </div>
-          <span class="eco-go"><ArrowUpRight size={16} /></span>
+          <span class="eco-go">
+            <ArrowUpRight size={16} />
+          </span>
         </a>
       </div>
     </div>
@@ -120,7 +144,11 @@ const { site: siteData } = config;
   <!-- Next Step -->
   <section class="closing">
     <div class="wrap">
-      <h2>了解得差不多了。<br />来认识一下我们？</h2>
+      <h2>
+        了解得差不多了。
+        <br />
+        来认识一下我们？
+      </h2>
       <p>随时欢迎你的加入，或者只是来 QQ 群里聊聊技术。</p>
       <div class="closing-actions">
         <Button variant="primary" href="/join">

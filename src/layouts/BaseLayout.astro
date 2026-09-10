@@ -22,11 +22,19 @@ const canonical = new URL(Astro.url.pathname, siteData.url).toString();
     <ClientRouter />
   </head>
   <body>
-    <div class="navigation-progress" data-state="idle" aria-hidden="true" transition:persist="navigation-progress">
-    </div>
-    <a class="skip-link" href="#main-content">跳转到主要内容</a>
+    <div
+      class="navigation-progress"
+      data-state="idle"
+      aria-hidden="true"
+      transition:persist="navigation-progress"
+    ></div>
+    <a class="skip-link" href="#main-content">
+      跳转到主要内容
+    </a>
     <SiteHeader />
-    <main id="main-content"><slot /></main>
+    <main id="main-content">
+      <slot />
+    </main>
     <SiteFooter />
     <script>
       import type { TransitionBeforePreparationEvent } from 'astro:transitions/client';

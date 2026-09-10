@@ -1,6 +1,6 @@
 ---
 import Button from '../components/Button.astro';
-import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import config from '../config';
@@ -72,7 +72,11 @@ const faqs = [
     description="这里没有繁琐的考核，只有一群愿意把时间花在有意思事情上的人。无论你是否会写第一行代码，只要你愿意动手，就随时欢迎。"
     class="join-hero"
   >
-    <Fragment slot="title">加入计协，<br />把想法变成作品。</Fragment>
+    <Fragment slot="title">
+      加入计协，
+      <br />
+      把想法变成作品。
+    </Fragment>
     <div slot="meta" class="status-indicator">
       <span class={`status-badge status-${status}`}>{statusLabels[status] || statusLabels.open}</span>
       <span class="status-tip">2026 年秋季纳新群已就绪</span>
@@ -88,20 +92,18 @@ const faqs = [
       </div>
 
       <div class="audience-grid">
-        {
-          audiences.map((item) => (
-            <article class="audience-card">
-              <span class="audience-num">{item.num}</span>
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
-              <div class="chips">
-                {item.chips.map((chip) => (
-                  <span class="chip">{chip}</span>
-                ))}
-              </div>
-            </article>
-          ))
-        }
+        {audiences.map((item) => (
+          <article class="audience-card">
+            <span class="audience-num">{item.num}</span>
+            <h3>{item.title}</h3>
+            <p>{item.desc}</p>
+            <div class="chips">
+              {item.chips.map((chip) => (
+                <span class="chip">{chip}</span>
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -181,19 +183,17 @@ const faqs = [
       </div>
 
       <div class="faq-list">
-        {
-          faqs.map((faq) => (
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>{faq.q}</span>
-                <span class="faq-icon" aria-hidden="true" />
-              </summary>
-              <div class="faq-answer">
-                <p>{faq.a}</p>
-              </div>
-            </details>
-          ))
-        }
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>{faq.q}</span>
+              <span class="faq-icon" aria-hidden="true" />
+            </summary>
+            <div class="faq-answer">
+              <p>{faq.a}</p>
+            </div>
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -202,7 +202,9 @@ const faqs = [
   <section class="section join-bottom">
     <div class="wrap">
       <div class="join-bottom-card">
-        <div class="section-line"><span>GET STARTED</span></div>
+        <div class="section-line">
+          <span>GET STARTED</span>
+        </div>
         <h2>准备好了？立刻出发。</h2>
         <p>期待在下一个项目、下一场比赛，或者下一次技术沙龙里看见你的名字。</p>
         <div class="cta-actions">

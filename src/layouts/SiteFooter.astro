@@ -21,30 +21,27 @@ const { footer: footerGroups, recruitment } = config;
             class="footer-wordmark"
             role="img"
             aria-label="东南大学成贤学院校团委科创部大学生科学技术协会（计算机分会）"
-          >
-          </div>
+          ></div>
         </div>
         <p class="footer-tagline">用代码赋予思想形状，以好奇探寻技术本质。</p>
       </div>
 
-      {
-        footerGroups.map((group) => (
-          <div class="footer-group">
-            <strong class="group-title">{group.title.toUpperCase()}</strong>
-            <div class="footer-links">
-              {group.links.map((link) => (
-                <a
-                  href={link.href}
-                  target={'external' in link && link.external ? '_blank' : undefined}
-                  rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
+      {footerGroups.map((group) => (
+        <div class="footer-group">
+          <strong class="group-title">{group.title.toUpperCase()}</strong>
+          <div class="footer-links">
+            {group.links.map((link) => (
+              <a
+                href={link.href}
+                target={'external' in link && link.external ? '_blank' : undefined}
+                rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
-        ))
-      }
+        </div>
+      ))}
 
       <div class="footer-group">
         <strong class="group-title">CONTACT</strong>

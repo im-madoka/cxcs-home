@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { ArrowRight } from 'lucide-astro';
+import { ArrowRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ArticleTabs from '../../components/ArticleTabs.astro';
@@ -32,64 +32,60 @@ const rest = articles.filter((entry) => entry.id !== featured?.id);
       <ArticleTabs />
 
       <!-- Featured Story Card -->
-      {
-        featured && (
-          <a class="story-card" href={`/articles/${featured.id}`}>
-            <img
-              class="story-cover"
-              src={getArticleCover(featured)}
-              alt={featured.data.cover?.alt || featured.data.title}
-              loading="lazy"
-            />
-            <div class="story-content">
-              <div class="eyebrow">
-                {featured.data.type.toUpperCase()} · {featured.data.publishedAt.toLocaleDateString('zh-CN')}
-              </div>
-              <h3>{featured.data.title}</h3>
-              <p>{featured.data.description}</p>
-              <span class="arrow-link">
-                阅读全文 <ArrowRight size={15} />
-              </span>
+      {featured && (
+        <a class="story-card" href={`/articles/${featured.id}`}>
+          <img
+            class="story-cover"
+            src={getArticleCover(featured)}
+            alt={featured.data.cover?.alt || featured.data.title}
+            loading="lazy"
+          />
+          <div class="story-content">
+            <div class="eyebrow">
+              {featured.data.type.toUpperCase()} · {featured.data.publishedAt.toLocaleDateString('zh-CN')}
             </div>
-          </a>
-        )
-      }
+            <h3>{featured.data.title}</h3>
+            <p>{featured.data.description}</p>
+            <span class="arrow-link">
+              阅读全文 <ArrowRight size={15} />
+            </span>
+          </div>
+        </a>
+      )}
 
       <!-- Normal Article Grid -->
       <div class="editorial-grid">
-        {
-          rest.map((article) => (
-            <article class="editorial-item">
-              <a class="article-card" href={`/articles/${article.id}`}>
-                <div class="article-cover">
-                  <img
-                    src={getArticleCover(article)}
-                    alt={article.data.cover?.alt || article.data.title}
-                    loading="lazy"
-                  />
+        {rest.map((article) => (
+          <article class="editorial-item">
+            <a class="article-card" href={`/articles/${article.id}`}>
+              <div class="article-cover">
+                <img
+                  src={getArticleCover(article)}
+                  alt={article.data.cover?.alt || article.data.title}
+                  loading="lazy"
+                />
+              </div>
+              <div class="article-body">
+                <div class="article-meta">
+                  <span class="article-type">{getArticleCategory(article.data.type).label}</span>
+                  <span>·</span>
+                  <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                  {article.data.authors.length > 0 && (
+                    <>
+                      <span>·</span>
+                      <span>{article.data.authors.join(' / ')}</span>
+                    </>
+                  )}
                 </div>
-                <div class="article-body">
-                  <div class="article-meta">
-                    <span class="article-type">{getArticleCategory(article.data.type).label}</span>
-                    <span>·</span>
-                    <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                    {article.data.authors.length > 0 && (
-                      <>
-                        <span>·</span>
-                        <span>{article.data.authors.join(' / ')}</span>
-                      </>
-                    )}
-                  </div>
-                  <h3>{article.data.title}</h3>
-                  <p>{article.data.description}</p>
-                  <span class="article-more">
-                    阅读全文 <ArrowRight size={13} />
-                  </span>
-                </div>
-              </a>
-            </article>
-          ))
-        }
+                <h3>{article.data.title}</h3>
+                <p>{article.data.description}</p>
+                <span class="article-more">
+                  阅读全文 <ArrowRight size={13} />
+                </span>
+              </div>
+            </a>
+          </article>
+        ))}
       </div>
     </div>
   </section>

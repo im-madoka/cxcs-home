@@ -12,11 +12,11 @@ function readOutput(path: string) {
   return readFileSync(join(fixtureRoot, 'dist', path), 'utf8');
 }
 
-function writeArticle(folder: string, type: string, extra = '', body = 'Fixture article body.') {
+function writeArticle(folder: string, type: string, extra = '', body = 'Fixture article body.', format = 'mdx') {
   const directory = join(fixtureRoot, 'src/content/articles', folder);
   mkdirSync(directory, { recursive: true });
   writeFileSync(
-    join(directory, 'index.mdx'),
+    join(directory, `index.${format}`),
     `---\ntitle: Fixture ${folder}\ndescription: Integration fixture\ntype: ${type}\npublishedAt: 2026-09-10\n${extra}---\n\n${body}\n`,
   );
   return directory;
@@ -33,6 +33,7 @@ beforeAll(() => {
   for (const file of ['src', 'package.json', 'astro.config.mjs', 'tsconfig.json']) {
     cpSync(join(projectRoot, file), join(fixtureRoot, file), { recursive: true });
   }
+  rmSync(join(fixtureRoot, 'src/content/articles'), { recursive: true });
   symlinkSync(join(projectRoot, 'node_modules'), join(fixtureRoot, 'node_modules'), 'dir');
   symlinkSync(join(projectRoot, 'public'), join(fixtureRoot, 'public'), 'dir');
   // Keep Astro component IDs inside this isolated project when sharing dependencies.
@@ -69,11 +70,11 @@ beforeAll(() => {
     '![Local body image](./assets/images/cover.jpg)\n\n<span data-mdx-result>{1 + 1}</span>',
   );
   mkdirSync(join(directory, 'assets/images'), { recursive: true });
-  cpSync(
-    join(projectRoot, 'src/content/articles/blog/cxcs-page/assets/images/cover.jpg'),
-    join(directory, 'assets/images/cover.jpg'),
-  );
+  cpSync(join(projectRoot, 'public/assets/articles/code.jpg'), join(directory, 'assets/images/cover.jpg'));
   writeFileSync(join(directory, 'assets/images/ignored.mdx'), 'This is an asset, not an article.');
+  writeFileSync(join(directory, 'assets/images/ignored.md'), 'This is an asset, not an article.');
+  writeArticle('blog/cxcs-page', 'blog', 'featured: true\n');
+  writeArticle('blog/blue-hour', 'blog');
   writeArticle('notes/generated-cover', 'notes');
   writeArticle('news/blue-hour', 'news');
   writeArticle('notes/hidden', 'notes', 'draft: true\n');
@@ -83,6 +84,30 @@ beforeAll(() => {
     'notes',
     'cover:\n  image: /assets/brand/association-emblem.png\n  alt: Public cover\n',
   );
+
+  const mathBody = String.raw`Inline formula: $E = mc^2$ and $\frac{a_1}{b_2}$.
+
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$
+
+Escaped currency: \$42.
+
+\`$not_math$\`
+
+\`\`\`text
+$$not_math$$
+\`\`\`
+`.replaceAll('\\`', '`');
+  for (const format of ['md', 'mdx']) {
+    writeArticle(
+      `notes/math-${format}`,
+      'notes',
+      '',
+      mathBody + (format === 'mdx' ? '\n<span data-mdx-math>{1 + 1}</span>' : ''),
+      format,
+    );
+  }
 
   execFileSync(process.execPath, ['run', 'build'], { cwd: fixtureRoot, stdio: 'pipe' });
 }, 60_000);
@@ -119,6 +144,35 @@ describe('article directories and configured categories', () => {
       'src="/assets/brand/association-emblem.png"',
     );
   });
+
+  for (const format of ['md', 'mdx']) {
+    test(`renders inline and display math in ${format.toUpperCase()} while preserving code and currency`, () => {
+      const html = readOutput(`articles/notes/math-${format}/index.html`);
+      expect(html.match(/class="katex"/g)).toHaveLength(3);
+      expect(html.match(/class="katex-display"/g)).toHaveLength(1);
+      expect(html.match(/<math\b/g)).toHaveLength(3);
+      expect(html).toContain('encoding="application/x-tex"');
+      expect(html).not.toContain('katex-error');
+      expect(html).toContain('Escaped currency: $42.');
+      expect(html).toContain('<code>$not_math$</code>');
+      expect(html).toContain('$$not_math$$');
+      expect(html).not.toContain('$E = mc^2$');
+      if (format === 'mdx') {
+        expect(html.match(/<span[^>]*data-mdx-math[^>]*>(.*?)<\/span>/)?.[1]).toBe('2');
+      }
+      expect(readOutput('articles/notes/index.html')).toContain(`/articles/notes/math-${format}`);
+      expect(readOutput('rss.xml')).toContain(`/articles/notes/math-${format}/`);
+      expect(readOutput('sitemap.xml')).toContain(`/articles/notes/math-${format}`);
+
+      const css = Array.from(html.matchAll(/<link[^>]+href="([^"]+\.css)"/g), (match) => readOutput(match[1])).join(
+        '\n',
+      );
+      expect(css).toContain('.katex');
+      const fonts = Array.from(css.matchAll(/url\(["']?([^\s)"']*KaTeX[^\s)"']*\.woff2)["']?\)/g), (match) => match[1]);
+      expect(fonts.length).toBeGreaterThan(0);
+      for (const font of fonts) expect(existsSync(join(fixtureRoot, 'dist', font))).toBe(true);
+    });
+  }
 
   test('supports the same article name in different categories and generates category covers', () => {
     for (const id of ['news/blue-hour', 'blog/blue-hour', 'notes/generated-cover']) {
@@ -165,6 +219,16 @@ describe('article directories and configured categories', () => {
     const directory = writeArticle('elsewhere/local-images', 'notes');
     try {
       expect(failingBuild()).toContain('Duplicate article "notes/local-images"');
+    } finally {
+      rmSync(directory, { recursive: true });
+    }
+  }, 30_000);
+
+  test('rejects Markdown and MDX sharing the same article directory', () => {
+    const directory = writeArticle('notes/duplicate-formats', 'notes');
+    writeArticle('notes/duplicate-formats', 'notes', '', 'Duplicate Markdown article.', 'md');
+    try {
+      expect(failingBuild()).toContain('Duplicate article "notes/duplicate-formats"');
     } finally {
       rmSync(directory, { recursive: true });
     }

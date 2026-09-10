@@ -5,9 +5,10 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 
 const projectRoot = process.cwd();
-const generatedCover = '/generated/article-covers/blog/blue-hour.webp';
+const articleId = 'news/annual-general-meeting-succession';
+const generatedCover = `/generated/article-covers/${articleId}.webp`;
 let articlesPage = '';
-let blogPage = '';
+let categoryPage = '';
 let homePage = '';
 
 beforeAll(() => {
@@ -17,7 +18,7 @@ beforeAll(() => {
   });
 
   articlesPage = readFileSync(join(projectRoot, 'dist/articles/index.html'), 'utf8');
-  blogPage = readFileSync(join(projectRoot, 'dist/articles/blog/index.html'), 'utf8');
+  categoryPage = readFileSync(join(projectRoot, 'dist/articles/news/index.html'), 'utf8');
   homePage = readFileSync(join(projectRoot, 'dist/index.html'), 'utf8');
 }, 30_000);
 
@@ -47,8 +48,8 @@ describe('generated article covers', () => {
   });
 
   test('uses the same generated cover everywhere the article is listed', () => {
-    expect(articleCard(articlesPage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
-    expect(articleCard(blogPage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
-    expect(articleCard(homePage, 'blog/blue-hour')).toContain(`src="${generatedCover}"`);
+    expect(articleCard(articlesPage, articleId)).toContain(`src="${generatedCover}"`);
+    expect(articleCard(categoryPage, articleId)).toContain(`src="${generatedCover}"`);
+    expect(articleCard(homePage, articleId)).toContain(`src="${generatedCover}"`);
   });
 });

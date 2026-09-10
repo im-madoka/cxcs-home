@@ -1,6 +1,6 @@
 ---
 import Button from '../components/Button.astro';
-import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import config from '../config';
@@ -23,9 +23,13 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 
     <div class="hero-stage">
       <div class="hero-title-lockup">
-        <div class="hello" aria-hidden="true">HELLO</div>
+        <div class="hello" aria-hidden="true">
+          HELLO
+        </div>
 
-        <div class="world" aria-hidden="true">WORLD.</div>
+        <div class="world" aria-hidden="true">
+          WORLD.
+        </div>
       </div>
 
       <img
@@ -41,10 +45,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 
     <div class="hero-copy">
       <h1 id="hero-title">
-        <span>欢迎来到</span>东南大学成贤学院<br />计算机协会
+        <span>欢迎来到</span>东南大学成贤学院
+        <br />
+        计算机协会
       </h1>
       <p>
-        在纯粹的逻辑与无穷的构想之间，<br />用代码敲出真实世界的回响。
+        在纯粹的逻辑与无穷的构想之间，
+        <br />
+        用代码敲出真实世界的回响。
       </p>
     </div>
 
@@ -58,7 +66,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     </div>
 
     <div class="hero-aside">
-      代码赋予思想形状，<br />好奇赋予代码意义。
+      代码赋予思想形状，
+      <br />
+      好奇赋予代码意义。
       <small>CODE GIVES FORM. CURIOSITY GIVES MEANING.</small>
     </div>
   </section>
@@ -67,7 +77,11 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   <section class="section wrap" id="what-we-do" aria-labelledby="what-title">
     <div class="section-line">WHAT WE DO</div>
     <div class="section-heading">
-      <h2 id="what-title">在课堂之外，<br />探索技术与创造的边界。</h2>
+      <h2 id="what-title">
+        在课堂之外，
+        <br />
+        探索技术与创造的边界。
+      </h2>
       <p>从底层原理的推敲，到面向现实的工程构筑。我们聚集于此，让抽象的构想落地生根，让未解的疑问找到答案。</p>
     </div>
 
@@ -78,8 +92,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <span>探究本质</span>
         </div>
         <h3>理解原理，而非止于使用</h3>
-        <p>从系统的底层运转，到现代应用的设计与工程。<br />我们不仅学习运用工具，更去理解其背后的逻辑与美感。</p>
-        <span class="daily-symbol" aria-hidden="true">&lt;/&gt;</span>
+        <p>
+          从系统的底层运转，到现代应用的设计与工程。
+          <br />
+          我们不仅学习运用工具，更去理解其背后的逻辑与美感。
+        </p>
+        <span class="daily-symbol" aria-hidden="true">
+          &lt;/&gt;
+        </span>
       </article>
 
       <article class="daily">
@@ -88,8 +108,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <span>构建即是思考</span>
         </div>
         <h3>从无到有地构建</h3>
-        <p>一个解决校园痛点的脚本、一个服务师生的平台，或是一场纯粹的技术实验。<br />只要敲下代码，想法便有了实体。</p>
-        <span class="daily-symbol orange" aria-hidden="true">↗</span>
+        <p>
+          一个解决校园痛点的脚本、一个服务师生的平台，或是一场纯粹的技术实验。
+          <br />
+          只要敲下代码，想法便有了实体。
+        </p>
+        <span class="daily-symbol orange" aria-hidden="true">
+          ↗
+        </span>
       </article>
 
       <article class="daily">
@@ -98,8 +124,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <span>协作攻坚</span>
         </div>
         <h3>在竞技与协作中沉淀</h3>
-        <p>在各类赛事与黑客松中并肩攻坚。<br />复杂的工程从不是孤胆英雄的舞台，团队协作让每一个难关都有所支撑。</p>
-        <span class="daily-symbol" aria-hidden="true">&#123; &#125;</span>
+        <p>
+          在各类赛事与黑客松中并肩攻坚。
+          <br />
+          复杂的工程从不是孤胆英雄的舞台，团队协作让每一个难关都有所支撑。
+        </p>
+        <span class="daily-symbol" aria-hidden="true">
+          &#123; &#125;
+        </span>
       </article>
 
       <article class="daily">
@@ -108,8 +140,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <span>长久共鸣</span>
         </div>
         <h3>找到同频的探索者</h3>
-        <p>工具与技术总在更迭，但那些<br />深夜并肩调试 Bug、因突破而击掌相庆的同伴，始终是大学里最珍贵的印记。</p>
-        <span class="daily-symbol" aria-hidden="true">++</span>
+        <p>
+          工具与技术总在更迭，但那些
+          <br />
+          深夜并肩调试 Bug、因突破而击掌相庆的同伴，始终是大学里最珍贵的印记。
+        </p>
+        <span class="daily-symbol" aria-hidden="true">
+          ++
+        </span>
       </article>
     </div>
   </section>
@@ -120,14 +158,20 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
       <div class="section-line">START HERE</div>
       <div class="start-intro">
         <p>“每一个庞大精密的系统，最初都来自一个空白的文件。”</p>
-        <h2 id="start-title">不必先行万步，<span>从第一行开始。</span></h2>
+        <h2 id="start-title">
+          不必先行万步，<span>从第一行开始。</span>
+        </h2>
       </div>
 
       <div class="steps">
         <article class="step">
           <span class="step-number">01 →</span>
           <h3>从零开始</h3>
-          <p>面对庞杂的技术栈，迷茫是常态。<br />我们梳理了踩坑经验与进阶路线，助你拨开迷雾，找到踏实的起点。</p>
+          <p>
+            面对庞杂的技术栈，迷茫是常态。
+            <br />
+            我们梳理了踩坑经验与进阶路线，助你拨开迷雾，找到踏实的起点。
+          </p>
           <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
             打开 CXCS Guide <ArrowUpRight size={13} />
           </a>
@@ -136,7 +180,11 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
         <article class="step">
           <span class="step-number">02 →</span>
           <h3>付诸工程</h3>
-          <p>真正的理解发生在创造之中。<br />哪怕只是修改几个参数、解决一个小问题，亲自运行代码才是真正的领悟。</p>
+          <p>
+            真正的理解发生在创造之中。
+            <br />
+            哪怕只是修改几个参数、解决一个小问题，亲自运行代码才是真正的领悟。
+          </p>
           <a class="small-link" href="/articles">
             阅读探索与实践 <ArrowRight size={13} />
           </a>
@@ -146,7 +194,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <span class="step-number">03 ↗</span>
           <h3>把它分享出去</h3>
           <p>
-            写完的代码，不应该只留在自己的电脑里。<br />把项目部署上线，让大家真正用上你的作品，新的交流也会随之发生。
+            写完的代码，不应该只留在自己的电脑里。
+            <br />
+            把项目部署上线，让大家真正用上你的作品，新的交流也会随之发生。
           </p>
           <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
             用 CXCS Page 发布 <ArrowUpRight size={13} />
@@ -160,54 +210,56 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   <section class="section wrap" id="latest" aria-labelledby="latest-title">
     <div class="section-line">LATEST FROM CXCS</div>
     <div class="section-heading">
-      <h2 id="latest-title">近期的记录、<br />思考与回声。</h2>
-      <a class="small-link" href="/articles">全部文章 <ArrowRight size={14} /></a>
+      <h2 id="latest-title">
+        近期的记录、
+        <br />
+        思考与回声。
+      </h2>
+      <a class="small-link" href="/articles">
+        全部文章 <ArrowRight size={14} />
+      </a>
     </div>
 
     <div class="latest-grid">
-      {
-        featuredArticle && (
-          <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
-            <img
-              class="news-cover"
-              src={getArticleCover(featuredArticle)}
-              alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
-              loading="lazy"
-            />
-            <div class="meta">
-              <span class="type">{getArticleCategory(featuredArticle.data.type).label}</span>
-              <span>·</span>
-              <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-              {featuredArticle.data.authors.length > 0 && (
-                <>
-                  <span>·</span>
-                  <span>{featuredArticle.data.authors.join(' / ')}</span>
-                </>
-              )}
-            </div>
-            <h3>{featuredArticle.data.title}</h3>
-            <p>{featuredArticle.data.description}</p>
-          </a>
-        )
-      }
+      {featuredArticle && (
+        <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
+          <img
+            class="news-cover"
+            src={getArticleCover(featuredArticle)}
+            alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
+            loading="lazy"
+          />
+          <div class="meta">
+            <span class="type">{getArticleCategory(featuredArticle.data.type).label}</span>
+            <span>·</span>
+            <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+            {featuredArticle.data.authors.length > 0 && (
+              <>
+                <span>·</span>
+                <span>{featuredArticle.data.authors.join(' / ')}</span>
+              </>
+            )}
+          </div>
+          <h3>{featuredArticle.data.title}</h3>
+          <p>{featuredArticle.data.description}</p>
+        </a>
+      )}
 
       <div class="side-stories">
-        {
-          sideArticles.map((article) => (
-            <a class="side-story" href={`/articles/${article.id}`}>
-              <div>
-                <div class="meta">
-                  <span class="type">{getArticleCategory(article.data.type).label}</span>
-                  <span>·</span>
-                  <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-                </div>
-                <h3>{article.data.title}</h3>
-                <p>{article.data.description}</p>
+        {sideArticles.map((article) => (
+          <a class="side-story" href={`/articles/${article.id}`}>
+            <div>
+              <div class="meta">
+                <span class="type">{getArticleCategory(article.data.type).label}</span>
+                <span>·</span>
+                <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
               </div>
-              <img src={getArticleCover(article)} alt={article.data.cover?.alt || article.data.title} loading="lazy" />
-            </a>
-          ))
-        }
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+            </div>
+            <img src={getArticleCover(article)} alt={article.data.cover?.alt || article.data.title} loading="lazy" />
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -217,7 +269,11 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     <div class="wrap">
       <div class="section-line">CXCS ECOSYSTEM</div>
       <div class="section-heading">
-        <h2 id="ecosystem-title">从初次探索，<br />到独立交付。</h2>
+        <h2 id="ecosystem-title">
+          从初次探索，
+          <br />
+          到独立交付。
+        </h2>
         <p>贯穿学习、实践与创造的完整过程。</p>
       </div>
     </div>
@@ -230,7 +286,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
             <h3 class="eco-name">Website</h3>
             <h4 class="eco-headline">认识我们，也找到彼此。</h4>
             <p>记录协会的前沿动态、开源项目与成员轨迹。这里是对外开放的窗口，也是你与一群志同道合者相遇的起点。</p>
-            <a class="small-link" href="#what">认识计算机协会 <ArrowRight size={14} /></a>
+            <a class="small-link" href="#what">
+              认识计算机协会 <ArrowRight size={14} />
+            </a>
           </div>
           <div class="eco-visual">
             <img
@@ -297,11 +355,16 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     <div class="wrap">
       <div class="section-line">JOIN US</div>
       <div class="join-inner">
-        <h2 id="join-title">下一段航程，<br />期待与你同行。</h2>
+        <h2 id="join-title">
+          下一段航程，
+          <br />
+          期待与你同行。
+        </h2>
         <div>
           <p>
-            技能可以从零研习，经验可以慢慢沉淀，但对探索的热望不可替代。<br
-            />只要你对计算机的世界怀有好奇，这里便有属于你的一席之地。
+            技能可以从零研习，经验可以慢慢沉淀，但对探索的热望不可替代。
+            <br />
+            只要你对计算机的世界怀有好奇，这里便有属于你的一席之地。
           </p>
           <Button variant="primary" href="/join">
             加入计算机协会 <ArrowRight size={14} />

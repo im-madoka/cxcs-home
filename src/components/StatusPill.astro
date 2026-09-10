@@ -21,8 +21,11 @@ const labels: Record<string, string> = {
   data-end={endAt}
   data-cancelled={cancelled ? 'true' : undefined}
   data-recruitment-start={recruitmentStart}
-  data-recruitment-end={recruitmentEnd}><i aria-hidden="true"></i>{label || labels[status] || status}</span
+  data-recruitment-end={recruitmentEnd}
 >
+  <i aria-hidden="true"></i>
+  {label || labels[status] || status}
+</span>
 
 <script>
   const labels: Record<string, string> = {

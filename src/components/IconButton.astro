@@ -5,7 +5,9 @@ type Props = HTMLAttributes<'button'>;
 const { class: className, type = 'button', ...attributes } = Astro.props;
 ---
 
-<button class:list={['icon-button', className]} type={type} {...attributes}><slot /></button>
+<button class:list={['icon-button', className]} type={type} {...attributes}>
+  <slot />
+</button>
 
 <style>
   .icon-button {

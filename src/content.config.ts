@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 import { existsSync } from 'node:fs';
 import { getArticleCategory, isArticleType } from './articles';
@@ -7,7 +8,7 @@ const articleFiles = new Map<string, string>();
 
 const articles = defineCollection({
   loader: glob({
-    pattern: '*/*/index.mdx',
+    pattern: '*/*/index.{md,mdx}',
     base: './src/content/articles',
     generateId: ({ entry, data, base }) => {
       const type = z.string().parse(data.type);
@@ -39,7 +40,7 @@ const articles = defineCollection({
       draft: z.boolean().default(false),
       cover: z
         .object({
-          image: z.string().url().or(z.string().startsWith('/')).or(image()),
+          image: z.url().or(z.string().startsWith('/')).or(image()),
           alt: z.string(),
           caption: z.string().optional(),
         })

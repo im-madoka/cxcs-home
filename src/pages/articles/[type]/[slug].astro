@@ -1,7 +1,8 @@
 ---
 import Button from '../../../components/Button.astro';
+import 'katex/dist/katex.min.css';
 import { getCollection, render } from 'astro:content';
-import { ArrowLeft } from 'lucide-astro';
+import { ArrowLeft } from '@lucide/astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import config from '../../../config';
 import { getArticleCategory, getArticleCover } from '../../../articles';
@@ -56,14 +57,12 @@ const related = entries
     </header>
 
     <!-- Cover Media -->
-    {
-      entry.data.cover?.image && (
-        <div class="wrap detail-cover-wrap">
-          <img class="detail-cover" src={getArticleCover(entry)} alt={entry.data.cover.alt || entry.data.title} />
-          {entry.data.cover.caption && <p class="detail-cover-caption">{entry.data.cover.caption}</p>}
-        </div>
-      )
-    }
+    {entry.data.cover?.image && (
+      <div class="wrap detail-cover-wrap">
+        <img class="detail-cover" src={getArticleCover(entry)} alt={entry.data.cover.alt || entry.data.title} />
+        {entry.data.cover.caption && <p class="detail-cover-caption">{entry.data.cover.caption}</p>}
+      </div>
+    )}
 
     <!-- Content Body -->
     <div class="article-body-container">
@@ -80,24 +79,22 @@ const related = entries
         </Button>
       </div>
 
-      {
-        related.length > 0 && (
-          <div class="related-block">
-            <div class="section-line">
-              <span>RECOMMENDED</span>
-            </div>
-            <div class="related-grid">
-              {related.map((item) => (
-                <a class="related-link" href={`/articles/${item.id}`}>
-                  <span class="related-type">{item.data.type.toUpperCase()}</span>
-                  <h3>{item.data.title}</h3>
-                  <p>{item.data.description}</p>
-                </a>
-              ))}
-            </div>
+      {related.length > 0 && (
+        <div class="related-block">
+          <div class="section-line">
+            <span>RECOMMENDED</span>
           </div>
-        )
-      }
+          <div class="related-grid">
+            {related.map((item) => (
+              <a class="related-link" href={`/articles/${item.id}`}>
+                <span class="related-type">{item.data.type.toUpperCase()}</span>
+                <h3>{item.data.title}</h3>
+                <p>{item.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </footer>
   </article>
 </BaseLayout>
@@ -267,6 +264,12 @@ const related = entries
   }
   .article-body :global(pre code) {
     font-size: inherit;
+  }
+  .article-body :global(.katex-display) {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25em 0;
   }
 
   .article-footer {

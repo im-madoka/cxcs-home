@@ -12,19 +12,19 @@ const { activeType } = Astro.props;
   <a
     class:list={['tab-link', { 'is-active': !activeType }]}
     href="/articles"
-    aria-current={!activeType ? 'page' : undefined}>全部</a
+    aria-current={!activeType ? 'page' : undefined}
   >
-  {
-    Object.entries(config.articles.categories).map(([type, category]) => (
-      <a
-        class:list={['tab-link', { 'is-active': activeType === type }]}
-        href={`/articles/${type}`}
-        aria-current={activeType === type ? 'page' : undefined}
-      >
-        {category.label}
-      </a>
-    ))
-  }
+    全部
+  </a>
+  {Object.entries(config.articles.categories).map(([type, category]) => (
+    <a
+      class:list={['tab-link', { 'is-active': activeType === type }]}
+      href={`/articles/${type}`}
+      aria-current={activeType === type ? 'page' : undefined}
+    >
+      {category.label}
+    </a>
+  ))}
 </nav>
 
 <style>

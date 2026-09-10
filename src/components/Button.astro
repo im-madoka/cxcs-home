@@ -1,6 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { ArrowRight, ArrowUpRight } from 'lucide-astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 
 type Props = HTMLAttributes<'a'> &
   HTMLAttributes<'button'> & {
@@ -20,7 +20,10 @@ const Tag = href ? 'a' : 'button';
   rel={external ? 'noopener noreferrer' : undefined}
   {...attributes}
 >
-  <slot><span>{label}</span>{external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}</slot>
+  <slot>
+    <span>{label}</span>
+    {external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
+  </slot>
 </Tag>
 
 <style>

@@ -3,5 +3,6 @@ const { label = 'CXCS', class: className = '' } = Astro.props;
 ---
 
 <div class={`brand-placeholder ${className}`} aria-label={`${label} placeholder`}>
-  <span class="placeholder-symbol">&lt;/&gt;</span><span>{label}</span>
+  <span class="placeholder-symbol">&lt;/&gt;</span>
+  <span>{label}</span>
 </div>

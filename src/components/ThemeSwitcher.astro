@@ -1,17 +1,23 @@
 ---
 import IconButton from './IconButton.astro';
-import { Monitor, Moon, Sun } from 'lucide-astro';
+import { Monitor, Moon, Sun } from '@lucide/astro';
 ---
 
 <div class="theme-switcher">
   <IconButton class="theme-trigger" type="button" aria-label="切换主题" aria-expanded="false" title="切换主题">
-    <Sun size={16} strokeWidth={1.8} class="icon-sun" />
-    <Moon size={16} strokeWidth={1.8} class="icon-moon" />
+    <Sun size={16} stroke-width={1.8} class="icon-sun" />
+    <Moon size={16} stroke-width={1.8} class="icon-moon" />
   </IconButton>
   <div class="theme-menu" role="menu" hidden>
-    <button type="button" role="menuitem" data-theme-choice="system"><Monitor size={15} /> 跟随系统</button>
-    <button type="button" role="menuitem" data-theme-choice="light"><Sun size={15} /> 浅色模式</button>
-    <button type="button" role="menuitem" data-theme-choice="dark"><Moon size={15} /> 深色模式</button>
+    <button type="button" role="menuitem" data-theme-choice="system">
+      <Monitor size={15} /> 跟随系统
+    </button>
+    <button type="button" role="menuitem" data-theme-choice="light">
+      <Sun size={15} /> 浅色模式
+    </button>
+    <button type="button" role="menuitem" data-theme-choice="dark">
+      <Moon size={15} /> 深色模式
+    </button>
   </div>
 </div>
 

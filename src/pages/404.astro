@@ -1,6 +1,6 @@
 ---
 import Button from '../components/Button.astro';
-import { ArrowLeft, ArrowRight } from 'lucide-astro';
+import { ArrowLeft, ArrowRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import config from '../config';
 const { site: siteData } = config;
@@ -9,7 +9,9 @@ const { site: siteData } = config;
 <BaseLayout title={`404 · ${siteData.shortName}`} description="这个页面不存在，也可能已经被移动到了别的地方。">
   <section class="not-found">
     <div class="wrap">
-      <div class="section-line"><span>ERROR / 404</span></div>
+      <div class="section-line">
+        <span>ERROR / 404</span>
+      </div>
       <h1 class="error-code">404</h1>
       <h2>好像走错地方了。</h2>
       <p class="error-desc">这个页面不存在，也可能已经被移动到了别的地方。</p>
