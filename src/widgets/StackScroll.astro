@@ -12,10 +12,10 @@ const { id = 'ecosystem' } = Astro.props;
 
 <section class="ecosystem" id={id} aria-labelledby="ecosystem-title">
   <div class="wrap">
-    <div class="section-line"><span>06</span> CXCS ECOSYSTEM</div>
+    <div class="section-line">CXCS ECOSYSTEM</div>
     <div class="section-heading">
-      <h2 id="ecosystem-title">从认识我们，<br />到做出你的作品。</h2>
-      <p>三个站点，连起一段完整的旅程。</p>
+      <h2 id="ecosystem-title">从初次探索，<br />到独立交付。</h2>
+      <p>贯穿学习、实践与创造的完整过程。</p>
     </div>
   </div>
 
@@ -24,8 +24,8 @@ const { id = 'ecosystem' } = Astro.props;
       <div class="eco-content">
         <div class="eco-number">01 / MEET</div>
         <h3 class="eco-name">Website</h3>
-        <h4 class="eco-headline">从这里，认识计协。</h4>
-        <p>我们是谁，最近在做什么，做过哪些项目，以及怎样加入。关于协会的故事，都在这里。</p>
+        <h4 class="eco-headline">认识我们，也找到彼此。</h4>
+        <p>记录协会的前沿动态、开源项目与成员轨迹。这里是对外开放的窗口，也是你与一群志同道合者相遇的起点。</p>
         <a class="small-link" href="#what">认识计算机协会 <ArrowRight size={14} /></a>
       </div>
       <div class="eco-visual">
@@ -45,8 +45,8 @@ const { id = 'ecosystem' } = Astro.props;
       <div class="eco-content">
         <div class="eco-number">02 / LEARN</div>
         <h3 class="eco-name">Guide</h3>
-        <h4 class="eco-headline">学一点，再多一点。</h4>
-        <p>从环境配置到学习路线，从第一段代码到项目实践。把走过的路整理下来，成为下一位同学的起点。</p>
+        <h4 class="eco-headline">前人踩过的坑，你的起点。</h4>
+        <p>从开发环境配置到进阶技术路线。历届成员把踩过的坑和积累的经验整理成册，让你不必在迷茫中独自摸索。</p>
         <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
           前往 CXCS Guide <ArrowUpRight size={14} />
         </a>
@@ -68,8 +68,8 @@ const { id = 'ecosystem' } = Astro.props;
       <div class="eco-content">
         <div class="eco-number">03 / DEPLOY</div>
         <h3 class="eco-name">Page</h3>
-        <h4 class="eco-headline">让你的作品，有个地址。</h4>
-        <p>从项目文件夹到互联网上的一个网站。把发布交给 CXCS Page，把时间留给下一次想做的东西。</p>
+        <h4 class="eco-headline">把项目交托上线，专注创造本身。</h4>
+        <p>免去繁琐的服务器运维门槛。关联代码仓库即可自动完成构建，把更多时间留给写出真正有价值的代码。</p>
         <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
           前往 CXCS Page <ArrowUpRight size={14} />
         </a>
@@ -92,7 +92,7 @@ const { id = 'ecosystem' } = Astro.props;
     padding-top: 79px;
   }
   .ecosystem > .wrap {
-    padding-bottom: 36px;
+    padding-bottom: clamp(64px, 7vw, 96px);
   }
   .ecosystem .section-heading {
     margin: 0;

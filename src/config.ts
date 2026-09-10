@@ -3,7 +3,7 @@ import type { NavItem, RecruitmentConfig, SiteConfig, SiteInfo } from './types/c
 const site: SiteInfo = {
   shortName: 'CXCS',
   title: 'CXCS · 东南大学成贤学院计算机协会',
-  description: '一起学习，一起折腾，一起做点有意思的东西。',
+  description: '用代码赋予思想形状，以好奇探寻技术本质。在成贤，一群热衷于技术与创造的人在此相遇。',
   url: 'https://cxcs.dev',
   guideUrl: 'https://guide.cxcs.dev',
   pageUrl: 'https://cxcs.page',
