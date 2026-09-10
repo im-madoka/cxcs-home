@@ -963,6 +963,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   }
 
   @media (max-width: 800px) {
+    #what-we-do .section-heading {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+    #what-we-do .section-heading p {
+      max-width: none;
+    }
     .hero-stage {
       --title-world-offset: 225px;
     }
