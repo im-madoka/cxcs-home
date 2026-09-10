@@ -17,8 +17,12 @@ const { site: siteData } = config;
       <p class="error-desc">这个页面不存在，也可能已经被移动到了别的地方。</p>
 
       <div class="terminal">
-        <span class="term-line">&gt; cd /somewhere</span>
-        <span class="term-err">cd: no such file or directory: /somewhere</span>
+        <span class="term-line">
+          &gt; cd <span data-not-found-path>{Astro.url.pathname}</span>
+        </span>
+        <span class="term-err">
+          cd: no such file or directory: <span data-not-found-path>{Astro.url.pathname}</span>
+        </span>
       </div>
 
       <div class="error-actions">
@@ -32,6 +36,16 @@ const { site: siteData } = config;
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { onPageLoad } from '../assets/scripts/page-load';
+
+  onPageLoad(() => {
+    document.querySelectorAll<HTMLElement>('[data-not-found-path]').forEach((element) => {
+      element.textContent = window.location.pathname;
+    });
+  });
+</script>
 
 <style>
   .not-found {
@@ -62,6 +76,7 @@ const { site: siteData } = config;
     line-height: 1.8;
   }
   .terminal {
+    overflow-wrap: anywhere;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 6px;
