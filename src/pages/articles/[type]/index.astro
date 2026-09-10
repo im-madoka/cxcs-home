@@ -6,7 +6,6 @@ import PageHero from '../../../components/PageHero.astro';
 import ArticleTabs from '../../../components/ArticleTabs.astro';
 import { getArticleCover } from '../../../articles';
 import config from '../../../config';
-const { site: siteData } = config;
 
 export function getStaticPaths() {
   return Object.entries(config.articles.categories).map(([type, category]) => ({
@@ -21,7 +20,7 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft && d
 );
 ---
 
-<BaseLayout title={`${category.label} · Articles · ${siteData.shortName}`} description={category.description}>
+<BaseLayout>
   <PageHero eyebrow={`ARTICLES / ${type.toUpperCase()}`} title={category.title} description={category.description} />
 
   <!-- Feed Section -->

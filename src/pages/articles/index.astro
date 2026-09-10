@@ -5,8 +5,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ArticleTabs from '../../components/ArticleTabs.astro';
 import { getArticleCategory, getArticleCover } from '../../articles';
-import config from '../../config';
-const { site: siteData } = config;
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
@@ -15,10 +13,7 @@ const featured = articles.find((entry) => entry.data.featured) || articles[0];
 const rest = articles.filter((entry) => entry.id !== featured?.id);
 ---
 
-<BaseLayout
-  title={`Articles · ${siteData.shortName}`}
-  description="记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。"
->
+<BaseLayout>
   <PageHero
     eyebrow="CXCS EDITORIAL"
     title="文章与动态。"

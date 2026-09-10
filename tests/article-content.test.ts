@@ -135,6 +135,8 @@ describe('article directories and configured categories', () => {
       expect(existsSync(join(fixtureRoot, 'dist', src!))).toBe(true);
     }
     expect(html).toContain(`property="og:image" content="${new URL(cover!, config.site.url)}"`);
+    expect(html).toContain('property="og:image:alt" content="Local fixture cover"');
+    expect(html).toContain('property="og:type" content="article"');
     expect(html).toContain('rel="canonical" href="https://cxcs.dev/articles/notes/local-images/"');
   });
 
@@ -143,6 +145,24 @@ describe('article directories and configured categories', () => {
     expect(readOutput('articles/notes/public-cover/index.html')).toContain(
       'src="/assets/brand/association-emblem.png"',
     );
+    for (const [slug, image] of [
+      ['remote-cover', 'https://example.com/remote.jpg'],
+      ['public-cover', `${config.site.url}/assets/brand/association-emblem.png`],
+    ]) {
+      const html = readOutput(`articles/notes/${slug}/index.html`);
+      expect(html).toContain(`property="og:image" content="${image}"`);
+      expect(html).toContain(`name="twitter:image" content="${image}"`);
+      expect(existsSync(join(fixtureRoot, `dist/generated/article-covers/notes/${slug}.webp`))).toBe(false);
+    }
+  });
+
+  test('generates sharing covers for newly configured categories, including empty categories', () => {
+    for (const type of ['notes', 'empty']) {
+      const html = readOutput(`articles/${type}/index.html`);
+      const image = `/generated/page-covers/articles/${type}.webp`;
+      expect(html).toContain(`property="og:image" content="${config.site.url}${image}"`);
+      expect(existsSync(join(fixtureRoot, 'dist', image))).toBe(true);
+    }
   });
 
   for (const format of ['md', 'mdx']) {

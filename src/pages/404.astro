@@ -2,11 +2,9 @@
 import Button from '../components/Button.astro';
 import { ArrowLeft, ArrowRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import config from '../config';
-const { site: siteData } = config;
 ---
 
-<BaseLayout title={`404 · ${siteData.shortName}`} description="这个页面不存在，也可能已经被移动到了别的地方。">
+<BaseLayout pagePath="/404">
   <section class="not-found">
     <div class="wrap">
       <div class="section-line">

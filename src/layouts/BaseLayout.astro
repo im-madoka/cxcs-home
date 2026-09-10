@@ -1,24 +1,15 @@
 ---
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
-import BaseHead from './BaseHead.astro';
-import config from '../config';
+import BaseHead, { type Props } from './BaseHead.astro';
 import '../assets/styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-
-const { site: siteData } = config;
-const {
-  title = siteData.title,
-  description = siteData.description,
-  image = 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=85',
-} = Astro.props;
-const canonical = new URL(Astro.url.pathname, siteData.url).toString();
 ---
 
 <!doctype html>
 <html lang="zh-CN" data-theme="system">
   <head>
-    <BaseHead title={title} description={description} image={image} canonical={canonical} />
+    <BaseHead {...Astro.props} />
     <ClientRouter />
   </head>
   <body>

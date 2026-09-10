@@ -1,11 +1,27 @@
 ---
 import config from '../config';
+import { getPageCoverPath, pageMetadata } from '../page-metadata';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  canonical?: string;
+  type?: 'website' | 'article';
+  pagePath?: string;
+}
+
 const { site: siteData } = config;
+const path = Astro.props.pagePath ?? (decodeURI(Astro.url.pathname).replace(/\/+$/, '') || '/');
+const page = pageMetadata[path];
 const {
-  title = siteData.title,
-  description = siteData.description,
-  image = 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=85',
-  canonical = siteData.url,
+  title = page?.title ?? siteData.title,
+  description = page?.description ?? siteData.description,
+  image = getPageCoverPath(page ? path : '/'),
+  imageAlt = title,
+  canonical = new URL(Astro.url.pathname, siteData.url).toString(),
+  type = 'website',
 } = Astro.props;
 const imageUrl = new URL(image, siteData.url).toString();
 ---
@@ -15,15 +31,19 @@ const imageUrl = new URL(image, siteData.url).toString();
 <meta name="theme-color" content="#f6f7f9" />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteData.shortName} />
+<meta property="og:locale" content="zh_CN" />
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={imageAlt} />
 <link rel="icon" type="image/png" href="/assets/brand/association-emblem.png" />
 <link rel="apple-touch-icon" href="/assets/brand/association-emblem.png" />
 <title>{title}</title>

@@ -35,6 +35,8 @@ const related = entries
   title={`${entry.data.title} · ${siteData.shortName}`}
   description={entry.data.description}
   image={getArticleCover(entry)}
+  imageAlt={entry.data.cover?.alt || entry.data.title}
+  type="article"
 >
   <div class="reading-progress" aria-hidden="true"></div>
 

@@ -16,7 +16,7 @@ const featuredArticle = articles.find((entry) => entry.data.featured) || article
 const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id).slice(0, 2);
 ---
 
-<BaseLayout title={siteData.title} description={siteData.description}>
+<BaseLayout>
   <!-- Hero section matching design (full dvh, massive HELLO/WORLD, mascot parallax, kicker & index removed) -->
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-grid" aria-hidden="true"></div>

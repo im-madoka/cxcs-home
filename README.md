@@ -120,6 +120,8 @@ cover:
 
 `cover.image` 支持本地相对路径、远程 URL 和 `public/` 下的绝对站点路径，例如 `/assets/articles/code.jpg`。省略封面时，Satori 与 Sharp 在构建时生成 1600 × 1000 的 WebP 标题封面，用于首页、文章列表和社交分享。详情页仅在明确配置 `cover.image` 时显示正文前的大图。
 
+所有页面统一输出 Open Graph 和 Twitter 分享信息。普通页面（含 404）的标题与描述维护在 [src/page-metadata.ts](./src/page-metadata.ts)，构建时使用页面标题和同一套封面模板生成 `/generated/page-covers/<path>.webp`，首页对应 `index.webp`；分类页随分类配置自动生成。新增普通页面时需在该文件登记路径、标题和描述。文章分享图优先使用 `cover.image`，未设置时使用自动文章封面。
+
 正文图片可以直接使用 Markdown 相对路径，Astro 会处理并输出图片：
 
 ```md
