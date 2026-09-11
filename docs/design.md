@@ -73,7 +73,7 @@ Latest 的数据规则与文章总列表一致：过滤草稿，按 `publishedAt
 
 ### 内页标题
 
-[PageHero](../src/components/PageHero.astro) 供 About、Join、文章总列表和分类页共用，包含英文标签、主标题、说明，以及可选的 `title`、`meta` 插槽。背景使用 `--ice`，底部有细分隔线。高度默认 460px，在 520px 及以下为 520px。文章详情采用自己的标题区。
+[PageHero](../src/widgets/PageHero.astro) 供 About、Join、文章总列表和分类页共用，包含英文标签、主标题、说明，以及可选的 `title`、`meta` 插槽。背景使用 `--ice`，底部有细分隔线。高度默认 460px，在 520px 及以下为 520px。文章详情采用自己的标题区。
 
 ### 主题与导航反馈
 

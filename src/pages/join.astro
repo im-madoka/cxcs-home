@@ -2,7 +2,7 @@
 import Button from '../components/Button.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
+import PageHero from '../widgets/PageHero.astro';
 import config from '../config';
 import { getRecruitmentStatus } from '../status';
 
@@ -92,18 +92,20 @@ const faqs = [
       </div>
 
       <div class="audience-grid">
-        {audiences.map((item) => (
-          <article class="audience-card">
-            <span class="audience-num">{item.num}</span>
-            <h3>{item.title}</h3>
-            <p>{item.desc}</p>
-            <div class="chips">
-              {item.chips.map((chip) => (
-                <span class="chip">{chip}</span>
-              ))}
-            </div>
-          </article>
-        ))}
+        {
+          audiences.map((item) => (
+            <article class="audience-card">
+              <span class="audience-num">{item.num}</span>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <div class="chips">
+                {item.chips.map((chip) => (
+                  <span class="chip">{chip}</span>
+                ))}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -183,17 +185,19 @@ const faqs = [
       </div>
 
       <div class="faq-list">
-        {faqs.map((faq) => (
-          <details class="faq-item">
-            <summary class="faq-question">
-              <span>{faq.q}</span>
-              <span class="faq-icon" aria-hidden="true" />
-            </summary>
-            <div class="faq-answer">
-              <p>{faq.a}</p>
-            </div>
-          </details>
-        ))}
+        {
+          faqs.map((faq) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{faq.q}</span>
+                <span class="faq-icon" aria-hidden="true" />
+              </summary>
+              <div class="faq-answer">
+                <p>{faq.a}</p>
+              </div>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>
