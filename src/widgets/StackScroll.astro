@@ -15,6 +15,33 @@ const stackStyle =
   <slot />
 </div>
 
+<script>
+  import { onPageLoad } from '../assets/scripts/page-load';
+
+  let resizeObserver: ResizeObserver | undefined;
+
+  onPageLoad(() => {
+    resizeObserver?.disconnect();
+
+    const measure = (card: HTMLElement) => {
+      card.style.setProperty('--stack-scroll-card-height', `${card.getBoundingClientRect().height}px`);
+      card.style.setProperty('--stack-scroll-position', 'sticky');
+    };
+
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach(({ target }) => measure(target as HTMLElement));
+    });
+    resizeObserver = observer;
+
+    document.querySelectorAll<HTMLElement>('.stack-scroll > .stack-scroll-card').forEach((card) => {
+      measure(card);
+      observer.observe(card);
+    });
+  });
+
+  document.addEventListener('astro:before-swap', () => resizeObserver?.disconnect());
+</script>
+
 <style>
   .stack-scroll {
     /* Each sticky card paints above earlier siblings, within this stack only. */

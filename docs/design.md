@@ -53,7 +53,7 @@ Hero → What We Do → Start Here → Latest from CXCS → CXCS Ecosystem → J
 
 Hero 使用 `100dvh`，角色图片带固有宽高和 `fetchpriority="high"`。装饰性英文标题对辅助技术隐藏，中文名称使用 `h1`。GSAP 实现标题、角色、说明和按钮的入场，角色支持轻微指针视差与点击回弹；视差的 `requestAnimationFrame` 在接近目标位置后停止。
 
-首页的普通卡片由 ScrollTrigger 在进入视口时 Reveal，没有滚动锁定、横向 Gallery 或 GSAP Pin / Scrub。生态堆叠由 [StackScroll](../src/widgets/StackScroll.astro) 和 [StackScrollCard](../src/widgets/StackScrollCard.astro) 的 CSS `position: sticky` 实现：默认停靠在顶栏高度处，卡片高 570px，溢出内容可在卡片内滚动。三张卡依次使用主题 Surface、蓝色和深色背景。
+首页的普通卡片由 ScrollTrigger 在进入视口时 Reveal。生态堆叠由 [StackScroll](../src/widgets/StackScroll.astro) 和 [StackScrollCard](../src/widgets/StackScrollCard.astro) 的 CSS `position: sticky` 实现：卡片随内容撑开，桌面端最小高度为 570px，宽度不超过 900px 时使用自然高度。ResizeObserver 测量卡片高度，超出视口的卡片在底部显示后才吸附，内容随页面滚动，无需卡片内部滚动；未启用脚本时按普通文档流显示。三张卡依次使用主题 Surface、蓝色和深色背景，What We Do 与 Journey 的标题、说明均上下排列。
 
 移动端调整 Hero 构图、字号、卡片列数与按钮排列；生态卡片在 900px 及以下改为上下布局，仍保留 sticky 堆叠。当前没有单独的移动端滚动动画时间线。
 

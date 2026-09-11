@@ -78,7 +78,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   <!-- Section 02 / What We Do (Bento cards) -->
   <section class="section wrap" id="what-we-do" aria-labelledby="what-title">
     <div class="section-line">WHAT WE DO</div>
-    <div class="section-heading">
+    <div class="section-heading section-heading-stacked">
       <h2 id="what-title">
         在课堂之外，
         <br />
@@ -272,7 +272,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   <section class="ecosystem" id="journey" aria-labelledby="journey-title">
     <div class="wrap">
       <div class="section-line">THE JOURNEY</div>
-      <div class="section-heading">
+      <div class="section-heading section-heading-stacked">
         <h2 id="journey-title">
           从初次探索，
           <br />
@@ -712,6 +712,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     margin-top: 10px;
     letter-spacing: 0.05em;
   }
+  .section-heading-stacked {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .section-heading-stacked p {
+    max-width: none;
+  }
   .bento {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -1088,14 +1096,6 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   }
 
   @media (max-width: 800px) {
-    #what-we-do .section-heading {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 16px;
-    }
-    #what-we-do .section-heading p {
-      max-width: none;
-    }
     .hero-stage {
       --title-world-offset: 225px;
     }
@@ -1223,7 +1223,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     margin: 0;
   }
   .ecosystem .eco-panel {
-    height: 100%;
+    min-height: inherit;
     padding: 58px 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
@@ -1606,7 +1606,6 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
   @media (max-width: 900px) {
     .ecosystem .eco-panel {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto minmax(0, 1fr);
       gap: 20px;
       padding: 28px 0;
     }
@@ -1625,8 +1624,36 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
       margin-bottom: 16px;
     }
     .ecosystem .eco-visual {
-      height: 100%;
+      height: auto;
       padding: 16px;
+    }
+    .mockup-header {
+      flex-wrap: wrap;
+      gap: 8px 14px;
+    }
+    .mockup-title {
+      position: static;
+      transform: none;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+    .term-line,
+    .pr-top-bar,
+    .pr-meta-row,
+    .pr-stats-row,
+    .tinker-header,
+    .tinker-row {
+      flex-wrap: wrap;
+    }
+    .tinker-header,
+    .tinker-row {
+      gap: 6px;
+    }
+    .tinker-body {
+      min-width: 0;
+    }
+    .journey-mockup {
+      overflow-wrap: anywhere;
     }
   }
 </style>

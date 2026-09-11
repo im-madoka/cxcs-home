@@ -32,11 +32,17 @@ const cardStyle =
 <style>
   .stack-scroll-card {
     box-sizing: border-box;
-    position: sticky;
-    top: var(--stack-scroll-top, 72px);
-    height: 570px;
-    overflow: auto;
+    position: var(--stack-scroll-position, static);
+    /* Tall cards scroll to their bottom before sticking, so every part stays reachable. */
+    top: min(var(--stack-scroll-top, 72px), calc(100svh - var(--stack-scroll-card-height, 570px)));
+    min-height: 570px;
     border-top: 1px solid;
     box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: 900px) {
+    .stack-scroll-card {
+      min-height: 0;
+    }
   }
 </style>
