@@ -24,7 +24,7 @@ beforeAll(() => {
   });
   baseLayout = readFileSync(join(projectRoot, 'src/layouts/BaseLayout.astro'), 'utf8');
   pageLoad = readFileSync(join(projectRoot, 'src/assets/scripts/page-load.ts'), 'utf8');
-  pageHero = readFileSync(join(projectRoot, 'src/components/PageHero.astro'), 'utf8');
+  pageHero = readFileSync(join(projectRoot, 'src/widgets/PageHero.astro'), 'utf8');
   navigationProgress = baseLayout;
   themeSwitcher = readFileSync(join(projectRoot, 'src/components/ThemeSwitcher.astro'), 'utf8');
 }, 30_000);

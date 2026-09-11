@@ -1,6 +1,6 @@
 ---
 import Button from '../../../components/Button.astro';
-import PageHero from '../../../components/PageHero.astro';
+import PageHero from '../../../widgets/PageHero.astro';
 import 'katex/dist/katex.min.css';
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft } from '@lucide/astro';
@@ -79,22 +79,24 @@ const related = entries
         </Button>
       </div>
 
-      {related.length > 0 && (
-        <div class="related-block">
-          <div class="section-line">
-            <span>RECOMMENDED</span>
+      {
+        related.length > 0 && (
+          <div class="related-block">
+            <div class="section-line">
+              <span>RECOMMENDED</span>
+            </div>
+            <div class="related-grid">
+              {related.map((item) => (
+                <a class="related-link" href={`/articles/${item.id}`}>
+                  <span class="related-type">{item.data.type.toUpperCase()}</span>
+                  <h3>{item.data.title}</h3>
+                  <p>{item.data.description}</p>
+                </a>
+              ))}
+            </div>
           </div>
-          <div class="related-grid">
-            {related.map((item) => (
-              <a class="related-link" href={`/articles/${item.id}`}>
-                <span class="related-type">{item.data.type.toUpperCase()}</span>
-                <h3>{item.data.title}</h3>
-                <p>{item.data.description}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
+        )
+      }
     </footer>
   </article>
 </BaseLayout>

@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+import welcome from '../assets/home-gallery/welcome.jpeg';
+import techExchange from '../assets/home-gallery/tech-exchange.jpeg';
+import techStudy from '../assets/home-gallery/tech-study.jpg';
+import algorithmLecture from '../assets/home-gallery/algorithm-lecture.png';
+import pcBuilding from '../assets/home-gallery/pc-building.jpeg';
+import sciencePark from '../assets/home-gallery/science-park.jpg';
+
+const photos = [
+  { image: welcome, alt: '迎新会上，学长向同学们分享竞赛与学习经验' },
+  { image: techExchange, alt: '技术交流会上，同学们围坐在笔记本电脑旁讨论代码' },
+  { image: techStudy, alt: '技术学习活动中，同学在黑板前讲解计算机网络知识' },
+  { image: algorithmLecture, alt: '算法讲座上，同学们在教室里聆听讲解' },
+  { image: pcBuilding, alt: '计算机硬件分享与组装比赛中，同学们共同安装电脑硬件' },
+  { image: sciencePark, alt: '计协同学参观东南大学国家大学科技园，聆听现场介绍' },
+];
+---
+
+<section class="home-gallery" data-home-gallery aria-label="计协活动相册，共六张照片">
+  <div class="gallery-viewport" data-gallery-viewport tabindex="0" role="group" aria-label="活动照片，可滚动浏览">
+    <div class="gallery-track" data-gallery-track>
+      {photos.map(({ image, alt }) => (
+        <Image
+          src={image}
+          alt={alt}
+          class="gallery-photo"
+          style={{ aspectRatio: `${image.width} / ${image.height}` }}
+          format="webp"
+          quality={85}
+          width={Math.min(image.width, 2560)}
+          widths={[640, 960, 1440, 1920, 2560]
+            .filter((width) => width < Math.min(image.width, 2560))
+            .concat(Math.min(image.width, 2560))}
+          sizes={`${((image.width / image.height) * 100).toFixed(2)}dvh`}
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { onPageLoad } from '../assets/scripts/page-load';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let cleanupGallery: ((preserveLayout?: boolean) => void) | undefined;
+
+  onPageLoad(() => {
+    cleanupGallery?.();
+    cleanupGallery = undefined;
+
+    const gallery = document.querySelector<HTMLElement>('[data-home-gallery]');
+    const viewport = gallery?.querySelector<HTMLElement>('[data-gallery-viewport]');
+    const track = gallery?.querySelector<HTMLElement>('[data-gallery-track]');
+    if (!gallery || !viewport || !track) return;
+    let preserveLayout = false;
+
+    // Load the whole strip before entry, including photos outside the horizontal viewport.
+    const preload = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        track.querySelectorAll('img').forEach((image) => (image.loading = 'eager'));
+        preload.disconnect();
+      },
+      { rootMargin: '100% 0px' },
+    );
+    preload.observe(gallery);
+
+    let restoreHistory = true;
+    const savedScrollY: unknown = history.state?.scrollY;
+    const media = gsap.matchMedia();
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      gallery.setAttribute('data-enhanced', '');
+      viewport.scrollLeft = 0;
+
+      const setX = gsap.quickSetter(track, 'x', 'px');
+      let distance = -1;
+      let hold = -1;
+      let frame = 0;
+
+      const measure = () => {
+        const nextDistance = Math.max(0, track.getBoundingClientRect().width - viewport.clientWidth);
+        const nextHold = viewport.clientHeight * 0.2;
+        if (Math.abs(nextDistance - distance) < 0.5 && Math.abs(nextHold - hold) < 0.5) return false;
+        distance = nextDistance;
+        hold = nextHold;
+        gallery.style.setProperty('--gallery-scroll-distance', `${distance + hold * 2}px`);
+        return true;
+      };
+
+      const render = (trigger: ScrollTrigger) => {
+        // The first photo sits on the left. Downward scrolling moves the strip leftward.
+        const traveled = trigger.progress * (distance + hold * 2) - hold;
+        setX(-Math.max(0, Math.min(distance, traveled)));
+      };
+
+      measure();
+      // Astro restores scroll before page-load, while the gallery is still only one screen tall.
+      // Restore again after extending the layout, including on a reload deep inside the gallery.
+      if (restoreHistory && typeof savedScrollY === 'number' && Number.isFinite(savedScrollY) && savedScrollY > 0) {
+        window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+      }
+      const scroll = ScrollTrigger.create({
+        trigger: gallery,
+        start: 'top top',
+        end: 'bottom bottom',
+        onUpdate: render,
+        onRefresh: render,
+      });
+
+      const resize = new ResizeObserver(() => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          if (measure()) ScrollTrigger.refresh();
+        });
+      });
+      resize.observe(viewport);
+      resize.observe(track);
+
+      return () => {
+        cancelAnimationFrame(frame);
+        resize.disconnect();
+        scroll.kill();
+        if (!preserveLayout) {
+          gsap.set(track, { clearProps: 'transform' });
+          gallery.removeAttribute('data-enhanced');
+          gallery.style.removeProperty('--gallery-scroll-distance');
+        }
+      };
+    });
+    restoreHistory = false;
+
+    cleanupGallery = (keepLayout = false) => {
+      preserveLayout = keepLayout;
+      preload.disconnect();
+      media.revert();
+    };
+  });
+
+  // Keep the outgoing layout stable for the page transition and history scroll position.
+  document.addEventListener('astro:before-swap', () => cleanupGallery?.(true));
+</script>
+
+<style>
+  .home-gallery {
+    position: relative;
+    background: var(--bg);
+  }
+
+  .gallery-viewport {
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .gallery-viewport:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .gallery-track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+  }
+
+  .gallery-photo {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    height: 100%;
+  }
+
+  .home-gallery[data-enhanced] {
+    height: calc(100vh + var(--gallery-scroll-distance));
+    height: calc(100dvh + var(--gallery-scroll-distance));
+  }
+
+  .home-gallery[data-enhanced] .gallery-viewport {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-start;
+    overflow: clip;
+  }
+
+  .home-gallery[data-enhanced] .gallery-track {
+    flex-shrink: 0;
+    will-change: transform;
+  }
+</style>
