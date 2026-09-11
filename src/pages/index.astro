@@ -25,13 +25,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 
     <div class="hero-stage">
       <div class="hero-title-lockup">
-        <div class="hello" aria-hidden="true">
-          HELLO
-        </div>
+        <div class="hello" aria-hidden="true">HELLO</div>
 
-        <div class="world" aria-hidden="true">
-          WORLD.
-        </div>
+        <div class="world" aria-hidden="true">WORLD.</div>
       </div>
 
       <img
@@ -99,9 +95,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <br />
           我们不仅学习运用工具，更去理解其背后的逻辑与美感。
         </p>
-        <span class="daily-symbol" aria-hidden="true">
-          &lt;/&gt;
-        </span>
+        <span class="daily-symbol" aria-hidden="true"> &lt;/&gt; </span>
       </article>
 
       <article class="daily">
@@ -115,9 +109,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <br />
           只要敲下代码，想法便有了实体。
         </p>
-        <span class="daily-symbol orange" aria-hidden="true">
-          ↗
-        </span>
+        <span class="daily-symbol orange" aria-hidden="true"> ↗ </span>
       </article>
 
       <article class="daily">
@@ -131,9 +123,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <br />
           复杂的工程从不是孤胆英雄的舞台，团队协作让每一个难关都有所支撑。
         </p>
-        <span class="daily-symbol" aria-hidden="true">
-          &#123; &#125;
-        </span>
+        <span class="daily-symbol" aria-hidden="true"> &#123; &#125; </span>
       </article>
 
       <article class="daily">
@@ -147,9 +137,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <br />
           深夜并肩调试 Bug、因突破而击掌相庆的同伴，始终是大学里最珍贵的印记。
         </p>
-        <span class="daily-symbol" aria-hidden="true">
-          ++
-        </span>
+        <span class="daily-symbol" aria-hidden="true"> ++ </span>
       </article>
     </div>
   </section>
@@ -225,45 +213,49 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     </div>
 
     <div class="latest-grid">
-      {featuredArticle && (
-        <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
-          <img
-            class="news-cover"
-            src={getArticleCover(featuredArticle)}
-            alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
-            loading="lazy"
-          />
-          <div class="meta">
-            <span class="type">{getArticleCategory(featuredArticle.data.type).label}</span>
-            <span>·</span>
-            <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
-            {featuredArticle.data.authors.length > 0 && (
-              <>
-                <span>·</span>
-                <span>{featuredArticle.data.authors.join(' / ')}</span>
-              </>
-            )}
-          </div>
-          <h3>{featuredArticle.data.title}</h3>
-          <p>{featuredArticle.data.description}</p>
-        </a>
-      )}
+      {
+        featuredArticle && (
+          <a class="lead-story" href={`/articles/${featuredArticle.id}`}>
+            <img
+              class="news-cover"
+              src={getArticleCover(featuredArticle)}
+              alt={featuredArticle.data.cover?.alt || featuredArticle.data.title}
+              loading="lazy"
+            />
+            <div class="meta">
+              <span class="type">{getArticleCategory(featuredArticle.data.type).label}</span>
+              <span>·</span>
+              <span>{featuredArticle.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+              {featuredArticle.data.authors.length > 0 && (
+                <>
+                  <span>·</span>
+                  <span>{featuredArticle.data.authors.join(' / ')}</span>
+                </>
+              )}
+            </div>
+            <h3>{featuredArticle.data.title}</h3>
+            <p>{featuredArticle.data.description}</p>
+          </a>
+        )
+      }
 
       <div class="side-stories">
-        {sideArticles.map((article) => (
-          <a class="side-story" href={`/articles/${article.id}`}>
-            <div>
-              <div class="meta">
-                <span class="type">{getArticleCategory(article.data.type).label}</span>
-                <span>·</span>
-                <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+        {
+          sideArticles.map((article) => (
+            <a class="side-story" href={`/articles/${article.id}`}>
+              <div>
+                <div class="meta">
+                  <span class="type">{getArticleCategory(article.data.type).label}</span>
+                  <span>·</span>
+                  <span>{article.data.publishedAt.toLocaleDateString('zh-CN')}</span>
+                </div>
+                <h3>{article.data.title}</h3>
+                <p>{article.data.description}</p>
               </div>
-              <h3>{article.data.title}</h3>
-              <p>{article.data.description}</p>
-            </div>
-            <img src={getArticleCover(article)} alt={article.data.cover?.alt || article.data.title} loading="lazy" />
-          </a>
-        ))}
+              <img src={getArticleCover(article)} alt={article.data.cover?.alt || article.data.title} loading="lazy" />
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -321,9 +313,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
                   <span class="prompt-path">student-journey</span>
                   <span class="prompt-cmd">echo "Hello, CXCS!"</span>
                 </div>
-                <div class="term-output">
-                  "在纯粹的逻辑与无穷的构想之间，敲出真实世界的回响。"
-                </div>
+                <div class="term-output">"在纯粹的逻辑与无穷的构想之间，敲出真实世界的回响。"</div>
                 <div class="term-cursor-line">
                   <span class="prompt-arrow">➜</span>
                   <span class="prompt-path">student-journey</span>
@@ -343,7 +333,8 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
             <h4 class="eco-headline">在并肩攻坚中，把想法打磨成工程。</h4>
             <p>
               真正深刻的蜕变，发生在深夜与同伴连麦排查 Bug 的时刻。
-              从个人的练手脚本，到团队协作的真实系统与竞赛答辩。Git 协作分支、严谨的代码评审与架构推演——复杂的工程不再是单打独斗，一群同频的人让每个难关都有所支撑。
+              从个人的练手脚本，到团队协作的真实系统与竞赛答辩。Git
+              协作分支、严谨的代码评审与架构推演——复杂的工程不再是单打独斗，一群同频的人让每个难关都有所支撑。
             </p>
             <a class="small-link" href="/articles">
               阅读社员实践与博客 <ArrowRight size={14} />
@@ -395,8 +386,8 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
             <h3 class="eco-name">Create</h3>
             <h4 class="eco-headline">别管实不实用，好玩就值得折腾。</h4>
             <p>
-              不用一开始就奔着什么严肃的大工程去。
-              在群里写个定时播报的整活 Bot、用 Rust 随手搓个极速 Web 工具，或者组装一块墨水屏开发板……只要你觉得有意思，协会就有人陪你一起折腾。大学里最难得的，就是有时间和同伴做点纯粹好玩的东西。
+              不用一开始就奔着什么严肃的大工程去。 在群里写个定时播报的整活 Bot、用 Rust 随手搓个极速 Web
+              工具，或者组装一块墨水屏开发板……只要你觉得有意思，协会就有人陪你一起折腾。大学里最难得的，就是有时间和同伴做点纯粹好玩的东西。
             </p>
             <a class="small-link" href="/articles">
               看看大家都在折腾什么 <ArrowRight size={14} />
@@ -466,9 +457,6 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
           <Button variant="primary" href="/join">
             加入计算机协会 <ArrowRight size={14} />
           </Button>
-          <span class="join-status">
-            {recruitment.title} · 公开 QQ 交流群 {recruitment.qqGroup}
-          </span>
         </div>
       </div>
     </div>
@@ -1059,13 +1047,6 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     margin: 0 0 23px;
     line-height: 1.8;
   }
-  .join-status {
-    font-size: 11px;
-    color: var(--orange);
-    margin-top: 20px;
-    display: block;
-    font-weight: 500;
-  }
   @media (max-width: 1150px) {
     .hello {
       font-size: 163px;
@@ -1311,7 +1292,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     display: flex;
     flex-direction: column;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
     text-align: left;
   }
   .ecosystem .eco-panel:hover .journey-mockup {
@@ -1348,9 +1331,15 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     border-radius: 50%;
     display: inline-block;
   }
-  .dot-red { background: #ff5f56; }
-  .dot-yellow { background: #ffbd2e; }
-  .dot-green { background: #27c93f; }
+  .dot-red {
+    background: #ff5f56;
+  }
+  .dot-yellow {
+    background: #ffbd2e;
+  }
+  .dot-green {
+    background: #27c93f;
+  }
   .mockup-title {
     position: absolute;
     left: 50%;
@@ -1410,7 +1399,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     font-weight: 700;
   }
   @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+      opacity: 0;
+    }
   }
 
   /* Card 2: Git PR Mockup */
@@ -1484,8 +1475,12 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     top: 2px;
     font-size: 10px;
   }
-  .tl-icon.commit { color: #60a5fa; }
-  .tl-icon.review { color: #4ade80; }
+  .tl-icon.commit {
+    color: #60a5fa;
+  }
+  .tl-icon.review {
+    color: #4ade80;
+  }
   .tl-content {
     display: flex;
     flex-direction: column;
@@ -1561,7 +1556,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 6px;
     padding: 10px 12px;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
   .ecosystem .eco-journey-play:hover .tinker-item {
     background: rgba(255, 255, 255, 0.05);
