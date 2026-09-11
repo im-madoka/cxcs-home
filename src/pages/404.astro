@@ -2,18 +2,22 @@
 import Button from '../components/Button.astro';
 import { ArrowLeft, ArrowRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../widgets/PageHero.astro';
 ---
 
 <BaseLayout pagePath="/404">
-  <section class="not-found">
-    <div class="wrap">
-      <div class="section-line">
-        <span>ERROR / 404</span>
-      </div>
-      <h1 class="error-code">404</h1>
-      <h2>好像走错地方了。</h2>
-      <p class="error-desc">这个页面不存在，也可能已经被移动到了别的地方。</p>
-
+  <PageHero
+    eyebrow="ERROR / 404"
+    title="404 · 好像走错地方了。"
+    description="这个页面不存在，也可能已经被移动到了别的地方。"
+    class="not-found"
+  >
+    <span slot="eyebrow">ERROR / 404</span>
+    <Fragment slot="title">
+      <span class="error-code">404</span>
+      <span class="error-title">好像走错地方了。</span>
+    </Fragment>
+    <Fragment slot="meta">
       <div class="terminal">
         <span class="term-line">
           &gt; cd <span data-not-found-path>{Astro.url.pathname}</span>
@@ -31,8 +35,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           看看最近的内容 <ArrowRight size={14} />
         </Button>
       </div>
-    </div>
-  </section>
+    </Fragment>
+  </PageHero>
 </BaseLayout>
 
 <script>
@@ -46,14 +50,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </script>
 
 <style>
-  .not-found {
+  :global(.page-hero.not-found) {
     padding: calc(var(--header-height) + 64px) 0 84px;
+    height: auto;
     min-height: calc(100dvh - var(--header-height));
-    display: flex;
     align-items: center;
-    background: var(--ice);
+  }
+  :global(.not-found h1) {
+    margin-bottom: 12px;
   }
   .error-code {
+    display: block;
     font-size: clamp(72px, 10vw, 120px);
     font-weight: 800;
     line-height: 0.9;
@@ -61,17 +68,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0 0 16px;
     letter-spacing: -0.04em;
   }
-  .not-found h2 {
+  .error-title {
+    display: block;
     font-size: 28px;
     font-weight: 650;
-    margin: 0 0 12px;
+    line-height: 1.6;
   }
-  .error-desc {
-    font-size: 14px;
-    color: var(--muted);
+  :global(.not-found .page-hero-copy) {
     max-width: 480px;
     margin: 0 0 28px;
-    line-height: 1.8;
   }
   .terminal {
     overflow-wrap: anywhere;

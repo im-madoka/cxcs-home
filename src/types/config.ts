@@ -1,3 +1,5 @@
+import type { RecruitmentStatus } from '../status';
+
 export type SiteInfo = {
   shortName: string;
   title: string;
@@ -32,6 +34,7 @@ export type ArticlesConfig = {
 
 export type RecruitmentConfig = {
   title: string;
+  status: RecruitmentStatus;
   opensAt?: string;
   closesAt?: string;
   qqGroup: string;

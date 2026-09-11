@@ -20,8 +20,8 @@ export const pageMetadata: Record<string, PageMetadata> = {
     description: '记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。',
   },
   '/join': {
-    title: `Join Us · ${site.shortName}`,
-    description: '加入计算机协会，一起学、一起做、一起折腾。',
+    title: `加入我们 · ${site.shortName}`,
+    description: '欢迎加入东南大学成贤学院计算机协会，查看招新 QQ 群、加群方式与常见问题。',
   },
   '/404': {
     title: `404 · ${site.shortName}`,

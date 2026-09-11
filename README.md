@@ -170,12 +170,12 @@ $$
 | `site`                | 站点名称、标题、描述，以及主站、Guide、Page 地址 |
 | `nav`                 | 顶栏导航、移动端标签与外链标记                   |
 | `articles.categories` | 文章分类、分类页文案、发布说明与自动封面配色     |
-| `recruitment`         | 首页招新提示、起止时间、公开 QQ 群号             |
+| `recruitment`         | 招新标题、状态、起止时间、公开 QQ 群号           |
 | `footer`              | 页脚分组链接                                     |
 
 分类配置的键对应 frontmatter 的 `type` 和 `/articles/<type>`，配置顺序就是分类导航顺序。每个分类包含 `label`、`title`、`description`、`byline`、`coverLabel` 和 `accent`。新增分类只需补齐配置项并在文章中使用该类型，分类页、导航、标签、sitemap 和封面自动使用新配置；空分类仍生成页面，未配置的文章类型会导致构建失败。
 
-招新页在同时提供 `opensAt`、`closesAt` 时，按构建时间计算 `upcoming → open → closed`；缺少任一时间时显示“即将开启”。时间建议使用带时区的 ISO 8601 字符串。当前只配置了招新提示和群号，未配置起止时间。修改招新周期时，还需检查 [src/pages/join.astro](./src/pages/join.astro) 内的年份提示、说明和 FAQ；这些文案未集中在配置中。群入口目前始终显示，状态不会在浏览器中重新计算，跨越起止时间后需重新构建并发布。
+招新页在同时提供 `opensAt`、`closesAt` 时，按构建时间计算 `upcoming → open → closed`；缺少任一时间时使用配置中的 `status`。当前设为 `open`（招新进行中），未设置起止时间。招新标题由 `recruitment.title` 维护，群号由 `qqGroup` 维护。时间建议使用带时区的 ISO 8601 字符串。群号始终可查看和复制；状态不会在浏览器中重新计算，调整状态或跨越起止时间后需重新构建并发布。
 
 ## 目录与工程约定
 

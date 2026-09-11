@@ -16,7 +16,8 @@ const nav: NavItem[] = [
 ];
 
 const recruitment: RecruitmentConfig = {
-  title: '下一次招新信息待确认',
+  title: '2026 年秋季招新',
+  status: 'open',
   opensAt: undefined,
   closesAt: undefined,
   qqGroup: '870131425',

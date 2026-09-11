@@ -21,6 +21,7 @@ const {
 ---
 
 <Tag class:list={['page-hero', 'inner-hero', className, { 'page-hero-with-cover': image }]}>
+  {!image && <div class="page-hero-grid" aria-hidden="true"></div>}
   {image && <img class="page-hero-cover" src={image} alt={imageAlt} fetchpriority="high" decoding="async" />}
   <div class="wrap">
     <div class="section-line">
@@ -55,6 +56,16 @@ const {
     overflow: hidden;
     background: var(--ice);
     border-bottom: 1px solid var(--line);
+  }
+  .page-hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 120px 120px;
+    opacity: 0.35;
   }
   .page-hero-with-cover {
     --muted: color-mix(in srgb, var(--text) 80%, var(--bg));
