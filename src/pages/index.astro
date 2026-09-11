@@ -381,6 +381,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { initHeroMotion } from '../assets/scripts/hero-motion';
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -395,44 +396,10 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     if (!hero || !character) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let rafId: number | null = null;
-
-    const updateLoop = () => {
-      currentX += (targetX - currentX) * 0.08;
-      currentY += (targetY - currentY) * 0.08;
-
-      character.style.setProperty('--px', `${currentX.toFixed(2)}px`);
-      character.style.setProperty('--py', `${currentY.toFixed(2)}px`);
-
-      if (Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05) {
-        rafId = requestAnimationFrame(updateLoop);
-      } else {
-        rafId = null;
-      }
-    };
-
-    const startLoop = () => {
-      if (rafId === null) rafId = requestAnimationFrame(updateLoop);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      const bounds = hero.getBoundingClientRect();
-      targetX = (event.clientX - bounds.left - bounds.width / 2) * 0.015;
-      targetY = (event.clientY - bounds.top - bounds.height / 2) * 0.01;
-      startLoop();
-    };
-
-    const onPointerLeave = () => {
-      targetX = 0;
-      targetY = 0;
-      startLoop();
-    };
+    const cleanupHeroMotion = initHeroMotion(hero, character);
 
     const onCharacterClick = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       gsap.killTweensOf(character);
       gsap.fromTo(
         character,
@@ -446,8 +413,6 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
       );
     };
 
-    hero.addEventListener('pointermove', onPointerMove, { passive: true });
-    hero.addEventListener('pointerleave', onPointerLeave, { passive: true });
     character.addEventListener('click', onCharacterClick);
 
     const context = gsap.context(() => {
@@ -501,10 +466,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     });
 
     cleanupCurrentMotion = () => {
-      hero.removeEventListener('pointermove', onPointerMove);
-      hero.removeEventListener('pointerleave', onPointerLeave);
+      cleanupHeroMotion();
       character.removeEventListener('click', onCharacterClick);
-      if (rafId !== null) cancelAnimationFrame(rafId);
+      gsap.killTweensOf(character);
       context.revert();
     };
   };
@@ -598,6 +562,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     transition: transform 0.1s ease-out;
     cursor: pointer;
     pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
   }
   .hero-copy {
     position: absolute;
