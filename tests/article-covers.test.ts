@@ -70,6 +70,6 @@ describe('page sharing metadata', () => {
       }
     }
 
-    expect(pageImages.size).toBe(5 + Object.keys(config.articles.categories).length);
+    expect(pageImages.size).toBe(4 + Object.keys(config.articles.categories).length);
   });
 });

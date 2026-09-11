@@ -10,7 +10,6 @@ const site: SiteInfo = {
 };
 
 const nav: NavItem[] = [
-  { label: 'About', href: '/about' },
   { label: 'Articles', href: '/articles' },
   { label: 'Guide', mobileLabel: 'CXCS Guide', href: site.guideUrl, external: true },
   { label: 'Page', mobileLabel: 'CXCS Page', href: site.pageUrl, external: true },

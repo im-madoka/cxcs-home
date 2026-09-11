@@ -15,10 +15,6 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: site.title,
     description: site.description,
   },
-  '/about': {
-    title: `About · ${site.shortName}`,
-    description: '我们是一群喜欢计算机，也喜欢折腾的人。',
-  },
   '/articles': {
     title: `Articles · ${site.shortName}`,
     description: '记录折腾的过程，分享踩过的坑，也留下一些值得被记住的尝试。',

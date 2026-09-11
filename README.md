@@ -2,7 +2,7 @@
 
 东南大学成贤学院计算机协会官方网站，主站为 [cxcs.dev](https://cxcs.dev)。
 
-项目使用 Astro 静态生成页面，以原生 Astro 组件、TypeScript 和 GSAP 实现交互，通过 Markdown / MDX 维护文章。当前包含首页、协会介绍、文章列表与分类、文章详情、招新页和 404，以及 RSS、sitemap 和自动文章封面。站内导航使用 Astro `ClientRouter`，每个页面仍有独立的静态 HTML 输出。
+项目使用 Astro 静态生成页面，以原生 Astro 组件、TypeScript 和 GSAP 实现交互，通过 Markdown / MDX 维护文章。当前包含首页、文章列表与分类、文章详情、招新页和 404，以及 RSS、sitemap 和自动文章封面。站内导航使用 Astro `ClientRouter`，每个页面仍有独立的静态 HTML 输出。
 
 ## 本地开发
 
@@ -20,7 +20,7 @@ bun run build
 bun run preview
 ```
 
-构建输出为 `dist/`，HTML 按目录输出，例如 `/about` 对应 `dist/about/index.html`。`preview` 用于预览构建结果。当前构建无需环境变量或服务端适配器。
+构建输出为 `dist/`，HTML 按目录输出，例如 `/join` 对应 `dist/join/index.html`。`preview` 用于预览构建结果。当前构建无需环境变量或服务端适配器。
 
 工具链使用 Astro 7、MDX 8、TypeScript 7 和 ESLint 10。由于 `astro check` 与 `typescript-eslint` 仍依赖 TypeScript 6 的编程接口，按 [TypeScript 官方并行安装方案](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0)，`@typescript/native` 提供 TypeScript 7 的 `tsc`，`typescript` 别名指向 6.x 兼容包。`bun run check` 依次执行 Astro 检查和 TypeScript 7 检查。
 
@@ -38,17 +38,16 @@ bun run preview
 
 ## 页面与输出
 
-| 路径                                                   | 内容                                                           |
-| ------------------------------------------------------ | -------------------------------------------------------------- |
+| 路径                                                   | 内容                                                                     |
+| ------------------------------------------------------ | ------------------------------------------------------------------------ |
 | `/`                                                    | 首页：Hero、What We Do、Start Here、全屏相册、Latest、Ecosystem、Join Us |
-| `/about`                                               | 协会介绍、社区原则与生态入口                                   |
-| `/articles`                                            | 推荐文章和全部公开文章                                         |
-| `/articles/<type>`                                     | 按配置生成的分类页，当前为 `news`、`blog`                      |
-| `/articles/<type>/<article-name>`                      | 文章详情                                                       |
-| `/join`                                                | 招新状态、QQ 群入口与常见问题                                  |
-| `/404`                                                 | 404 页面，构建输出为 `404.html`                                |
-| `/rss.xml`、`/sitemap.xml`、`/robots.txt`              | 订阅与搜索引擎发现入口                                         |
-| `/generated/article-covers/<type>/<article-name>.webp` | 未指定封面的公开文章的自动标题封面                             |
+| `/articles`                                            | 推荐文章和全部公开文章                                                   |
+| `/articles/<type>`                                     | 按配置生成的分类页，当前为 `news`、`blog`                                |
+| `/articles/<type>/<article-name>`                      | 文章详情                                                                 |
+| `/join`                                                | 招新状态、QQ 群入口与常见问题                                            |
+| `/404`                                                 | 404 页面，构建输出为 `404.html`                                          |
+| `/rss.xml`、`/sitemap.xml`、`/robots.txt`              | 订阅与搜索引擎发现入口                                                   |
+| `/generated/article-covers/<type>/<article-name>.webp` | 未指定封面的公开文章的自动标题封面                                       |
 
 ## 内容维护
 
@@ -126,7 +125,7 @@ cover:
   caption: 可选的图片说明
 ```
 
-`cover` 简写和 `cover.image` 均支持本地相对路径（如 `./cover.png`）、远程 URL 和 `public/` 下的绝对站点路径，例如 `/assets/articles/code.jpg`。手动指定的封面铺满文章详情页 Hero 的背景，叠加随主题切换的遮罩和标题：浅色模式使用浅色遮罩，深色模式使用深色遮罩，顶部导航区域的遮罩更强以保证透明 Header 的文字清晰。文章详情与 Articles、About 等内页共用 PageHero，标题区默认底部对齐，桌面底部留白 40px、手机端 32px。Hero 高度统一为：桌面端 460px，视口宽度不超过 520px 时为 520px；可选图片说明显示在 Hero 下方。省略封面时，Satori 与 Sharp 在构建时生成 1600 × 1000 的 WebP 标题封面，用于首页、文章列表和社交分享，详情页 Hero 保持纯色背景。
+`cover` 简写和 `cover.image` 均支持本地相对路径（如 `./cover.png`）、远程 URL 和 `public/` 下的绝对站点路径，例如 `/assets/articles/code.jpg`。手动指定的封面铺满文章详情页 Hero 的背景，叠加随主题切换的遮罩和标题：浅色模式使用浅色遮罩，深色模式使用深色遮罩，顶部导航区域的遮罩更强以保证透明 Header 的文字清晰。文章详情与 Articles、Join 等内页共用 PageHero，标题区默认底部对齐，桌面底部留白 40px、手机端 32px。Hero 高度统一为：桌面端 460px，视口宽度不超过 520px 时为 520px；可选图片说明显示在 Hero 下方。省略封面时，Satori 与 Sharp 在构建时生成 1600 × 1000 的 WebP 标题封面，用于首页、文章列表和社交分享，详情页 Hero 保持纯色背景。
 
 所有页面统一输出 Open Graph 和 Twitter 分享信息。普通页面（含 404）的标题与描述维护在 [src/page-metadata.ts](./src/page-metadata.ts)，构建时使用页面标题和同一套封面模板生成 `/generated/page-covers/<path>.webp`，首页对应 `index.webp`；分类页随分类配置自动生成。新增普通页面时需在该文件登记路径、标题和描述。文章分享图优先使用 `cover.image`，未设置时使用自动文章封面。
 
@@ -148,7 +147,7 @@ import fileUrl from './assets/files/example.pdf?url';
 
 Markdown 和 MDX 共用 `remark-math`、`rehype-katex` 配置，在构建时渲染公式，无需浏览器运行公式渲染脚本。文章页面打包 KaTeX 样式和字体，长独立公式可横向滚动。
 
-`package.json` 的 KaTeX override 统一插件渲染器与页面样式的版本，升级 KaTeX 时需同步更新依赖与 override。
+`package.json` 的 KaTeX override 统一插件渲染器与页面版本的版本，升级 KaTeX 时需同步更新依赖与 override。
 
 行内公式使用 `$...$`，独立公式使用单独成行的 `$$`：
 

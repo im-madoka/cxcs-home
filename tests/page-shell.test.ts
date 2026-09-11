@@ -10,7 +10,6 @@ let pageHero = '';
 let navigationProgress = '';
 let themeSwitcher = '';
 const pages: Array<[string, string]> = [
-  ['about', 'ABOUT CXCS'],
   ['articles', 'CXCS EDITORIAL'],
   ['articles/news', 'ARTICLES / NEWS'],
   ['articles/blog', 'ARTICLES / BLOG'],

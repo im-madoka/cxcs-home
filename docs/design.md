@@ -21,7 +21,6 @@ CXCS Website 是东南大学成贤学院计算机协会的官方门户，服务�
 | 路径                                                   | 实现文件（相对 `src/pages/`）                | 内容                      |
 | ------------------------------------------------------ | -------------------------------------------- | ------------------------- |
 | `/`                                                    | `index.astro`                                | 六区块首页                |
-| `/about`                                               | `about.astro`                                | 协会介绍与社区原则        |
 | `/articles`                                            | `articles/index.astro`                       | 推荐文章与全部公开文章    |
 | `/articles/<type>`                                     | `articles/[type]/index.astro`                | 配置驱动的分类列表        |
 | `/articles/<type>/<article-name>`                      | `articles/[type]/[slug].astro`               | 文章详情                  |
@@ -53,7 +52,7 @@ Hero → What We Do → Start Here → Latest from CXCS → CXCS Ecosystem → J
 
 Hero 使用 `100dvh`，角色图片带固有宽高和 `fetchpriority="high"`。装饰性英文标题对辅助技术隐藏，中文名称使用 `h1`。GSAP 实现标题、角色、说明和按钮的入场，角色支持轻微指针视差与点击回弹；视差的 `requestAnimationFrame` 在接近目标位置后停止。
 
-首页的普通卡片由 ScrollTrigger 在进入视口时 Reveal。生态堆叠由 [StackScroll](../src/widgets/StackScroll.astro) 和 [StackScrollCard](../src/widgets/StackScrollCard.astro) 的 CSS `position: sticky` 实现：卡片随内容撑开，桌面端最小高度为 570px，宽度不超过 900px 时使用自然高度。ResizeObserver 测量卡片高度，超出视口的卡片在底部显示后才吸附，内容随页面滚动，无需卡片内部滚动；未启用脚本时按普通文档流显示。三张卡依次使用主题 Surface、蓝色和深色背景，What We Do 与 Journey 的标题、说明均上下排列。
+首页的普通卡片由 ScrollTrigger 在进入窗口时 Reveal。生态堆叠由 [StackScroll](../src/widgets/StackScroll.astro) 和 [StackScrollCard](../src/widgets/StackScrollCard.astro) 的 CSS `position: sticky` 实现：卡片随内容撑开，桌面端最小高度为 570px，宽度不超过 900px 时使用自然高度。ResizeObserver 测量卡片高度，超出窗口的卡片在底部显示后才吸附，内容随页面滚动，无需卡片内部滚动；未启用脚本时按普通文档流显示。三张卡依次使用主题 Surface、蓝色和深色背景，What We Do 与 Journey 的标题、说明均上下排列。
 
 移动端调整 Hero 构图、字号、卡片列数与按钮排列；生态卡片在 900px 及以下改为上下布局，仍保留 sticky 堆叠。当前没有单独的移动端滚动动画时间线。
 
@@ -65,7 +64,7 @@ Latest 的数据规则与文章总列表一致：过滤草稿，按 `publishedAt
 
 [BaseLayout](../src/layouts/BaseLayout.astro) 提供完整 HTML、`BaseHead`、`ClientRouter`、导航进度条、跳转到主要内容的链接、顶栏、`main` 和页脚。所有页面使用此布局，文章详情的结构和排版直接维护在对应路由文件中。
 
-桌面顶栏包括社徽与字标、About、Articles、Guide、Page、主题菜单和 Join Us。导航文案来自 `config.nav`；Join Us 入口由顶栏单独渲染。顶栏固定在页面顶部，初始高 72px，滚动超过 30px 后收缩为 64px，并出现半透明背景、模糊和分隔线。
+桌面顶栏包括社徽与字标、Articles、Guide、Page、主题菜单和 Join Us。导航文案来自 `config.nav`；Join Us 入口由顶栏单独渲染。顶栏固定在页面顶部，初始高 72px，滚动超过 30px 后收缩为 64px，并出现半透明背景、模糊和分隔线。
 
 1000px 及以下使用移动菜单，打开后显示整屏 Overlay、锁定背景滚动并聚焦关闭按钮；支持 Escape、点击链接关闭和关闭后返回触发按钮。关闭状态通过 `inert` 与 `aria-hidden` 隐藏交互内容。当前没有焦点循环锁定。
 
@@ -73,7 +72,7 @@ Latest 的数据规则与文章总列表一致：过滤草稿，按 `publishedAt
 
 ### 内页标题
 
-[PageHero](../src/widgets/PageHero.astro) 供 About、Join、文章总列表和分类页共用，包含英文标签、主标题、说明，以及可选的 `title`、`meta` 插槽。背景使用 `--ice`，底部有细分隔线。高度默认 460px，在 520px 及以下为 520px。文章详情采用自己的标题区。
+[PageHero](../src/widgets/PageHero.astro) 供 Join、文章总列表和分类页共用，包含英文标签、主标题、说明，以及可选的 `title`、`meta` 插槽。背景使用 `--ice`，底部有细分隔线。高度默认 460px，在 520px 及以下为 520px。文章详情采用自己的标题区。
 
 ### 主题与导航反馈
 
@@ -81,7 +80,7 @@ Latest 的数据规则与文章总列表一致：过滤草稿，按 `publishedAt
 
 [ThemeSwitcher](../src/components/ThemeSwitcher.astro) 通过事件委托管理桌面、移动端主题按钮。在视觉主题发生变化且浏览器支持 View Transitions 时，以选项按钮位置为圆心展开新主题，当前动画时长为 2000ms。重复切换或站内导航会中断旧动画；不支持该 API 或启用 Reduced Motion 时直接应用主题。`astro:before-swap` 将当前选择复制到新文档。
 
-导航进度条是固定在视口顶部的 3px 蓝线，跨页面保留，根据 Astro 导航准备、完成和中止事件更新。它提供导航反馈，不表示实际下载字节比例。文章详情另外有按整页滚动比例计算的阅读进度条。
+导航进度条是固定在窗口顶部的 3px 蓝线，跨页面保留，根据 Astro 导航准备、完成和中止事件更新。它提供导航反馈，不表示实际下载字节比例。文章详情另外有按整页滚动比例计算的阅读进度条。
 
 ## 4. 内页内容设计
 
@@ -101,9 +100,7 @@ Markdown 与 MDX 共用 `remark-math`、`rehype-katex`，在构建时生成公�
 
 正文后有返回列表和最多两篇相关文章。当前推荐规则为：排除自身和草稿，匹配同分类或任一共同标签，然后按集合返回顺序取前两篇。`relatedArticles` 字段尚未接入，也没有基于时间的额外排序。
 
-### About、Join 与 404
-
-About 依次介绍社区、Curiosity / Build / Share / Together 四项原则、三个站点入口和加入 CTA。当前没有组织架构、成员 Registry 或历史时间线。
+### Join 与 404
 
 Join 展示招新状态、四类适合加入的同学、QQ群号和加群链接、招新说明、四项 FAQ 与最终 CTA。FAQ 使用原生 `details` / `summary`。群号来自配置，受众、说明、年份提示和 FAQ 直接维护在 `join.astro`。
 
@@ -124,17 +121,17 @@ Join 展示招新状态、四类适合加入的同学、QQ群号和加群链接�
 
 | 变量                    | 浅色      | 深色      |
 | ----------------------- | --------- | --------- |
-| `--bg`                  | `#fafafa` | `#232323` |
-| `--surface`             | `#ffffff` | `#2b2b2b` |
-| `--surface-strong`      | `#f0f4fa` | `#33363e` |
-| `--ice` / `--blue-soft` | `#eef4ff` | `#282f3d` |
-| `--text` / `--ink`      | `#181a1e` | `#f4f5f8` |
-| `--muted`               | `#657083` | `#bbc2cf` |
-| `--line`                | `#dbe2ed` | `#444952` |
-| `--line-strong`         | `#b8c5d9` | `#59616e` |
-| `--blue`                | `#2464ed` | `#8aafff` |
-| `--blue-deep`           | `#1b53c7` | `#6e9bff` |
-| `--orange`              | `#bd4c21` | `#ff996c` |
+| `--bg`                  | `#fafafa` | `#232323` |\
+| `--surface`             | `#ffffff` | `#2b2b2b` |\
+| `--surface-strong`      | `#f0f4fa` | `#33363e` |\
+| `--ice` / `--blue-soft` | `#eef4ff` | `#282f3d` |\
+| `--text` / `--ink`      | `#181a1e` | `#f4f5f8` |\
+| `--muted`               | `#657083` | `#bbc2cf` |\
+| `--line`                | `#dbe2ed` | `#444952` |\
+| `--line-strong`         | `#b8c5d9` | `#59616e` |\
+| `--blue`                | `#2464ed` | `#8aafff` |\
+| `--blue-deep`           | `#1b53c7` | `#6e9bff` |\
+| `--orange`              | `#bd4c21` | `#ff996c` |\
 
 圆角 Token 为 3 / 3 / 7 / 10px，常用容器最大宽度 1296px，左右留白分别为桌面 56px、800px 及以下 24px、520px 及以下 18px。`--reading-width` 当前定义为 740px，但文章页实际使用局部规则的 760px，调整正文时应以文章页为准。
 
@@ -218,7 +215,7 @@ Reduced Motion 已覆盖共享 Reveal、首页入场与滚动 Reveal、主题圆
 
 `BaseHead` 输出标题、描述、canonical、OpenGraph、Twitter `summary_large_image` 和社徽 favicon。Canonical 由 `config.site.url` 与当前路径组合；文章使用自己的标题、摘要和封面，普通页面默认分享图片仍是代码中配置的 Unsplash URL。
 
-当前 `og:type` 统一为 `website`，尚未输出 Organization、Article 等 JSON-LD。RSS 按发布日期倒序输出所有分类的公开文章，包含标题、日期、摘要和链接，不含正文。Sitemap 包含首页、About、Articles、Join、全部配置分类和公开文章，排除 404 与草稿。Robots 默认允许抓取并指向 sitemap。
+当前 `og:type` 统一为 `website`，尚未输出 Organization、Article 等 JSON-LD。RSS 按发布日期倒序输出所有分类的公开文章，包含标题、日期、摘要和链接，不含正文。Sitemap 包含首页、Articles、Join、全部配置分类和公开文章，排除 404 与草稿。Robots 默认允许抓取并指向 sitemap。
 
 ### 部署边界
 
@@ -234,4 +231,4 @@ Reduced Motion 已覆盖共享 Reveal、首页入场与滚动 Reveal、主题圆
 | `bun run format:check` | Prettier 和 Astro 格式检查；当前忽略 `docs/`                                                     |
 | `bun run build`        | 内容 schema、静态页面与资源生成                                                                  |
 
-部分测试会执行完整构建，内容模型测试使用临时副本验证新增分类、图片、公式和非法输入。现有测试主要检查函数、源码约定和生成产物，尚无浏览器端到端测试、完整链接检查或性能 / 无障碍基准报告。后续变更应按涉及的页面检查桌面与移动布局、深浅主题、客户端导航和 Reduced Motion；Core Web Vitals 与资源体积需另行实测。
+部分测试会执行完整构建，内容模型测试使用临时副本验证新增分类、图片、公式和非法输入。现有测试主要检查函数、源码约定和生产产物，尚无浏览器端到端测试、完整链接检查或性能 / 无障碍基准报告。后续变更应按涉及的页面检查桌面与移动布局、深浅主题、客户端导航和 Reduced Motion；Core Web Vitals 与资源体积需另行实测。
