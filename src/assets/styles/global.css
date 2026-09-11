@@ -61,6 +61,21 @@ img {
   }
 }
 
+.inner-hero {
+  --page-hero-height: 460px;
+  height: var(--page-hero-height);
+  padding: calc(var(--header-height) + 40px) 0 40px;
+  display: flex;
+  align-items: flex-end;
+}
+@media (max-width: 520px) {
+  .inner-hero {
+    --page-hero-height: 520px;
+    padding-top: calc(var(--header-height) + 32px);
+    padding-bottom: 32px;
+  }
+}
+
 .section {
   padding: 72px 0;
 }

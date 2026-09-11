@@ -50,12 +50,11 @@ describe('inner page shell', () => {
   });
 
   test('uses one shared hero height and the current page name on every target page', () => {
-    expect(pageHero).toMatch(/\.page-hero\s*\{[\s\S]*--page-hero-height:/);
-
     for (const [path, label] of pages) {
       const html = readFileSync(join(projectRoot, 'dist', path, 'index.html'), 'utf8');
-      const hero = html.match(/<section class="page-hero[^"]*"[^>]*>[\s\S]*?<\/section>/)?.[0] || '';
+      const hero = html.match(/<section\b[^>]*class="page-hero[^"]*"[^>]*>[\s\S]*?<\/section>/)?.[0] || '';
       expect(hero).toContain('class="page-hero');
+      expect(hero).toContain('inner-hero');
       expect(hero).toContain(label);
       expect(hero).not.toContain('>05<');
       expect(hero).not.toContain('>04<');

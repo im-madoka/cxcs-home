@@ -39,11 +39,14 @@ const articles = defineCollection({
       authors: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
       cover: z
-        .object({
-          image: z.url().or(z.string().startsWith('/')).or(image()),
-          alt: z.string(),
-          caption: z.string().optional(),
-        })
+        .preprocess(
+          (value) => (typeof value === 'string' ? { image: value, alt: '' } : value),
+          z.object({
+            image: z.url().or(z.string().startsWith('/')).or(image()),
+            alt: z.string(),
+            caption: z.string().optional(),
+          }),
+        )
         .optional(),
       featured: z.boolean().default(false),
       tags: z.array(z.string()).default([]),

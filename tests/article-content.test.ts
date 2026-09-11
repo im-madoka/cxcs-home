@@ -12,6 +12,10 @@ function readOutput(path: string) {
   return readFileSync(join(fixtureRoot, 'dist', path), 'utf8');
 }
 
+function articleHero(html: string) {
+  return html.match(/<header\b[^>]*class="page-hero[^"]*"[^>]*>[\s\S]*?<\/header>/)?.[0] || '';
+}
+
 function writeArticle(folder: string, type: string, extra = '', body = 'Fixture article body.', format = 'mdx') {
   const directory = join(fixtureRoot, 'src/content/articles', folder);
   mkdirSync(directory, { recursive: true });
@@ -66,13 +70,25 @@ beforeAll(() => {
   const directory = writeArticle(
     'staging/local-images',
     'notes',
-    'cover:\n  image: ./assets/images/cover.jpg\n  alt: Local fixture cover\n',
+    'cover:\n  image: ./assets/images/cover.jpg\n  alt: Local fixture cover\n  caption: Local fixture caption\n',
     '![Local body image](./assets/images/cover.jpg)\n\n<span data-mdx-result>{1 + 1}</span>',
   );
   mkdirSync(join(directory, 'assets/images'), { recursive: true });
   cpSync(join(projectRoot, 'public/assets/articles/code.jpg'), join(directory, 'assets/images/cover.jpg'));
   writeFileSync(join(directory, 'assets/images/ignored.mdx'), 'This is an asset, not an article.');
   writeFileSync(join(directory, 'assets/images/ignored.md'), 'This is an asset, not an article.');
+  for (const format of ['md', 'mdx']) {
+    for (const style of ['shorthand', 'object']) {
+      const localDirectory = writeArticle(
+        `staging/local-${style}-${format}`,
+        'notes',
+        style === 'shorthand' ? 'cover: ./cover.png\n' : 'cover:\n  image: ./cover.png\n  alt: Adjacent cover\n',
+        'Article with a cover in the same directory.',
+        format,
+      );
+      cpSync(join(projectRoot, 'public/assets/brand/association-emblem.png'), join(localDirectory, 'cover.png'));
+    }
+  }
   writeArticle('blog/cxcs-page', 'blog', 'featured: true\n');
   writeArticle('blog/blue-hour', 'blog');
   writeArticle('notes/generated-cover', 'notes');
@@ -128,7 +144,8 @@ describe('article directories and configured categories', () => {
   test('renders MDX and emits local cover and body images', () => {
     const html = readOutput('articles/notes/local-images/index.html');
     expect(html.match(/<span[^>]*data-mdx-result[^>]*>(.*?)<\/span>/)?.[1]).toBe('2');
-    const cover = html.match(/<img[^>]+class="detail-cover"[^>]+src="([^"]+)"/)?.[1];
+    const hero = articleHero(html);
+    const cover = hero.match(/<img[^>]+class="page-hero-cover"[^>]+src="([^"]+)"/)?.[1];
     const bodyImage = html.match(/<img\b[^>]*alt="Local body image"[^>]*>/)?.[0].match(/\bsrc="([^"]+)"/)?.[1];
     for (const src of [cover, bodyImage]) {
       expect(src).toMatch(/^\/_astro\//);
@@ -138,7 +155,33 @@ describe('article directories and configured categories', () => {
     expect(html).toContain('property="og:image:alt" content="Local fixture cover"');
     expect(html).toContain('property="og:type" content="article"');
     expect(html).toContain('rel="canonical" href="https://cxcs.dev/articles/notes/local-images/"');
+    expect(hero).toContain('page-hero-with-cover');
+    expect(hero).toContain('<h1');
+    expect(html).toContain('Local fixture caption');
+    expect(html).not.toContain('detail-cover-wrap');
   });
+
+  for (const format of ['md', 'mdx']) {
+    for (const style of ['shorthand', 'object']) {
+      test(`resolves an adjacent PNG ${style} cover in ${format.toUpperCase()} across the hero, listings, and metadata`, () => {
+        const id = `notes/local-${style}-${format}`;
+        const html = readOutput(`articles/${id}/index.html`);
+        const hero = articleHero(html);
+        const cover = hero.match(/<img[^>]+class="page-hero-cover"[^>]+src="([^"]+)"/)?.[1];
+        const alt = style === 'shorthand' ? `Fixture staging/local-${style}-${format}` : 'Adjacent cover';
+        expect(cover).toMatch(/^\/_astro\/cover\..+\.png$/);
+        expect(existsSync(join(fixtureRoot, 'dist', cover!))).toBe(true);
+        expect(hero).toContain(`alt="${alt}"`);
+        expect(html).toContain(`property="og:image" content="${new URL(cover!, config.site.url)}"`);
+        expect(html).toContain(`name="twitter:image:alt" content="${alt}"`);
+        for (const listing of ['articles/index.html', 'articles/notes/index.html']) {
+          const card = readOutput(listing).match(new RegExp(`<a[^>]+href="/articles/${id}"[^>]*>[\\s\\S]*?</a>`))?.[0];
+          expect(card).toContain(`src="${cover}"`);
+        }
+        expect(existsSync(join(fixtureRoot, `dist/generated/article-covers/${id}.webp`))).toBe(false);
+      });
+    }
+  }
 
   test('keeps remote and public covers usable', () => {
     expect(readOutput('articles/notes/remote-cover/index.html')).toContain('src="https://example.com/remote.jpg"');
@@ -150,6 +193,8 @@ describe('article directories and configured categories', () => {
       ['public-cover', `${config.site.url}/assets/brand/association-emblem.png`],
     ]) {
       const html = readOutput(`articles/notes/${slug}/index.html`);
+      expect(articleHero(html)).toContain('page-hero-with-cover');
+      expect(articleHero(html)).toContain(`src="${slug === 'public-cover' ? new URL(image).pathname : image}"`);
       expect(html).toContain(`property="og:image" content="${image}"`);
       expect(html).toContain(`name="twitter:image" content="${image}"`);
       expect(existsSync(join(fixtureRoot, `dist/generated/article-covers/notes/${slug}.webp`))).toBe(false);
@@ -196,7 +241,10 @@ describe('article directories and configured categories', () => {
 
   test('supports the same article name in different categories and generates category covers', () => {
     for (const id of ['news/blue-hour', 'blog/blue-hour', 'notes/generated-cover']) {
-      expect(readOutput(`articles/${id}/index.html`)).toContain(`/generated/article-covers/${id}.webp`);
+      const html = readOutput(`articles/${id}/index.html`);
+      expect(html).toContain(`/generated/article-covers/${id}.webp`);
+      expect(articleHero(html)).not.toContain('<img');
+      expect(articleHero(html)).not.toContain('page-hero-with-cover');
       expect(existsSync(join(fixtureRoot, `dist/generated/article-covers/${id}.webp`))).toBe(true);
     }
   });

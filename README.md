@@ -98,7 +98,7 @@ featured: false
 | `draft`           | 默认 `false`；设为 `true` 后不生成文章页面、列表项、RSS 条目、sitemap 条目或自动封面 |
 | `featured`        | 默认 `false`；首页和文章总列表优先选择发布时间最新的推荐文章，无推荐时选择最新文章   |
 | `tags`            | 字符串数组，默认 `[]`，用于相关文章匹配                                              |
-| `cover`           | 可选对象，包含必填的 `image`、`alt` 和可选的 `caption`                               |
+| `cover`           | 可选图片路径，或包含必填的 `image`、`alt` 和可选的 `caption` 的对象                  |
 | `updatedAt`       | 可选日期；目前仅由 schema 接收，页面与订阅输出未使用                                 |
 | `credits`         | 默认 `[]`，每项为 `{ person, credit }`；目前未展示                                   |
 | `relatedArticles` | 默认 `[]`，字符串数组；目前未参与推荐选择                                            |
@@ -109,7 +109,13 @@ featured: false
 
 ### 图片与附件
 
-图片建议放在文章的 `assets/images/`，其他附件按类型放在 `assets/` 内。添加自定义封面时，在 frontmatter 中填写：
+图片可以直接放在 `index.md` / `index.mdx` 所在的文章目录，也可以按需放在 `assets/images/`；其他附件按类型放在 `assets/` 内。与正文同目录的图片可在 frontmatter 中直接作为封面引用：
+
+```yaml
+cover: ./cover.png
+```
+
+相对路径以当前文章的正文文件所在目录为基准，构建时由 Astro 处理并输出图片。简写形式使用文章标题作为替代文本；需要指定替代文本或图片说明时，使用对象形式：
 
 ```yaml
 cover:
@@ -118,7 +124,7 @@ cover:
   caption: 可选的图片说明
 ```
 
-`cover.image` 支持本地相对路径、远程 URL 和 `public/` 下的绝对站点路径，例如 `/assets/articles/code.jpg`。省略封面时，Satori 与 Sharp 在构建时生成 1600 × 1000 的 WebP 标题封面，用于首页、文章列表和社交分享。详情页仅在明确配置 `cover.image` 时显示正文前的大图。
+`cover` 简写和 `cover.image` 均支持本地相对路径（如 `./cover.png`）、远程 URL 和 `public/` 下的绝对站点路径，例如 `/assets/articles/code.jpg`。手动指定的封面铺满文章详情页 Hero 的背景，叠加随主题切换的遮罩和标题：浅色模式使用浅色遮罩，深色模式使用深色遮罩，顶部导航区域的遮罩更强以保证透明 Header 的文字清晰。文章详情与 Articles、About 等内页共用 PageHero，标题区默认底部对齐，桌面底部留白 40px、手机端 32px。Hero 高度统一为：桌面端 460px，视口宽度不超过 520px 时为 520px；可选图片说明显示在 Hero 下方。省略封面时，Satori 与 Sharp 在构建时生成 1600 × 1000 的 WebP 标题封面，用于首页、文章列表和社交分享，详情页 Hero 保持纯色背景。
 
 所有页面统一输出 Open Graph 和 Twitter 分享信息。普通页面（含 404）的标题与描述维护在 [src/page-metadata.ts](./src/page-metadata.ts)，构建时使用页面标题和同一套封面模板生成 `/generated/page-covers/<path>.webp`，首页对应 `index.webp`；分类页随分类配置自动生成。新增普通页面时需在该文件登记路径、标题和描述。文章分享图优先使用 `cover.image`，未设置时使用自动文章封面。
 

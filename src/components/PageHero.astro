@@ -1,24 +1,38 @@
 ---
 interface Props {
+  as?: 'section' | 'header';
   eyebrow: string;
   title: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
   class?: string;
 }
 
-const { eyebrow, title, description, class: className = '' } = Astro.props;
+const {
+  as: Tag = 'section',
+  eyebrow,
+  title,
+  description,
+  image,
+  imageAlt = title,
+  class: className = '',
+}: Props = Astro.props;
 ---
 
-<section class:list={['page-hero', className]}>
+<Tag class:list={['page-hero', 'inner-hero', className, { 'page-hero-with-cover': image }]}>
+  {image && <img class="page-hero-cover" src={image} alt={imageAlt} fetchpriority="high" decoding="async" />}
   <div class="wrap">
-    <div class="section-line">{eyebrow}</div>
+    <div class="section-line">
+      <slot name="eyebrow">{eyebrow}</slot>
+    </div>
     <h1>
       <slot name="title">{title}</slot>
     </h1>
     <p class="page-hero-copy">{description}</p>
     <slot name="meta" />
   </div>
-</section>
+</Tag>
 
 <script>
   import { onPageLoad } from '../assets/scripts/page-load';
@@ -36,19 +50,45 @@ const { eyebrow, title, description, class: className = '' } = Astro.props;
 
 <style>
   .page-hero {
-    --page-hero-height: 460px;
-    height: var(--page-hero-height);
-    padding: calc(var(--header-height) + 40px) 0 40px;
-    display: flex;
-    align-items: center;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     background: var(--ice);
     border-bottom: 1px solid var(--line);
+  }
+  .page-hero-with-cover {
+    --muted: color-mix(in srgb, var(--text) 80%, var(--bg));
+    --blue: color-mix(in srgb, var(--blue-deep) 70%, var(--text));
+    color: var(--text);
+  }
+  .page-hero-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .page-hero-with-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg) 96%, transparent) 0,
+      color-mix(in srgb, var(--bg) 96%, transparent) var(--header-height),
+      color-mix(in srgb, var(--bg) 80%, transparent) 100%
+    );
+    pointer-events: none;
   }
   .page-hero h1 {
     font-size: clamp(38px, 4.8vw, 56px);
     line-height: 1.25;
     font-weight: 700;
     margin: 0 0 16px;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
   }
   .page-hero-copy {
     font-size: 14px;
@@ -59,10 +99,8 @@ const { eyebrow, title, description, class: className = '' } = Astro.props;
   }
 
   @media (max-width: 520px) {
-    .page-hero {
-      --page-hero-height: 520px;
-      padding-top: calc(var(--header-height) + 32px);
-      padding-bottom: 32px;
+    .page-hero h1 {
+      font-size: clamp(26px, 6.5vw, 34px);
     }
   }
 </style>
