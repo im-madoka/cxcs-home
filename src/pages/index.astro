@@ -7,6 +7,7 @@ import config from '../config';
 import StackScroll from '../widgets/StackScroll.astro';
 import StackScrollCard from '../widgets/StackScrollCard.astro';
 import HomeGallery from '../widgets/HomeGallery.astro';
+
 import { getArticleCategory, getArticleCover } from '../articles';
 
 const { site: siteData, recruitment } = config;
@@ -267,86 +268,179 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     </div>
   </section>
 
-  <!-- Section 06 / Ecosystem -->
-  <section class="ecosystem" id="ecosystem" aria-labelledby="ecosystem-title">
+  <!-- Section 06 / The Journey -->
+  <section class="ecosystem" id="journey" aria-labelledby="journey-title">
     <div class="wrap">
-      <div class="section-line">CXCS ECOSYSTEM</div>
+      <div class="section-line">THE JOURNEY</div>
       <div class="section-heading">
-        <h2 id="ecosystem-title">
+        <h2 id="journey-title">
           从初次探索，
           <br />
-          到独立交付。
+          到独当一面。
         </h2>
-        <p>贯穿学习、实践与创造的完整过程。</p>
+        <p>在计协，见证每一个纯粹想法生根发芽、化为现实的成长历程。</p>
       </div>
     </div>
 
     <StackScroll>
       <StackScrollCard>
-        <div class="wrap eco-panel eco-website">
+        <div class="wrap eco-panel eco-journey-begin">
           <div class="eco-content">
-            <div class="eco-number">01 / MEET</div>
-            <h3 class="eco-name">Website</h3>
-            <h4 class="eco-headline">认识我们，也找到彼此。</h4>
-            <p>记录协会的前沿动态、开源项目与成员轨迹。这里是对外开放的窗口，也是你与一群志同道合者相遇的起点。</p>
-            <a class="small-link" href="#what">
-              认识计算机协会 <ArrowRight size={14} />
+            <div class="eco-number">01 / BEGIN</div>
+            <h3 class="eco-name">Spark</h3>
+            <h4 class="eco-headline">从第一行代码，到拨开迷雾。</h4>
+            <p>
+              面对陌生的终端、繁杂的配置与未知的报错，迷茫是必经的开端。
+              历届成员踩坑沉淀的新人指南，加上学长学姐在身边的即时答疑指引，让你不必独自在黑暗中摸索。迈出第一步，走得踏实而清醒。
+            </p>
+            <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
+              查阅学习指南 CXCS Guide <ArrowUpRight size={14} />
             </a>
           </div>
           <div class="eco-visual">
-            <img
-              src="/assets/ecosystem/emblem.png"
-              alt="东南大学成贤学院计算机协会完整社徽"
-              width="226"
-              height="226"
-              loading="lazy"
-            />
+            <div class="journey-mockup terminal-mockup">
+              <div class="mockup-header">
+                <div class="mockup-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <span class="mockup-title">zsh — ~/cxcs-workspace</span>
+              </div>
+              <div class="mockup-body code-font">
+                <div class="term-line prompt">
+                  <span class="prompt-arrow">➜</span>
+                  <span class="prompt-path">~</span>
+                  <span class="prompt-cmd">cxcs init student-journey</span>
+                </div>
+                <div class="term-line success">✓ 正在载入成贤计协历代学习路线...</div>
+                <div class="term-line success">✓ 基础开发环境配置就绪 (Linux / Git / Web)</div>
+                <div class="term-line success">✓ 专属学长/学姐答疑通道已接入</div>
+                <div class="term-line prompt" style="margin-top: 14px;">
+                  <span class="prompt-arrow">➜</span>
+                  <span class="prompt-path">student-journey</span>
+                  <span class="prompt-cmd">echo "Hello, CXCS!"</span>
+                </div>
+                <div class="term-output">
+                  "在纯粹的逻辑与无穷的构想之间，敲出真实世界的回响。"
+                </div>
+                <div class="term-cursor-line">
+                  <span class="prompt-arrow">➜</span>
+                  <span class="prompt-path">student-journey</span>
+                  <span class="cursor">_</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </StackScrollCard>
 
       <StackScrollCard background="#2464ed" color="#ffffff" borderColor="#2464ed">
-        <div class="wrap eco-panel eco-guide">
+        <div class="wrap eco-panel eco-journey-forge">
           <div class="eco-content">
-            <div class="eco-number">02 / LEARN</div>
-            <h3 class="eco-name">Guide</h3>
-            <h4 class="eco-headline">前人踩过的坑，你的起点。</h4>
-            <p>从开发环境配置到进阶技术路线。历届成员把踩过的坑和积累的经验整理成册，让你不必在迷茫中独自摸索。</p>
-            <a class="small-link" href={siteData.guideUrl} target="_blank" rel="noopener noreferrer">
-              前往 CXCS Guide <ArrowUpRight size={14} />
+            <div class="eco-number">02 / FORGE</div>
+            <h3 class="eco-name">Build</h3>
+            <h4 class="eco-headline">在并肩攻坚中，把想法打磨成工程。</h4>
+            <p>
+              真正深刻的蜕变，发生在深夜与同伴连麦排查 Bug 的时刻。
+              从个人的练手脚本，到团队协作的真实系统与竞赛答辩。Git 协作分支、严谨的代码评审与架构推演——复杂的工程不再是单打独斗，一群同频的人让每个难关都有所支撑。
+            </p>
+            <a class="small-link" href="/articles">
+              阅读社员实践与博客 <ArrowRight size={14} />
             </a>
           </div>
           <div class="eco-visual">
-            <img
-              src="/assets/ecosystem/guide-screen.png"
-              alt="CXCS Guide 学习指南的真实网页界面"
-              width="1440"
-              height="1000"
-              loading="lazy"
-            />
+            <div class="journey-mockup pr-mockup">
+              <div class="pr-top-bar">
+                <span class="pr-badge">✓ Merged</span>
+                <span class="pr-repo">cxcs / campus-services</span>
+                <span class="pr-id">#42</span>
+              </div>
+              <div class="pr-title">feat: 校园空教室检索与课表高速缓存链路</div>
+              <div class="pr-meta-row">
+                <span class="pr-author">3 authors</span>
+                <span class="pr-dot">·</span>
+                <span class="pr-status">All 12 checks passed</span>
+              </div>
+              <div class="pr-timeline">
+                <div class="timeline-item">
+                  <span class="tl-icon commit">●</span>
+                  <div class="tl-content">
+                    <span class="tl-msg">fix: 重构并发锁，消除并发请求脏读</span>
+                    <span class="tl-hash">commit 8a2f1c</span>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <span class="tl-icon review">✓</span>
+                  <div class="tl-content">
+                    <span class="tl-msg">Review approved by mentors</span>
+                    <span class="tl-sub">“架构逻辑清晰，缓存驱逐策略处理得很稳！”</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pr-stats-row">
+                <span class="stat-tag">+384 lines</span>
+                <span class="stat-tag">-96 lines</span>
+                <span class="stat-tag">CI: 48s passed</span>
+              </div>
+            </div>
           </div>
         </div>
       </StackScrollCard>
 
       <StackScrollCard background="#171b23" color="#ffffff" borderColor="#171b23">
-        <div class="wrap eco-panel eco-page">
+        <div class="wrap eco-panel eco-journey-play">
           <div class="eco-content">
-            <div class="eco-number">03 / DEPLOY</div>
-            <h3 class="eco-name">Page</h3>
-            <h4 class="eco-headline">把项目交托上线，专注创造本身。</h4>
-            <p>免去繁琐的服务器运维门槛。关联代码仓库即可自动完成构建，把更多时间留给写出真正有价值的代码。</p>
-            <a class="small-link" href={siteData.pageUrl} target="_blank" rel="noopener noreferrer">
-              前往 CXCS Page <ArrowUpRight size={14} />
+            <div class="eco-number">03 / PLAY</div>
+            <h3 class="eco-name">Create</h3>
+            <h4 class="eco-headline">别管实不实用，好玩就值得折腾。</h4>
+            <p>
+              不用一开始就奔着什么严肃的大工程去。
+              在群里写个定时播报的整活 Bot、用 Rust 随手搓个极速 Web 工具，或者组装一块墨水屏开发板……只要你觉得有意思，协会就有人陪你一起折腾。大学里最难得的，就是有时间和同伴做点纯粹好玩的东西。
+            </p>
+            <a class="small-link" href="/articles">
+              看看大家都在折腾什么 <ArrowRight size={14} />
             </a>
           </div>
           <div class="eco-visual">
-            <img
-              src="/assets/ecosystem/page-screen.png"
-              alt="CXCS Page 网站的真实界面"
-              width="1440"
-              height="1000"
-              loading="lazy"
-            />
+            <div class="journey-mockup tinker-mockup">
+              <div class="tinker-header">
+                <span class="tinker-label">EXPERIMENT LAB</span>
+                <span class="tinker-subtitle">纯粹出于好玩折腾出的小玩意</span>
+              </div>
+              <div class="tinker-list">
+                <div class="tinker-item">
+                  <span class="tinker-emoji">🤖</span>
+                  <div class="tinker-body">
+                    <div class="tinker-row">
+                      <span class="tinker-title">社群助手 & 整活 Bot</span>
+                      <span class="tinker-tag">TypeScript</span>
+                    </div>
+                    <p class="tinker-desc">早八唤醒、GitHub 热榜推送与自定义梗图生成，每天在群里陪大家打发时间。</p>
+                  </div>
+                </div>
+                <div class="tinker-item">
+                  <span class="tinker-emoji">🦀</span>
+                  <div class="tinker-body">
+                    <div class="tinker-row">
+                      <span class="tinker-title">局域网快传与极速工具站</span>
+                      <span class="tinker-tag">Rust</span>
+                    </div>
+                    <p class="tinker-desc">基于 Axum 构建的轻量 Web 服务，几乎不吃内存，宿舍内网大文件秒级直传。</p>
+                  </div>
+                </div>
+                <div class="tinker-item">
+                  <span class="tinker-emoji">🕹️</span>
+                  <div class="tinker-body">
+                    <div class="tinker-row">
+                      <span class="tinker-title">墨水屏开发板桌面挂件</span>
+                      <span class="tinker-tag">单片机</span>
+                    </div>
+                    <p class="tinker-desc">闲置电子墨水屏改造成天气日历时钟，低功耗常亮，偶尔还能刷一把贪吃蛇。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </StackScrollCard>
@@ -1141,6 +1235,8 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     color: var(--muted);
     margin-bottom: 39px;
   }
+  .ecosystem .eco-journey-forge .eco-number,
+  .ecosystem .eco-journey-play .eco-number,
   .ecosystem .eco-guide .eco-number,
   .ecosystem .eco-page .eco-number {
     color: #c1d3ff;
@@ -1164,10 +1260,14 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     line-height: 1.8;
     margin: 0 0 31px;
   }
+  .ecosystem .eco-journey-forge .eco-content p,
+  .ecosystem .eco-journey-play .eco-content p,
   .ecosystem .eco-guide .eco-content p,
   .ecosystem .eco-page .eco-content p {
     color: #e5edff;
   }
+  .ecosystem .eco-journey-forge .small-link,
+  .ecosystem .eco-journey-play .small-link,
   .ecosystem .eco-guide .small-link,
   .ecosystem .eco-page .small-link {
     color: #ffffff;
@@ -1177,7 +1277,7 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     background: var(--ice);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 30px;
+    padding: 24px;
     height: 388px;
     min-height: 0;
     display: flex;
@@ -1185,46 +1285,322 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     justify-content: center;
     overflow: hidden;
   }
-  .ecosystem .eco-website .eco-visual {
-    background: #d8e5ff;
-    border-color: #bfd4ff;
+  .ecosystem .eco-journey-begin .eco-visual {
+    background: #eef2f6;
+    border-color: #d8e2ee;
   }
-  :root[data-theme='dark'] .ecosystem .eco-website .eco-visual {
-    background: #1d2535;
-    border-color: #2b384f;
+  :root[data-theme='dark'] .ecosystem .eco-journey-begin .eco-visual {
+    background: #181e2b;
+    border-color: #273347;
   }
-  .ecosystem .eco-website .eco-visual img {
-    width: 226px;
-    height: 226px;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 14px 28px rgba(36, 100, 237, 0.22));
-    transition: transform 0.3s ease;
-  }
-  .ecosystem .eco-website:hover .eco-visual img {
-    transform: scale(1.05);
-  }
-  .ecosystem .eco-guide .eco-visual {
+  .ecosystem .eco-journey-forge .eco-visual {
     background: #184cc2;
     border-color: #2c65e8;
   }
-  .ecosystem .eco-page .eco-visual {
+  .ecosystem .eco-journey-play .eco-visual {
     background: #0f1218;
     border-color: #252b37;
   }
-  .ecosystem .eco-guide .eco-visual img,
-  .ecosystem .eco-page .eco-visual img {
+
+  /* Journey Mockups */
+  .journey-mockup {
     width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 5px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    max-width: 480px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
   }
-  .ecosystem .eco-panel:hover .eco-visual img {
+  .ecosystem .eco-panel:hover .journey-mockup {
     transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22);
+  }
+
+  /* Card 1: Terminal Mockup */
+  .terminal-mockup {
+    background: #11141a;
+    border: 1px solid #232936;
+    color: #e2e8f0;
+  }
+  :root[data-theme='dark'] .terminal-mockup {
+    background: #0d1017;
+    border-color: #1f2637;
+  }
+  .mockup-header {
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .mockup-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f; }
+  .mockup-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #7d8799;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .mockup-body {
+    padding: 18px 20px;
+    font-size: 12px;
+    line-height: 1.65;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  .term-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .prompt-arrow {
+    color: #38d39f;
+    font-weight: 700;
+  }
+  .prompt-path {
+    color: #60a5fa;
+  }
+  .prompt-cmd {
+    color: #ffffff;
+    font-weight: 500;
+  }
+  .term-line.success {
+    color: #94a3b8;
+    font-size: 11px;
+    padding-left: 2px;
+  }
+  .term-output {
+    margin: 10px 0 12px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 2px solid #3b82f6;
+    border-radius: 0 4px 4px 0;
+    font-size: 11px;
+    color: #cbd5e1;
+    font-style: italic;
+  }
+  .term-cursor-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: #60a5fa;
+  }
+  .cursor {
+    color: #38d39f;
+    animation: blink 1s step-end infinite;
+    font-weight: 700;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Card 2: Git PR Mockup */
+  .pr-mockup {
+    background: rgba(13, 38, 98, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 22px;
+    color: #ffffff;
+  }
+  .pr-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .pr-badge {
+    background: #8957e5;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pr-repo {
+    font-size: 11px;
+    color: #c1d3ff;
+    font-family: ui-monospace, monospace;
+  }
+  .pr-id {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+  }
+  .pr-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+  .pr-meta-row {
+    font-size: 11px;
+    color: #c1d3ff;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .pr-status {
+    color: #4ade80;
+    font-weight: 500;
+  }
+  .pr-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
+    padding-left: 14px;
+    margin-left: 6px;
+  }
+  .timeline-item {
+    position: relative;
+  }
+  .tl-icon {
+    position: absolute;
+    left: -20px;
+    top: 2px;
+    font-size: 10px;
+  }
+  .tl-icon.commit { color: #60a5fa; }
+  .tl-icon.review { color: #4ade80; }
+  .tl-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tl-msg {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+  .tl-hash {
+    font-size: 10px;
+    color: #a5b4fc;
+    font-family: ui-monospace, monospace;
+  }
+  .tl-sub {
+    font-size: 11px;
+    color: #e0e7ff;
+    font-style: italic;
+    opacity: 0.9;
+  }
+  .pr-stats-row {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .stat-tag {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #e5edff;
+  }
+
+  /* Card 3: Tinker & Play Mockup (No Image, Fun & Real) */
+  .tinker-mockup {
+    background: #0f131a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 18px 20px;
+    color: #ffffff;
+    gap: 12px;
+  }
+  .tinker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+  }
+  .tinker-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #60a5fa;
+    letter-spacing: 0.08em;
+    font-family: ui-monospace, monospace;
+  }
+  .tinker-subtitle {
+    font-size: 11px;
+    color: #7d8799;
+  }
+  .tinker-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tinker-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 10px 12px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .ecosystem .eco-journey-play:hover .tinker-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .tinker-emoji {
+    font-size: 18px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .tinker-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .tinker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tinker-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+  .tinker-tag {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.15);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .tinker-desc {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.45;
+    margin: 0;
   }
 
   @media (max-width: 900px) {
