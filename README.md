@@ -40,7 +40,7 @@ bun run preview
 
 | 路径                                                   | 内容                                                           |
 | ------------------------------------------------------ | -------------------------------------------------------------- |
-| `/`                                                    | 首页：Hero、What We Do、Start Here、Latest、Ecosystem、Join Us |
+| `/`                                                    | 首页：Hero、What We Do、Start Here、全屏相册、Latest、Ecosystem、Join Us |
 | `/about`                                               | 协会介绍、社区原则与生态入口                                   |
 | `/articles`                                            | 推荐文章和全部公开文章                                         |
 | `/articles/<type>`                                     | 按配置生成的分类页，当前为 `news`、`blog`                      |
@@ -108,6 +108,8 @@ featured: false
 草稿过滤同样适用于开发服务器和本地生产预览，目前没有单独的草稿预览开关。`publishedAt` 用于日期展示和排序，不会阻止未来日期的非草稿文章立即输出。详情页的相关文章从同分类或有共同标签的公开文章中取前两篇，尚未按时间重新排序。
 
 ### 图片与附件
+
+首页活动相册位于 Start Here 与 Latest 之间，由 `src/widgets/HomeGallery.astro` 维护照片顺序和替代文本，原图放在 `src/assets/home-gallery/`，构建时生成响应式 WebP。照片高度为 `100dvh`（回退为 `100vh`），宽度保留原图比例。相册固定期间，向下滚动让照片向左移动、下一张从右侧进入，向上滚动则反向，首尾各保留 0.2 屏的滚动停留。导航覆盖照片时使用随主题变化的渐变背景，并关闭背景模糊。关闭 JavaScript 或启用减少动态效果时，相册提供原生横向滚动。
 
 图片可以直接放在 `index.md` / `index.mdx` 所在的文章目录，也可以按需放在 `assets/images/`；其他附件按类型放在 `assets/` 内。与正文同目录的图片可在 frontmatter 中直接作为封面引用：
 

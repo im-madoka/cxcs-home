@@ -6,6 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import config from '../config';
 import StackScroll from '../widgets/StackScroll.astro';
 import StackScrollCard from '../widgets/StackScrollCard.astro';
+import HomeGallery from '../widgets/HomeGallery.astro';
 import { getArticleCategory, getArticleCover } from '../articles';
 
 const { site: siteData, recruitment } = config;
@@ -206,7 +207,9 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     </div>
   </section>
 
-  <!-- Section 04 / Latest from CXCS -->
+  <HomeGallery />
+
+  <!-- Section 05 / Latest from CXCS -->
   <section class="section wrap" id="latest" aria-labelledby="latest-title">
     <div class="section-line">LATEST FROM CXCS</div>
     <div class="section-heading">

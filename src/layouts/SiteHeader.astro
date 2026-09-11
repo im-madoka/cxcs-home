@@ -132,7 +132,16 @@ const externalNav = config.nav.filter((item) => item.external);
     };
     const onCloseClick = () => closeMenu();
     const onLinkClick = () => closeMenu(false);
-    const syncHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 30);
+    const galleryViewport = document.querySelector<HTMLElement>('[data-gallery-viewport]');
+    const syncHeader = () => {
+      if (!header) return;
+      header.toggleAttribute('data-scrolled', window.scrollY > 30);
+      const bounds = galleryViewport?.getBoundingClientRect();
+      header.toggleAttribute(
+        'data-over-gallery',
+        !!bounds && bounds.top < header.getBoundingClientRect().bottom && bounds.bottom > 0,
+      );
+    };
 
     openButton.addEventListener('click', openMenu);
     closeButton.addEventListener('click', onCloseClick);
@@ -140,6 +149,7 @@ const externalNav = config.nav.filter((item) => item.external);
     links.forEach((link) => link.addEventListener('click', onLinkClick));
     document.addEventListener('keydown', onKeydown);
     window.addEventListener('scroll', syncHeader, { passive: true });
+    window.addEventListener('resize', syncHeader, { passive: true });
     syncHeader();
 
     cleanupHeader = () => {
@@ -149,6 +159,7 @@ const externalNav = config.nav.filter((item) => item.external);
       links.forEach((link) => link.removeEventListener('click', onLinkClick));
       document.removeEventListener('keydown', onKeydown);
       window.removeEventListener('scroll', syncHeader);
+      window.removeEventListener('resize', syncHeader);
     };
   };
 
@@ -182,7 +193,42 @@ const externalNav = config.nav.filter((item) => item.external);
     border-bottom: 1px solid var(--line);
     background: color-mix(in srgb, var(--bg) 85%, transparent);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 auto;
+    height: calc(100% + 80px);
+    background: linear-gradient(
+      to bottom,
+      var(--bg) 0%,
+      var(--bg) 24%,
+      color-mix(in srgb, var(--bg) 82%, transparent) 48%,
+      color-mix(in srgb, var(--bg) 30%, transparent) 74%,
+      transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .site-header[data-over-gallery] {
+    border-color: transparent;
+    background: transparent;
+    backdrop-filter: none;
+    transition: height 0.3s ease;
+  }
+  .site-header[data-over-gallery]::before {
+    opacity: 1;
+  }
+  /* Isolate the Safari fallback so CSS optimization preserves the standard declarations. */
+  @supports (-webkit-backdrop-filter: blur(16px)) {
+    .site-header[data-scrolled] {
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .site-header[data-over-gallery] {
+      -webkit-backdrop-filter: none;
+    }
   }
   .brand {
     display: inline-flex;
