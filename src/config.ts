@@ -4,7 +4,7 @@ const site: SiteInfo = {
   shortName: 'CXCS',
   title: 'CXCS · 东南大学成贤学院计算机协会',
   description: '用代码赋予思想形状，以好奇探寻技术本质。在成贤，一群热衷于技术与创造的人在此相遇。',
-  url: 'https://cxcs.dev',
+  url: 'https://home.cxcs.page',
   guideUrl: 'https://guide.cxcs.dev',
   pageUrl: 'https://cxcs.page',
 };
