@@ -1192,6 +1192,18 @@ const sideArticles = articles.filter((entry) => entry.id !== featuredArticle?.id
     .hero-actions .button {
       flex: 1;
       justify-content: center;
+      padding: 10px 12px;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    .hero-actions {
+      flex-direction: column;
+      bottom: 20px;
+    }
+    .hero-copy {
+      bottom: 120px;
     }
   }
   .ecosystem {
