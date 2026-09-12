@@ -20,24 +20,26 @@ const photos = [
 <section class="home-gallery" data-home-gallery aria-label="计协活动相册，共六张照片">
   <div class="gallery-viewport" data-gallery-viewport tabindex="0" role="group" aria-label="活动照片，可滚动浏览">
     <div class="gallery-track" data-gallery-track>
-      {photos.map(({ image, alt }) => (
-        <Image
-          src={image}
-          alt={alt}
-          class="gallery-photo"
-          style={{ aspectRatio: `${image.width} / ${image.height}` }}
-          format="webp"
-          quality={85}
-          width={Math.min(image.width, 2560)}
-          widths={[640, 960, 1440, 1920, 2560]
-            .filter((width) => width < Math.min(image.width, 2560))
-            .concat(Math.min(image.width, 2560))}
-          sizes={`${((image.width / image.height) * 100).toFixed(2)}dvh`}
-          loading="lazy"
-          decoding="async"
-          draggable="false"
-        />
-      ))}
+      {
+        photos.map(({ image, alt }) => (
+          <Image
+            src={image}
+            alt={alt}
+            class="gallery-photo"
+            style={{ aspectRatio: `${image.width} / ${image.height}` }}
+            format="webp"
+            quality={85}
+            width={Math.min(image.width, 2560)}
+            widths={[640, 960, 1440, 1920, 2560]
+              .filter((width) => width < Math.min(image.width, 2560))
+              .concat(Math.min(image.width, 2560))}
+            sizes={`${((image.width / image.height) * 100).toFixed(2)}dvh`}
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+          />
+        ))
+      }
     </div>
   </div>
 </section>
@@ -155,7 +157,6 @@ const photos = [
 
   .gallery-viewport {
     height: 100vh;
-    height: 100dvh;
     overflow-x: auto;
     overflow-y: hidden;
   }
@@ -179,7 +180,6 @@ const photos = [
 
   .home-gallery[data-enhanced] {
     height: calc(100vh + var(--gallery-scroll-distance));
-    height: calc(100dvh + var(--gallery-scroll-distance));
   }
 
   .home-gallery[data-enhanced] .gallery-viewport {
